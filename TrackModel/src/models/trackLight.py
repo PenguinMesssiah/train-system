@@ -1,6 +1,6 @@
 '''
 Last Updated: October 8, 2021
-@author: william scott
+@author: Will Scott
 '''
 
 class trackLight(object):
