@@ -102,7 +102,6 @@ def generatePositioningData(trackLayout: list) -> list:
             continue
         
         if(curObject.section == 'A'):
-            print('\nExecuting Line A Code, next X = ', nextX)
             curObject.xPos = nextX
             curObject.yPos = nextY
              
@@ -116,6 +115,7 @@ def generatePositioningData(trackLayout: list) -> list:
         elif(curObject.section == 'C'):
             if(curObject.blockNumber == 11):
                 nextX = 250;
+                nextY = 0;
                 
             curObject.xPos = nextX
             curObject.yPos = nextY - 25
@@ -123,7 +123,6 @@ def generatePositioningData(trackLayout: list) -> list:
             if(curObject.objType == 'Block'):
                 curObject.angle = -15
                 
-            continue;
         nextX = curObject.xPos + curObject.size
         nextY = curObject.yPos
             
