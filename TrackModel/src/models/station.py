@@ -10,12 +10,14 @@ class station(object):
     xPos      = None
     yPos      = None
     occupancy = None
+    section   = None
     objType   = None
 
-    def __init__(self, name, xPos, yPos, occupancy, objType):
+    def __init__(self, name, xPos, yPos, occupancy, section, objType):
         # Constructor
         self.name      = name
         self.xPos      = xPos
-        self.yPos      = xPos
+        self.yPos      = yPos
         self.occupancy = occupancy
+        self.section   = section
         self.objType   = objType

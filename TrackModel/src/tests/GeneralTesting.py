@@ -10,8 +10,16 @@ def main():
     
     trackList = trackBuilderService.readTrackFile()
     
+    trackBuilderService.generatePositioningData(trackList)
+    
     for curObj in trackList:
-        print("\nCurrent Block Type: ", curObj.objType)
+        if(curObj.objType == 'Switch'):
+            continue; 
+        
+        print("\nCurrent Object Type: ", curObj.objType)
+        print("\nCurrent Object Section: ", curObj.section)
+        print("\nCurrent xPos: ", curObj.xPos)
+        print("\nCurrent yPos: ", curObj.yPos)
         
 
 if __name__ == '__main__':

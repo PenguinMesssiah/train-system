@@ -67,7 +67,7 @@ def readTrackFile() -> list:
             elif(infraStr.find('Station') != -1):
                 infraStr = infraStr.replace('Station', '')
                 
-                curStation = station(infraStr, '', '', 0, 'Station')
+                curStation = station(infraStr, '', '', 0, row[1], 'Station')
                 trackLayout.append(curStation)
                 print("\n---------------------Added Station: Station ", curStation.name,"-------------------")  
         
@@ -76,10 +76,58 @@ def readTrackFile() -> list:
     return trackLayout
 
 # Method for Adding Cartesian Grid Data for View Finder
-def generatePositioningData(trackLayout: list):
+def generatePositioningData(trackLayout: list) -> list:
+    # Variables 
+    nextX = None
+    nextY = None
+    
     for curObject in trackLayout:
+        #Loading Starting Coordinates
+        if(curObject == trackLayout[0]):
             curObject.xPos = 0;
             curObject.yPos = 0;
+            
+            nextX = curObject.xPos + curObject.size
+            print('\nnextX= ', nextX)
+            nextY = curObject.yPos
+            continue
+        
+        #Skipping Any Switches: No Positioning Need
+        if(curObject.objType == 'Switch'):
+            continue
+        
+        if(curObject.objType == 'Station'):
+            curObject.xPos = nextX
+            curObject.yPos = nextY
+            continue
+        
+        if(curObject.section == 'A'):
+            print('\nExecuting Line A Code, next X = ', nextX)
+            curObject.xPos = nextX
+            curObject.yPos = nextY
+             
+        elif(curObject.section == 'B'):
+            curObject.xPos = nextX
+            curObject.yPos = nextY + 25
+                
+            if(curObject.objType == 'Block'):
+                curObject.angle = 15
+                
+        elif(curObject.section == 'C'):
+            if(curObject.blockNumber == 11):
+                nextX = 250;
+                
+            curObject.xPos = nextX
+            curObject.yPos = nextY - 25
+                
+            if(curObject.objType == 'Block'):
+                curObject.angle = -15
+                
+            continue;
+        nextX = curObject.xPos + curObject.size
+        nextY = curObject.yPos
+            
+    return trackLayout;
 
 if __name__ == '__readTrackFile__':
     readTrackFile()
