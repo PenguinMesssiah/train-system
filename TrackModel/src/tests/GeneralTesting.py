@@ -4,13 +4,15 @@ Created on October 8, 2021
 File for Testing Track Model Implementation
 '''
 
-from models.trackBlock import trackBlock
+from services import trackBuilderService
 
 def main():
-    c = trackBlock
-    c.xPos = 4;
-    print("x Position of C equals = ", c.xPos)
-
     
+    trackList = trackBuilderService.readTrackFile()
+    
+    for curObj in trackList:
+        print("\nCurrent Block Type: ", curObj.objType)
+        
+
 if __name__ == '__main__':
     main()

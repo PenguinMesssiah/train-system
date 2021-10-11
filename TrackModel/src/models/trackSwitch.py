@@ -11,12 +11,13 @@ class trackSwitch(object):
     endBlockOne = None
     endBlockTwo = None
     position    = None
+    objType     = None
 
-    def __init__(self, elementId, startBlock, endBlockOne, endBlockTwo, position):
+    def __init__(self, elementId, startBlock, endBlockOne, endBlockTwo, position, objType):
         # Constructor
         self.elementId   = elementId
         self.startBlock  = startBlock
         self.endBlockOne = endBlockOne
         self.endBlockTwo = endBlockTwo
         self.position    = position
-        
+        self.objType     = objType

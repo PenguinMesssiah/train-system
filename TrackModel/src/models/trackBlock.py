@@ -1,21 +1,23 @@
 '''
-Last Updated: October 8, 2021
+Last Updated: October 10, 2021
 @author: Will Scott
 '''
 
 class trackBlock(object):
     # Member Variables: External
-    elementId  = None
-    line       = None
-    elev       = None
-    cumElev    = None 
-    size       = None
-    section    = None
-    gradLevel  = None
-    envTemp    = None
-    speedLimit = None
-    occupancy  = None
-    authority  = None
+    blockNumber = None
+    line        = None
+    elev        = None
+    cumElev     = None 
+    size        = None
+    section     = None
+    gradLevel   = None
+    envTemp     = None
+    speedLimit  = None
+    occupancy   = None
+    authority   = None
+    
+    objType     = None
     
     # Member Variables: Positioning
     xPos = None
@@ -28,14 +30,15 @@ class trackBlock(object):
     failureTC = None   # Track Circuit Failure
     
     # Member Functions
-    def __init__(self, line, section, elementId, size, gradLevel, speedLimit, elev, cumEvel):
+    def __init__(self, line, section, blockNumber, size, gradLevel, speedLimit, elev, cumEvel, objType):
         # Constructor
-        self.line      = line
-        self.section   = section
-        self.elementId = elementId
-        self.size      = size
-        self.gradLevel = gradLevel
-        self.speedLimit = speedLimit
-        self.elev       = elev
-        self.cumElev    = cumEvel
+        self.line        = line
+        self.section     = section
+        self.blockNumber = blockNumber
+        self.size        = size
+        self.gradLevel   = gradLevel
+        self.speedLimit  = speedLimit
+        self.elev        = elev
+        self.cumElev     = cumEvel
+        self.objType     = objType
         
