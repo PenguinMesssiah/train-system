@@ -6,12 +6,14 @@ Last Updated: October 11, 2021
 # Imports
 import pylightxl as xl
 
+from PyQt5.QtCore           import pyqtSlot
 from models.trackBlock      import trackBlock
 from models.station         import station
 from models.trackSwitch     import trackSwitch
 
 
 # Method for Reading the Excel File containing the Track Layout
+@pyqtSlot()
 def readTrackFile() -> list:
     # Defined Variables
     trackLayout      = []

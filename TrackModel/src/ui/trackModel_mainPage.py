@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from services import trackBuilderService
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -22,6 +22,8 @@ class Ui_Dialog(object):
         self.browseFileSelectButton = QtWidgets.QPushButton(Dialog)
         self.browseFileSelectButton.setGeometry(QtCore.QRect(1800, 850, 111, 61))
         self.browseFileSelectButton.setObjectName("browseFileSelectButton")
+        #self.browseFileSelectButton.clicked.connect(lambda:trackBuilderService.readTrackFile())
+        self.browseFileSelectButton.clicked.connect(lambda:print("This shit is TRASH"))
         self.uploadTrackButton = QtWidgets.QPushButton(Dialog)
         self.uploadTrackButton.setGeometry(QtCore.QRect(1620, 850, 171, 61))
         self.uploadTrackButton.setObjectName("uploadTrackButton")
