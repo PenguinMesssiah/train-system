@@ -1,11 +1,12 @@
 # ECE 1140 Train Model Functions
 # Daniel Uebelacker
 
+from PyQt5 import QtCore, QtGui, QtWidgets
 import math
 import train
 import block
-from train_model_ui import UI
-from PyQt5 import QtCore
+from train_model_mainpage import Ui_TrainModel
+from datetime import datetime
 
 class Train_Functions:
 
@@ -21,36 +22,48 @@ class Train_Functions:
         self.trainList = []
         self.blockList = []
 
-        self.displayUI = UI
+        # self.displayUI = Ui_TrainModel
+        # Ui_TrainModel.__main__()
+
+        import sys
+        app = QtWidgets.QApplication(sys.argv)
+        mainWindow = QtWidgets.QMainWindow()
+        ui = Ui_TrainModel()
+        ui.setupUi(mainWindow)
+        mainWindow.show()
+
         self.update_UI()
 
+        sys.exit(app.exec_())
+
     def update_UI(self):
-        self.displayUI.xxx.valueChanged.connect(self.xxx)
-        
+        #self.displayUI.doors_text.valueChanged.connect(self.trainList[trainNum].doors)
+        self.displayUI.currentTime_text.valueChanged.connect(datetime.now().strftime("%H:%M:%S"))
+        #self.displayUI.accLimit_text.valueChanged.connect(self.trainList[trainNum].accelerationLimit)
 
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect()
         self.timer.start(100)
 
-    def update_kinematics(self, train, power):
+    def update_kinematics(self, trainNum, power):
         
         if self.engineFailure:
             power = 0
 
         # From train class
-        commandedSpeed = self.trainList[train].commandedSpeed
-        currentSpeed = self.trainList[train].currentSpeed
-        prevPosition = self.trainList[train].position
-        prevAcceleration = self.trainList[train].acceleration
-        mass = self.trainList[train].mass
-        brake = self.trainList[train].brake
-        emergencyBrake = self.trainList[train].emergencyBrake
-        currentBlock = self.trainList[train].currentBlock
+        commandedSpeed = self.trainList[trainNum].commandedSpeed
+        currentSpeed = self.trainList[trainNum].currentSpeed
+        prevPosition = self.trainList[trainNum].position
+        prevAcceleration = self.trainList[trainNum].acceleration
+        mass = self.trainList[trainNum].mass
+        brake = self.trainList[trainNum].brake
+        emergencyBrake = self.trainList[trainNum].emergencyBrake
+        currentBlock = self.trainList[trainNum].currentBlock
 
         # From track class
-        currentBlockLength = blockList[block].blockLength
-        speedLimit = blockList[block].speedLimit
-        trackAngle = blockList[block].trackAngle
+        currentBlockLength = blockList[blockNum].blockLength
+        speedLimit = blockList[blockNum].speedLimit
+        trackAngle = blockList[blockNum].trackAngle
 
         # For calculations
         timePeriod = 0.2
