@@ -3,10 +3,12 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import math
-import train
-import block
-from train_model_mainpage import Ui_TrainModel
+from train import Train
+from block import Block
+from train_model_ui import Ui_TrainModel
 from datetime import datetime
+from common import Track_Circuit_Data
+from connections import connect
 
 class Train_Functions:
 
@@ -22,32 +24,39 @@ class Train_Functions:
         self.trainList = []
         self.blockList = []
 
-        # self.displayUI = Ui_TrainModel
-        # Ui_TrainModel.__main__()
-
-        import sys
-        app = QtWidgets.QApplication(sys.argv)
-        mainWindow = QtWidgets.QMainWindow()
-        ui = Ui_TrainModel()
-        ui.setupUi(mainWindow)
-        mainWindow.show()
-
         self.update_UI()
-
-        sys.exit(app.exec_())
 
     def update_UI(self):
         #self.displayUI.doors_text.valueChanged.connect(self.trainList[trainNum].doors)
-        self.displayUI.currentTime_text.valueChanged.connect(datetime.now().strftime("%H:%M:%S"))
+        #self.displayUI.currentTime_text.valueChanged.connect(datetime.now().strftime("%H:%M:%S"))
         #self.displayUI.accLimit_text.valueChanged.connect(self.trainList[trainNum].accelerationLimit)
 
         self.timer = QtCore.QTimer()
-        self.timer.timeout.connect()
-        self.timer.start(100)
+        tempBlock1 = Block("A0", 100, 50, 20, 0, "ABC", "beacon1")
+        tempBlock2 = Block("A1", 120, 60, 20, 0, "ABC", "beacon2")
+        tempList = []
+        tempList.append(tempBlock1)
+        tempList.append(tempBlock2)
+        tempTC = Track_Circuit_Data(60, 70)
+
+        self.blockList = tempList
+
+        self.dispatch_train(5, tempList, tempTC)
+        self.timer.timeout.connect(self.update_kinematics(0, 5))
+        self.timer.start(1000)
+
+    def dispatch_train(self, destination, blockRoute, trackCircuitInput):
+
+        dispatchedTrain = Train(destination, blockRoute)
+
+        self.trainList.append(dispatchedTrain)
+
+        connect.train_ctrl_train_dispatched.emit(trackCircuitInput)
+
 
     def update_kinematics(self, trainNum, power):
         
-        if self.engineFailure:
+        if self.trainList[trainNum].engineFailure:
             power = 0
 
         # From train class
@@ -56,14 +65,16 @@ class Train_Functions:
         prevPosition = self.trainList[trainNum].position
         prevAcceleration = self.trainList[trainNum].acceleration
         mass = self.trainList[trainNum].mass
-        brake = self.trainList[trainNum].brake
+        brake = self.trainList[trainNum].brakeEngaged
         emergencyBrake = self.trainList[trainNum].emergencyBrake
-        currentBlock = self.trainList[trainNum].currentBlock
+        currentBlockNum = self.trainList[trainNum].currentBlock
+
+        currentBlock = self.blockList[currentBlockNum]
 
         # From track class
-        currentBlockLength = blockList[blockNum].blockLength
-        speedLimit = blockList[blockNum].speedLimit
-        trackAngle = blockList[blockNum].trackAngle
+        currentBlockLength = currentBlock.blockLength
+        speedLimit = currentBlock.speedLimit
+        trackAngle = currentBlock.trackAngle
 
         # For calculations
         timePeriod = 0.2
@@ -98,33 +109,39 @@ class Train_Functions:
             velocity = self.VELOCITY_LIMIT
         elif (velocity < 0):
             velocity = 0
-
+            
         # --------------------- POSITION CALCULATIONS ---------------------
         # -----------------------------------------------------------------
         position = prevPosition + (velocity * timePeriod)
 
         # Move position to next block on track
         if (position > currentBlockLength):
+
+            # Fix block length
             position -= currentBlockLength
 
-        self.trainList[train].position = position
-        self.trainList[train].block = newBlock
+            # Remove traveled block from list and update current block
+            self.trainList[trainNum].pop(0)
+            self.trainList[trainNum].currentBlock = self.blockList[0]
+            currentBlock = self.blockList[0]
 
-        self.trainsList[train].power = power
-        self.trainsList[train].currentSpeed = velocity
-        self.trainsList[train].acceleration = acceleration
-
-    def update_block_position(self, block, blockLength, speedLimit, elevation, slope, station, beacon):
+            # Send block occupancy to track model
+            connect.track_model_update_block_occupancy.emit(trainNum, currentBlock)
         
-        newBlock = Block(block)
-
-        newBlock.blockLength = blockLength
-        newBlock.speedLimit = speedLimit
-        newBlock.elevation = elevation
-        newBlock.slope = slope
-        newBlock.station = station
-        newBlock.beacon = beacon
-
+        # Update rest of values
+        self.trainList[trainNum].position = position
+        self.trainList[trainNum].power = power
+        self.trainList[trainNum].currentSpeed = velocity
+        self.trainList[trainNum].acceleration = acceleration
+        
+        # Update UI
+        print("hello!")
+        connect.train_model_update_ui.emit("position", position)
+        connect.train_model_update_ui.emit("power", power)
+        connect.train_model_update_ui.emit("velocity", velocity)
+        connect.train_model_update_ui.emit("acceleration", acceleration)
+        connect.train_model_update_ui.emit("blockName", currentBlock.name)
+        
 # ---------------------------------------------------------------------------------------------
 # -------------------------------- INPUTS FROM TRACK MODEL ------------------------------------
 # ---------------------------------------------------------------------------------------------
@@ -160,7 +177,10 @@ class Train_Functions:
     # Receive speed limit from the Track Model
     def receive_speedLimit(self, train, speedLimit):
         self.trainList[train].speedLimit = speedLimit
-        self.trainUI.speedLimit_text.setText(str(speedLimit))
+        self.ui.speedLimit_text.setText(str(speedLimit))
+
+    def receive_blockList(self, blockList):
+        self.blockList = blockList
 
 # ---------------------------------------------------------------------------------------------
 # ----------------------------- INPUTS FROM TRAIN CONTROLLER ----------------------------------
@@ -231,3 +251,15 @@ class Train_Functions:
     # Receive engine failure from Murphy
     def receive_engineFailure(self, train, engineFailure):
         self.trainList[train].engineFailure = engineFailure
+
+#functions = Train_Functions()
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    TrainModel = QtWidgets.QMainWindow()
+    ui = Ui_TrainModel()
+    ui.setupUi(TrainModel)
+    TrainModel.show()
+    sys.exit(app.exec_())
+

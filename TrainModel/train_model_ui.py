@@ -7,6 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from connections import connect
 
 class Ui_TrainModel(object):
     def setupUi(self, TrainModel):
@@ -265,15 +266,15 @@ class Ui_TrainModel(object):
         self.decLimit_text.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.decLimit_text.setObjectName("decLimit_text")
         self.gridLayout.addWidget(self.decLimit_text, 6, 4, 1, 1)
-        self.currentSpeed_text_6 = QtWidgets.QTextBrowser(self.centralwidget)
+        self.power_text = QtWidgets.QTextBrowser(self.centralwidget)
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(28)
-        self.currentSpeed_text_6.setFont(font)
-        self.currentSpeed_text_6.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.currentSpeed_text_6.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.currentSpeed_text_6.setObjectName("currentSpeed_text_6")
-        self.gridLayout.addWidget(self.currentSpeed_text_6, 9, 2, 1, 1)
+        self.power_text.setFont(font)
+        self.power_text.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.power_text.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.power_text.setObjectName("power_text")
+        self.gridLayout.addWidget(self.power_text, 9, 2, 1, 1)
         self.failureStatus_label = QtWidgets.QLabel(self.centralwidget)
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -300,18 +301,18 @@ class Ui_TrainModel(object):
         self.authority_text.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.authority_text.setObjectName("authority_text")
         self.gridLayout.addWidget(self.authority_text, 6, 3, 1, 1)
-        self.currentSpeed_label_6 = QtWidgets.QLabel(self.centralwidget)
+        self.power_label = QtWidgets.QLabel(self.centralwidget)
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(20)
         font.setBold(True)
         font.setWeight(75)
-        self.currentSpeed_label_6.setFont(font)
-        self.currentSpeed_label_6.setTextFormat(QtCore.Qt.RichText)
-        self.currentSpeed_label_6.setScaledContents(False)
-        self.currentSpeed_label_6.setAlignment(QtCore.Qt.AlignCenter)
-        self.currentSpeed_label_6.setObjectName("currentSpeed_label_6")
-        self.gridLayout.addWidget(self.currentSpeed_label_6, 8, 2, 1, 1)
+        self.power_label.setFont(font)
+        self.power_label.setTextFormat(QtCore.Qt.RichText)
+        self.power_label.setScaledContents(False)
+        self.power_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.power_label.setObjectName("power_label")
+        self.gridLayout.addWidget(self.power_label, 8, 2, 1, 1)
         self.passengers_label = QtWidgets.QLabel(self.centralwidget)
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -324,32 +325,32 @@ class Ui_TrainModel(object):
         self.passengers_label.setAlignment(QtCore.Qt.AlignCenter)
         self.passengers_label.setObjectName("passengers_label")
         self.gridLayout.addWidget(self.passengers_label, 4, 0, 1, 1)
-        self.speedLimit_label_2 = QtWidgets.QLabel(self.centralwidget)
+        self.speedLimit_label = QtWidgets.QLabel(self.centralwidget)
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(20)
         font.setBold(True)
         font.setWeight(75)
-        self.speedLimit_label_2.setFont(font)
-        self.speedLimit_label_2.setTextFormat(QtCore.Qt.RichText)
-        self.speedLimit_label_2.setScaledContents(False)
-        self.speedLimit_label_2.setAlignment(QtCore.Qt.AlignCenter)
-        self.speedLimit_label_2.setObjectName("speedLimit_label_2")
-        self.gridLayout.addWidget(self.speedLimit_label_2, 4, 2, 1, 1)
-        self.currentSpeed_label_5 = QtWidgets.QLabel(self.centralwidget)
+        self.speedLimit_label.setFont(font)
+        self.speedLimit_label.setTextFormat(QtCore.Qt.RichText)
+        self.speedLimit_label.setScaledContents(False)
+        self.speedLimit_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.speedLimit_label.setObjectName("speedLimit_label")
+        self.gridLayout.addWidget(self.speedLimit_label, 4, 2, 1, 1)
+        self.suggestedSpeed_label = QtWidgets.QLabel(self.centralwidget)
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(20)
         font.setBold(True)
         font.setWeight(75)
-        self.currentSpeed_label_5.setFont(font)
-        self.currentSpeed_label_5.setTextFormat(QtCore.Qt.RichText)
-        self.currentSpeed_label_5.setScaledContents(False)
-        self.currentSpeed_label_5.setAlignment(QtCore.Qt.AlignCenter)
-        self.currentSpeed_label_5.setObjectName("currentSpeed_label_5")
-        self.gridLayout.addWidget(self.currentSpeed_label_5, 2, 2, 1, 1)
-        self.gridLayout_6 = QtWidgets.QGridLayout()
-        self.gridLayout_6.setObjectName("gridLayout_6")
+        self.suggestedSpeed_label.setFont(font)
+        self.suggestedSpeed_label.setTextFormat(QtCore.Qt.RichText)
+        self.suggestedSpeed_label.setScaledContents(False)
+        self.suggestedSpeed_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.suggestedSpeed_label.setObjectName("suggestedSpeed_label")
+        self.gridLayout.addWidget(self.suggestedSpeed_label, 2, 2, 1, 1)
+        self.speed_grid = QtWidgets.QGridLayout()
+        self.speed_grid.setObjectName("speed_grid")
         self.suggestedSpeed_text = QtWidgets.QTextBrowser(self.centralwidget)
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -358,33 +359,33 @@ class Ui_TrainModel(object):
         self.suggestedSpeed_text.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.suggestedSpeed_text.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.suggestedSpeed_text.setObjectName("suggestedSpeed_text")
-        self.gridLayout_6.addWidget(self.suggestedSpeed_text, 2, 0, 1, 1)
-        self.label = QtWidgets.QLabel(self.centralwidget)
+        self.speed_grid.addWidget(self.suggestedSpeed_text, 2, 0, 1, 1)
+        self.commandedSpeed_label = QtWidgets.QLabel(self.centralwidget)
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(20)
         font.setBold(True)
         font.setWeight(75)
-        self.label.setFont(font)
-        self.label.setAlignment(QtCore.Qt.AlignCenter)
-        self.label.setObjectName("label")
-        self.gridLayout_6.addWidget(self.label, 3, 0, 1, 1)
-        self.textBrowser = QtWidgets.QTextBrowser(self.centralwidget)
-        self.textBrowser.setObjectName("textBrowser")
-        self.gridLayout_6.addWidget(self.textBrowser, 4, 0, 1, 1)
-        self.gridLayout.addLayout(self.gridLayout_6, 3, 2, 1, 1)
-        self.currentSpeed_label_4 = QtWidgets.QLabel(self.centralwidget)
+        self.commandedSpeed_label.setFont(font)
+        self.commandedSpeed_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.commandedSpeed_label.setObjectName("commandedSpeed_label")
+        self.speed_grid.addWidget(self.commandedSpeed_label, 3, 0, 1, 1)
+        self.commanedSpeed_text = QtWidgets.QTextBrowser(self.centralwidget)
+        self.commanedSpeed_text.setObjectName("commanedSpeed_text")
+        self.speed_grid.addWidget(self.commanedSpeed_text, 4, 0, 1, 1)
+        self.gridLayout.addLayout(self.speed_grid, 3, 2, 1, 1)
+        self.currentSpeed_label = QtWidgets.QLabel(self.centralwidget)
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(20)
         font.setBold(True)
         font.setWeight(75)
-        self.currentSpeed_label_4.setFont(font)
-        self.currentSpeed_label_4.setTextFormat(QtCore.Qt.RichText)
-        self.currentSpeed_label_4.setScaledContents(False)
-        self.currentSpeed_label_4.setAlignment(QtCore.Qt.AlignCenter)
-        self.currentSpeed_label_4.setObjectName("currentSpeed_label_4")
-        self.gridLayout.addWidget(self.currentSpeed_label_4, 0, 2, 1, 1)
+        self.currentSpeed_label.setFont(font)
+        self.currentSpeed_label.setTextFormat(QtCore.Qt.RichText)
+        self.currentSpeed_label.setScaledContents(False)
+        self.currentSpeed_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.currentSpeed_label.setObjectName("currentSpeed_label")
+        self.gridLayout.addWidget(self.currentSpeed_label, 0, 2, 1, 1)
         self.temp_label = QtWidgets.QLabel(self.centralwidget)
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -397,8 +398,8 @@ class Ui_TrainModel(object):
         self.temp_label.setAlignment(QtCore.Qt.AlignCenter)
         self.temp_label.setObjectName("temp_label")
         self.gridLayout.addWidget(self.temp_label, 8, 0, 1, 1)
-        self.gridLayout_4 = QtWidgets.QGridLayout()
-        self.gridLayout_4.setObjectName("gridLayout_4")
+        self.time_grid = QtWidgets.QGridLayout()
+        self.time_grid.setObjectName("time_grid")
         self.departureTime_text = QtWidgets.QTextBrowser(self.centralwidget)
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -407,7 +408,7 @@ class Ui_TrainModel(object):
         self.departureTime_text.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.departureTime_text.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.departureTime_text.setObjectName("departureTime_text")
-        self.gridLayout_4.addWidget(self.departureTime_text, 0, 0, 1, 1)
+        self.time_grid.addWidget(self.departureTime_text, 0, 0, 1, 1)
         self.arrivalTime_label = QtWidgets.QLabel(self.centralwidget)
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -419,7 +420,7 @@ class Ui_TrainModel(object):
         self.arrivalTime_label.setScaledContents(False)
         self.arrivalTime_label.setAlignment(QtCore.Qt.AlignCenter)
         self.arrivalTime_label.setObjectName("arrivalTime_label")
-        self.gridLayout_4.addWidget(self.arrivalTime_label, 1, 0, 1, 1)
+        self.time_grid.addWidget(self.arrivalTime_label, 1, 0, 1, 1)
         self.arrivalTime_text = QtWidgets.QTextBrowser(self.centralwidget)
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -428,8 +429,8 @@ class Ui_TrainModel(object):
         self.arrivalTime_text.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.arrivalTime_text.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.arrivalTime_text.setObjectName("arrivalTime_text")
-        self.gridLayout_4.addWidget(self.arrivalTime_text, 2, 0, 1, 1)
-        self.gridLayout.addLayout(self.gridLayout_4, 3, 0, 1, 1)
+        self.time_grid.addWidget(self.arrivalTime_text, 2, 0, 1, 1)
+        self.gridLayout.addLayout(self.time_grid, 3, 0, 1, 1)
         self.block_text = QtWidgets.QTextBrowser(self.centralwidget)
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -463,8 +464,8 @@ class Ui_TrainModel(object):
         self.menubar = QtWidgets.QMenuBar(TrainModel)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1920, 21))
         self.menubar.setObjectName("menubar")
-        self.menufdf = QtWidgets.QMenu(self.menubar)
-        self.menufdf.setObjectName("menufdf")
+        self.menu = QtWidgets.QMenu(self.menubar)
+        self.menu.setObjectName("menu")
         self.menuDiagnostics_Page = QtWidgets.QMenu(self.menubar)
         self.menuDiagnostics_Page.setObjectName("menuDiagnostics_Page")
         self.menuProperties_Page = QtWidgets.QMenu(self.menubar)
@@ -475,13 +476,38 @@ class Ui_TrainModel(object):
         self.statusbar = QtWidgets.QStatusBar(TrainModel)
         self.statusbar.setObjectName("statusbar")
         TrainModel.setStatusBar(self.statusbar)
-        self.menubar.addAction(self.menufdf.menuAction())
+        self.menubar.addAction(self.menu.menuAction())
         self.menubar.addAction(self.menuDiagnostics_Page.menuAction())
         self.menubar.addAction(self.menuProperties_Page.menuAction())
         self.menubar.addAction(self.menuTesting_Page.menuAction())
 
         self.retranslateUi(TrainModel)
         QtCore.QMetaObject.connectSlotsByName(TrainModel)
+
+        connect.train_model_update_ui.connect(self.update_main_page)
+        self.passengerPage_button.clicked.connect(self.passenger_button)
+
+        self.diagnostics_button.clicked.connect(self.diagnostic)
+
+    def diagnostic(self):
+        self.authority_text.setText("Hello!")
+
+    def passenger_button(self):
+        self.passengers_text.setText("this works!")
+
+    def update_main_page(self, variableName, variable):
+        print("Updating UI...")
+        #if variableName == 'position':
+                #self.
+        if variableName == 'power':
+                self.power_text.setText(str(variable))
+        elif variableName == 'velocity':
+                self.currentSpeed_text.setText(str(variable))
+        #elif variableName == 'acceleration':
+                #self.currentAcceleration.setText(str(variable))
+        elif variableName == 'blockName':
+                self.block_text.setText(str(variable))
+
 
     def retranslateUi(self, TrainModel):
         _translate = QtCore.QCoreApplication.translate
@@ -523,7 +549,7 @@ class Ui_TrainModel(object):
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt;\">15 m/s^2</span></p></body></html>"))
-        self.currentSpeed_text_6.setHtml(_translate("TrainModel", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+        self.power_text.setHtml(_translate("TrainModel", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'Arial\'; font-size:28pt; font-weight:400; font-style:normal;\">\n"
@@ -539,24 +565,24 @@ class Ui_TrainModel(object):
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt;\">60 mi</span></p></body></html>"))
-        self.currentSpeed_label_6.setText(_translate("TrainModel", "Power"))
+        self.power_label.setText(_translate("TrainModel", "Power"))
         self.passengers_label.setText(_translate("TrainModel", "Passengers"))
-        self.speedLimit_label_2.setText(_translate("TrainModel", "Speed Limit"))
-        self.currentSpeed_label_5.setText(_translate("TrainModel", "Suggested Speed"))
+        self.speedLimit_label.setText(_translate("TrainModel", "Speed Limit"))
+        self.suggestedSpeed_label.setText(_translate("TrainModel", "Suggested Speed"))
         self.suggestedSpeed_text.setHtml(_translate("TrainModel", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'Arial\'; font-size:28pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:16pt;\">80 mph</span></p>\n"
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS Shell Dlg 2\'; font-size:16pt;\"><br /></p></body></html>"))
-        self.label.setText(_translate("TrainModel", "Commanded Speed"))
-        self.textBrowser.setHtml(_translate("TrainModel", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+        self.commandedSpeed_label.setText(_translate("TrainModel", "Commanded Speed"))
+        self.commanedSpeed_text.setHtml(_translate("TrainModel", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt;\">80 mph</span></p>\n"
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:16pt;\"><br /></p></body></html>"))
-        self.currentSpeed_label_4.setText(_translate("TrainModel", "Current Speed"))
+        self.currentSpeed_label.setText(_translate("TrainModel", "Current Speed"))
         self.temp_label.setText(_translate("TrainModel", "Temp"))
         self.departureTime_text.setHtml(_translate("TrainModel", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
@@ -589,18 +615,17 @@ class Ui_TrainModel(object):
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:16pt;\">200</span></p></body></html>"))
-        self.menufdf.setTitle(_translate("TrainModel", "Passenger Page"))
+        self.menu.setTitle(_translate("TrainModel", "Passenger Page"))
         self.menuDiagnostics_Page.setTitle(_translate("TrainModel", "Diagnostics Page"))
         self.menuProperties_Page.setTitle(_translate("TrainModel", "Properties Page"))
         self.menuTesting_Page.setTitle(_translate("TrainModel", "Testing Page"))
 
 
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    TrainModel = QtWidgets.QMainWindow()
-    ui = Ui_TrainModel()
-    ui.setupUi(TrainModel)
-    TrainModel.show()
-    sys.exit(app.exec_())
-
+# if __name__ == "__main__":
+#     import sys
+#     app = QtWidgets.QApplication(sys.argv)
+#     TrainModel = QtWidgets.QMainWindow()
+#     ui = Ui_TrainModel()
+#     ui.setupUi(TrainModel)
+#     TrainModel.show()
+#     sys.exit(app.exec_())

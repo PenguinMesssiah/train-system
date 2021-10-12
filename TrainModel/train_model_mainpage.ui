@@ -513,7 +513,7 @@ p, li { white-space: pre-wrap; }
        </widget>
       </item>
       <item row="9" column="2">
-       <widget class="QTextBrowser" name="currentSpeed_text_6">
+       <widget class="QTextBrowser" name="power_text">
         <property name="font">
          <font>
           <family>Arial</family>
@@ -600,7 +600,7 @@ p, li { white-space: pre-wrap; }
        </widget>
       </item>
       <item row="8" column="2">
-       <widget class="QLabel" name="currentSpeed_label_6">
+       <widget class="QLabel" name="power_label">
         <property name="font">
          <font>
           <family>Arial</family>
@@ -648,7 +648,7 @@ p, li { white-space: pre-wrap; }
        </widget>
       </item>
       <item row="4" column="2">
-       <widget class="QLabel" name="speedLimit_label_2">
+       <widget class="QLabel" name="speedLimit_label">
         <property name="font">
          <font>
           <family>Arial</family>
@@ -672,7 +672,7 @@ p, li { white-space: pre-wrap; }
        </widget>
       </item>
       <item row="2" column="2">
-       <widget class="QLabel" name="currentSpeed_label_5">
+       <widget class="QLabel" name="suggestedSpeed_label">
         <property name="font">
          <font>
           <family>Arial</family>
@@ -696,7 +696,7 @@ p, li { white-space: pre-wrap; }
        </widget>
       </item>
       <item row="3" column="2">
-       <layout class="QGridLayout" name="gridLayout_6">
+       <layout class="QGridLayout" name="speed_grid">
         <item row="2" column="0">
          <widget class="QTextBrowser" name="suggestedSpeed_text">
           <property name="font">
@@ -722,7 +722,7 @@ p, li { white-space: pre-wrap; }
          </widget>
         </item>
         <item row="3" column="0">
-         <widget class="QLabel" name="label">
+         <widget class="QLabel" name="commandedSpeed_label">
           <property name="font">
            <font>
             <family>Arial</family>
@@ -740,7 +740,7 @@ p, li { white-space: pre-wrap; }
          </widget>
         </item>
         <item row="4" column="0">
-         <widget class="QTextBrowser" name="textBrowser">
+         <widget class="QTextBrowser" name="commanedSpeed_text">
           <property name="html">
            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -754,7 +754,7 @@ p, li { white-space: pre-wrap; }
        </layout>
       </item>
       <item row="0" column="2">
-       <widget class="QLabel" name="currentSpeed_label_4">
+       <widget class="QLabel" name="currentSpeed_label">
         <property name="font">
          <font>
           <family>Arial</family>
@@ -802,7 +802,7 @@ p, li { white-space: pre-wrap; }
        </widget>
       </item>
       <item row="3" column="0">
-       <layout class="QGridLayout" name="gridLayout_4">
+       <layout class="QGridLayout" name="time_grid">
         <item row="0" column="0">
          <widget class="QTextBrowser" name="departureTime_text">
           <property name="font">
@@ -968,7 +968,7 @@ p, li { white-space: pre-wrap; }
      <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menufdf">
+   <widget class="QMenu" name="menu">
     <property name="title">
      <string>Passenger Page</string>
     </property>
@@ -988,7 +988,7 @@ p, li { white-space: pre-wrap; }
      <string>Testing Page</string>
     </property>
    </widget>
-   <addaction name="menufdf"/>
+   <addaction name="menu"/>
    <addaction name="menuDiagnostics_Page"/>
    <addaction name="menuProperties_Page"/>
    <addaction name="menuTesting_Page"/>
