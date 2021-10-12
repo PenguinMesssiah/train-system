@@ -13,6 +13,7 @@ class Train:
     position = 0       # m
     currentSpeed = 0   # m/s
     acceleration = 0   # m/s^2
+    currentBlock = 0
 
     # from Train Controller
     power = 0          # watts
@@ -23,6 +24,8 @@ class Train:
     announcements = ""
 
     # from Track Model
+    blockRoute = []
+    destination = 0
     speedLimit = 0.0
     accelerationLimit = 0.0
     decelerationLimit = 0.0
@@ -37,3 +40,8 @@ class Train:
 
     # Mode
     automaticMode = True
+
+    def __init__(self, destination, blockRoute):
+
+        self.destination = destination
+        self.blockRoute = blockRoute
