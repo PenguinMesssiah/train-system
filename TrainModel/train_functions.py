@@ -14,6 +14,15 @@ class Train_Functions:
 
     def __init__(self):
 
+        import sys
+        app = QtWidgets.QApplication(sys.argv)
+        TrainModel = QtWidgets.QMainWindow()
+        ui = Ui_TrainModel()
+        ui.setupUi(TrainModel)
+        TrainModel.show()
+
+        print("init")
+
         self.FRICTION = 0.4
         self.GRAVITY_ACC = 9.80665               # m/s^2
         self.VELOCITY_LIMIT = 100                # m/s
@@ -25,6 +34,8 @@ class Train_Functions:
         self.blockList = []
 
         self.update_UI()
+
+        sys.exit(app.exec_())
 
     def update_UI(self):
         #self.displayUI.doors_text.valueChanged.connect(self.trainList[trainNum].doors)
@@ -42,7 +53,8 @@ class Train_Functions:
         self.blockList = tempList
 
         self.dispatch_train(5, tempList, tempTC)
-        self.timer.timeout.connect(self.update_kinematics(0, 5))
+        self.update_kinematics(0, 5)
+        #self.timer.timeout.connect(self.update_kinematics(0, 5))
         self.timer.start(1000)
 
     def dispatch_train(self, destination, blockRoute, trackCircuitInput):
@@ -74,7 +86,7 @@ class Train_Functions:
         # From track class
         currentBlockLength = currentBlock.blockLength
         speedLimit = currentBlock.speedLimit
-        trackAngle = currentBlock.trackAngle
+        slope = currentBlock.slope
 
         # For calculations
         timePeriod = 0.2
@@ -85,9 +97,9 @@ class Train_Functions:
             if (brake or emergencyBrake):
                 force = 0
             else:
-                force = self.FRICTION * mass * self.ACC_GRAVITY * math.cos(trackAngle)
+                force = self.FRICTION * mass * self.GRAVITY_ACC * math.cos(slope)
         else:
-            force = power / currentSpeed - (self.FRICTION + mass * self.ACC_GRAVITY + math.cos(trackAngle))
+            force = power / currentSpeed - (self.FRICTION + mass * self.GRAVITY_ACC + math.cos(slope))
     
         # --------------------- ACCELERATION CALCULATIONS ---------------------
         # ---------------------------------------------------------------------
@@ -227,6 +239,14 @@ class Train_Functions:
         self.trainList[train].engineFailure = engineFailure
 
 # ---------------------------------------------------------------------------------------------
+# ---------------------------------- INPUTS FROM PASSENGER ------------------------------------
+# ---------------------------------------------------------------------------------------------
+
+    # Receive passengers from station
+    def receive_passengers(self, train, passengers):
+        self.trainList[train].passengers = passengers
+
+# ---------------------------------------------------------------------------------------------
 # ----------------------- PASS THRU OUTPUTS TO TRAIN CONTROLLER -------------------------------
 # ---------------------------------------------------------------------------------------------
 
@@ -252,14 +272,14 @@ class Train_Functions:
     def receive_engineFailure(self, train, engineFailure):
         self.trainList[train].engineFailure = engineFailure
 
-#functions = Train_Functions()
+functions = Train_Functions()
 
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    TrainModel = QtWidgets.QMainWindow()
-    ui = Ui_TrainModel()
-    ui.setupUi(TrainModel)
-    TrainModel.show()
-    sys.exit(app.exec_())
+# if __name__ == "__main__":
+#     import sys
+#     app = QtWidgets.QApplication(sys.argv)
+#     TrainModel = QtWidgets.QMainWindow()
+#     ui = Ui_TrainModel()
+#     ui.setupUi(TrainModel)
+#     TrainModel.show()
+#     sys.exit(app.exec_())
 
