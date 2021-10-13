@@ -21,8 +21,8 @@ def main():
         print("\nCurrent xPos: ", curObj.xPos)
         print("\nCurrent yPos: ", curObj.yPos)
         
-#  #self.browseFileSelectButton.clicked.connect(lambda:trackBuilderService.readTrackFile())
-#  self.browseFileSelectButton.clicked.connect(lambda:print("This shit is TRASH"))
+##self.browseFileSelectButton.clicked.connect(lambda:trackBuilderService.readTrackFile())   
+#self.browseFileSelectButton.clicked.connect(lambda:print("This shit is TRASH"))
 
 
 if __name__ == '__main__':

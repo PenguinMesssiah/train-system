@@ -31,7 +31,7 @@ def readTrackFile() -> list:
             break;
         
         # Saving Block Information
-        curTrackBlock = trackBlock(row[0], row[1], int(row[2]), int(row[3]), int(row[4]), int(row[5]), int(row [8]), int(row[9]), 'Block')
+        curTrackBlock = trackBlock(row[0], row[1], int(row[2]), int(row[3]), int(row[4]), int(row[5]), int(row [8]), int(row[9]), 'Block', 72)
         trackLayout.append(curTrackBlock)
         
         print('\n----------------------------Added Block----------------------')
@@ -76,6 +76,10 @@ def readTrackFile() -> list:
      
     print("\nSuccessfully Finished Reading the Track Layout File")
     return trackLayout
+    # Writing to File
+    with open('database.txt', 'w') as database:
+        for trackObject in trackLayout:
+            database.write('\n', trackObject)
 
 # Method for Adding Cartesian Grid Data for View Finder
 def generatePositioningData(trackLayout: list) -> list:
@@ -129,6 +133,3 @@ def generatePositioningData(trackLayout: list) -> list:
         nextY = curObject.yPos
             
     return trackLayout;
-
-if __name__ == '__readTrackFile__':
-    readTrackFile()

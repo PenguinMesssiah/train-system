@@ -21,4 +21,6 @@ class AppWindow(QDialog):
 app    = QApplication(sys.argv)
 window = AppWindow()
 window.show()
+
+
 sys.exit(app.exec_())

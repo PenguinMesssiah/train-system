@@ -30,7 +30,7 @@ class trackBlock(object):
     failureTC = None   # Track Circuit Failure
     
     # Member Functions
-    def __init__(self, line, section, blockNumber, size, gradLevel, speedLimit, elev, cumEvel, objType):
+    def __init__(self, line, section, blockNumber, size, gradLevel, speedLimit, elev, cumEvel, objType, envTemp):
         # Constructor
         self.line        = line
         self.section     = section
@@ -41,4 +41,5 @@ class trackBlock(object):
         self.elev        = elev
         self.cumElev     = cumEvel
         self.objType     = objType
+        self.envTemp     = envTemp
         
