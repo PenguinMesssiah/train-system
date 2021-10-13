@@ -19,7 +19,7 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QGraphicsView" name="graphicsView">
+  <widget class="QGraphicsView" name="trackLayout">
    <property name="geometry">
     <rect>
      <x>360</x>
@@ -67,6 +67,16 @@
    <property name="title">
     <string>Env. Temperature</string>
    </property>
+   <widget class="QLCDNumber" name="lcdEnvTemp">
+    <property name="geometry">
+     <rect>
+      <x>23</x>
+      <y>30</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QGroupBox" name="grad">
    <property name="geometry">
@@ -80,6 +90,16 @@
    <property name="title">
     <string>Gradiation</string>
    </property>
+   <widget class="QLCDNumber" name="lcdGrad">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>30</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QGroupBox" name="elev">
    <property name="geometry">
@@ -93,6 +113,16 @@
    <property name="title">
     <string>Elevation</string>
    </property>
+   <widget class="QLCDNumber" name="lcdElev">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>30</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QGroupBox" name="blockSize">
    <property name="geometry">
@@ -106,6 +136,16 @@
    <property name="title">
     <string>Block Size</string>
    </property>
+   <widget class="QLCDNumber" name="lcdBlockSize">
+    <property name="geometry">
+     <rect>
+      <x>23</x>
+      <y>30</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QGroupBox" name="blockSelectorGroup">
    <property name="geometry">
@@ -119,7 +159,7 @@
    <property name="title">
     <string>Block Selector</string>
    </property>
-   <widget class="QScrollArea" name="blockSelector">
+   <widget class="QScrollArea" name="blockSelScrollArea">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -155,6 +195,29 @@
    <property name="title">
     <string>Switches</string>
    </property>
+   <widget class="QScrollArea" name="swScrollArea">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>30</y>
+      <width>111</width>
+      <height>211</height>
+     </rect>
+    </property>
+    <property name="widgetResizable">
+     <bool>true</bool>
+    </property>
+    <widget class="QWidget" name="scrollAreaWidgetContents_3">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>109</width>
+       <height>209</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
   </widget>
   <widget class="QGroupBox" name="signals">
    <property name="geometry">
@@ -168,32 +231,29 @@
    <property name="title">
     <string>Signals</string>
    </property>
-  </widget>
-  <widget class="QRadioButton" name="radioButton">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>600</y>
-     <width>151</width>
-     <height>61</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Heater</string>
-   </property>
-  </widget>
-  <widget class="QRadioButton" name="radioButton_2">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>660</y>
-     <width>101</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Track Lights</string>
-   </property>
+   <widget class="QScrollArea" name="signScrollArea">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>30</y>
+      <width>111</width>
+      <height>211</height>
+     </rect>
+    </property>
+    <property name="widgetResizable">
+     <bool>true</bool>
+    </property>
+    <widget class="QWidget" name="scrollAreaWidgetContents_4">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>109</width>
+       <height>209</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
   </widget>
   <widget class="QTextBrowser" name="textBrowser">
    <property name="geometry">
@@ -224,6 +284,75 @@ p, li { white-space: pre-wrap; }
    <property name="title">
     <string>Failure Status</string>
    </property>
+   <widget class="QLabel" name="brokenRailTxt">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>40</y>
+      <width>111</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Broken Rail Failure</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="trackCircuitTxt">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>90</y>
+      <width>131</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Track Circuit Failure</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="powerTxt">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>140</y>
+      <width>111</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Power Failure</string>
+    </property>
+   </widget>
+   <widget class="QLCDNumber" name="lcdBrokenRail">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>40</y>
+      <width>64</width>
+      <height>23</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLCDNumber" name="lcdTrackCircuit">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>90</y>
+      <width>64</width>
+      <height>23</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLCDNumber" name="lcdPower">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>150</y>
+      <width>64</width>
+      <height>23</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QGroupBox" name="blockSelectorGroup_2">
    <property name="geometry">
@@ -237,7 +366,7 @@ p, li { white-space: pre-wrap; }
    <property name="title">
     <string>Station List</string>
    </property>
-   <widget class="QScrollArea" name="blockSelector_2">
+   <widget class="QScrollArea" name="stationListScrollArea">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -260,6 +389,19 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </widget>
+  </widget>
+  <widget class="QCheckBox" name="checkBox">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>620</y>
+     <width>161</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Track Heater</string>
+   </property>
   </widget>
  </widget>
  <resources/>
