@@ -2,10 +2,10 @@
 class Train:
 
     # Static train attributes
-    length = 25        # meters
-    height = 3.5       # meters
-    width = 2.5        # meters
-    mass = 50          # tons
+    length = 32.2      # meters
+    height = 3.42      # meters
+    width = 2.65       # meters
+    mass = 40.9        # tons
     crewCount = 2      # people
     passengerCount = 0 # people
  
