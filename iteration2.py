@@ -401,3 +401,17 @@ while True:
         #while True:
         demoTrainCounter = 0
         testInterface()
+
+
+
+
+#TODO next steps personally that do not involve other modules (in no particular order yet)
+#  1) Find a resistor value that allows clear viewing of all LEDs
+#  2) Transfer circuit to a bigger breadboard, planning out where all wires will go
+#    Ensure that no LEDs are blocked by wires, try to put wires close to the board
+#  3) Physical hardware for manual inputs instead of console input (buttons, switches, )
+#  4) LCD screen for console output instead of PC console
+#  5) Clean-up code in accordance with Coding Standards
+#
+#
+#  end goal: Press start button on board, begin test, do not need to touch computer at all
