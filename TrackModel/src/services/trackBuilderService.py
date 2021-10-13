@@ -13,7 +13,6 @@ from models.trackSwitch     import trackSwitch
 
 
 # Method for Reading the Excel File containing the Track Layout
-@pyqtSlot()
 def readTrackFile() -> list:
     # Defined Variables
     trackLayout      = []

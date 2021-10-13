@@ -4,8 +4,28 @@ Last Updated: Oct 13, 2021
 '''
 #imports
 from services import trackBuilderService
-from PyQt5.QtWidgets import QDialog, QLCDNumber
+from PyQt5.QtWidgets import QDialog, QLCDNumber, QFormLayout, QLabel, QGroupBox,\
+    QVBoxLayout
 
+
+def updateBlockSelect(self, paramQWidget):
+        trackFile = trackBuilderService.readTrackFile()
+            
+        formLayout = QFormLayout()
+        groupBox   = QGroupBox()
+        
+        for trackObject in trackFile:
+            if(trackObject.objType == 'Block'):
+                tempObject = QLabel(str(trackObject.blockNumber))
+                formLayout.addRow(tempObject)
+            
+        groupBox.setLayout(formLayout)
+        paramQWidget.setWidget(groupBox)
+        
+        layout = QVBoxLayout()
+        layout.addWidget(paramQWidget)
+        
+                
 def updateLCDs(window: QDialog):
     trackList = trackBuilderService.readTrackFile()
     

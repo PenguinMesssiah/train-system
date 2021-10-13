@@ -10,8 +10,7 @@
 
 #Imports
 from PyQt5    import QtCore, QtGui, QtWidgets, Qt
-from services import trackBuilderService, formBuilderService
-from PyQt5.QtWidgets import QLabel, QVBoxLayout
+
     
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -33,7 +32,6 @@ class Ui_Dialog(object):
         self.uploadTrackButton = QtWidgets.QPushButton(Dialog)
         self.uploadTrackButton.setGeometry(QtCore.QRect(1620, 850, 171, 61))
         self.uploadTrackButton.setObjectName("uploadTrackButton")
-        self.uploadTrackButton.clicked.connect(self.updateBlockSelect());
         #QGroupBox
         self.envTemp = QtWidgets.QGroupBox(Dialog)
         self.envTemp.setGeometry(QtCore.QRect(1770, 550, 141, 81))
@@ -150,11 +148,11 @@ class Ui_Dialog(object):
         self.lcdPower.setGeometry(QtCore.QRect(220, 150, 64, 23))
         self.lcdPower.setObjectName("lcdPower")
         #QGroupBox
-        self.blockSelectorGroup_2 = QtWidgets.QGroupBox(Dialog)
-        self.blockSelectorGroup_2.setGeometry(QtCore.QRect(1770, 140, 141, 381))
-        self.blockSelectorGroup_2.setObjectName("blockSelectorGroup_2")
+        self.stationSelectorGroup = QtWidgets.QGroupBox(Dialog)
+        self.stationSelectorGroup.setGeometry(QtCore.QRect(1770, 140, 141, 381))
+        self.stationSelectorGroup.setObjectName("stationSelectorGroup")
         #QScrollArea
-        self.stationListScrollArea = QtWidgets.QScrollArea(self.blockSelectorGroup_2)
+        self.stationListScrollArea = QtWidgets.QScrollArea(self.stationSelectorGroup)
         self.stationListScrollArea.setGeometry(QtCore.QRect(10, 30, 121, 331))
         self.stationListScrollArea.setWidgetResizable(True)
         self.stationListScrollArea.setObjectName("stationListScrollArea")
@@ -190,35 +188,5 @@ class Ui_Dialog(object):
         self.brokenRailTxt.setText(_translate("Dialog", "Broken Rail Failure"))
         self.trackCircuitTxt.setText(_translate("Dialog", "Track Circuit Failure"))
         self.powerTxt.setText(_translate("Dialog", "Power Failure"))
-        self.blockSelectorGroup_2.setTitle(_translate("Dialog", "Station List"))
+        self.stationSelectorGroup.setTitle(_translate("Dialog", "Station List"))
         self.checkBox.setText(_translate("Dialog", "Track Heater"))
-
-    def updateLCD(self):
-            trackFile = trackBuilderService.readTrackFile()
-            
-            self.lcdEnvTemp.display(trackFile[0].envTemp)
-            self.lcdBlockSize.display(trackFile[0].size) 
-            self.lcdElev.display(trackFile[0].elev)
-            self.lcdGrad.display(trackFile[0].gradLevel)
-            
-            self.lcdPower.display(0)
-            self.lcdTrackCircuit.display(0)
-            self.lcdBrokenRail.display(0)
-            
-            
-    def updateBlockSelect(self):
-            trackFile = trackBuilderService.readTrackFile()
-            
-            vbox = QVBoxLayout()
-            
-            for trackObject in trackFile:
-                if(trackObject.objType == 'Block'):
-                    tempObject = QLabel(str(trackObject.blockNumber))
-                    vbox.addWidget(tempObject)
-                    
-                #self.scrollAreaWidgetContents.setLayout(vbox)
-                #Scroll Area Properties
-                self.blockSelScrollArea.setVerticalScrollBarPolicy(0)
-                self.blockSelScrollArea.setHorizontalScrollBarPolicy(0)
-                self.blockSelScrollArea.setWidgetResizable(True)
-                self.blockSelScrollArea.setWidget(self.widget)
