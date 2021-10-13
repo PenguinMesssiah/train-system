@@ -370,9 +370,9 @@ class Ui_TrainModel(object):
         self.commandedSpeed_label.setAlignment(QtCore.Qt.AlignCenter)
         self.commandedSpeed_label.setObjectName("commandedSpeed_label")
         self.speed_grid.addWidget(self.commandedSpeed_label, 3, 0, 1, 1)
-        self.commanedSpeed_text = QtWidgets.QTextBrowser(self.centralwidget)
-        self.commanedSpeed_text.setObjectName("commanedSpeed_text")
-        self.speed_grid.addWidget(self.commanedSpeed_text, 4, 0, 1, 1)
+        self.commandedSpeed_text = QtWidgets.QTextBrowser(self.centralwidget)
+        self.commandedSpeed_text.setObjectName("commandedSpeed_text")
+        self.speed_grid.addWidget(self.commandedSpeed_text, 4, 0, 1, 1)
         self.gridLayout.addLayout(self.speed_grid, 3, 2, 1, 1)
         self.currentSpeed_label = QtWidgets.QLabel(self.centralwidget)
         font = QtGui.QFont()
@@ -484,30 +484,58 @@ class Ui_TrainModel(object):
         self.retranslateUi(TrainModel)
         QtCore.QMetaObject.connectSlotsByName(TrainModel)
 
-        connect.train_model_update_ui.connect(self.update_main_page)
+        #connect.train_model_update_ui_int.connect(self.update_main_page_int)
+        #connect.train_model_update_ui_float.connect(self.update_main_page_float)
         self.passengerPage_button.clicked.connect(self.passenger_button)
 
         self.diagnostics_button.clicked.connect(self.diagnostic)
 
     def diagnostic(self):
         self.authority_text.setText("Hello!")
+        print("Hello!")
+        connect.diagnostics_button_pressed.emit()
 
     def passenger_button(self):
         self.passengers_text.setText("this works!")
 
-    def update_main_page(self, variableName, variable):
-        print("Updating UI...")
-        #if variableName == 'position':
-                #self.
-        if variableName == 'power':
-                self.power_text.setText(str(variable))
-        elif variableName == 'velocity':
-                self.currentSpeed_text.setText(str(variable))
-        #elif variableName == 'acceleration':
-                #self.currentAcceleration.setText(str(variable))
-        elif variableName == 'blockName':
-                self.block_text.setText(str(variable))
+    def update_main_page_int(self, variableName, variable):
+        if variableName == 'authority':
+            self.authority_text.setText(str(variable))
+        # elif variableName == 'accelerationLimit':
+        #     self.accLimit_text.setText(str(variable))
+        # elif variableName == 'decelerationLimit':
+        #     self.decLimit_text.setText(str(variable))
+        elif variableName == 'doors':
+            if variable:
+                self.doors_text.setText(str("Opened"))
+            else:
+                self.doors_text.setText(str("Closed"))
 
+    def update_main_page_float(self, variableName, variable):
+        if variableName == 'power':
+            self.power_text.setText(str(variable))
+        elif variableName == 'velocity':
+            self.currentSpeed_text.setText(str(variable))
+        elif variableName == 'currentTime':
+            self.currentTime_text.setText(str(variable))
+        elif variableName == 'suggestedSpeed':
+            self.suggestedSpeed_text.setText(str(variable))
+        elif variableName == 'commandedSpeed':
+            self.commandedSpeed_text.setText(str(variable))
+        elif variableName == 'speedLimit':
+            self.speedLimit_text.setText(str(variable))
+        elif variableName == 'authority':
+            self.authority_text.setText(str(variable))
+        # elif variableName == 'accelerationLimit':
+        #     self.accLimit_text.setText(str(variable))
+        # elif variableName == 'decelerationLimit':
+        #     self.decLimit_text.setText(str(variable))
+        elif variableName == 'doors':
+            self.doors_text.setText(str(variable))
+
+    def update_main_page_string(self, variableName, variable):
+        if variableName == 'blockName':
+            self.speedLimit_text.setText(str(variable))
 
     def retranslateUi(self, TrainModel):
         _translate = QtCore.QCoreApplication.translate
@@ -576,7 +604,7 @@ class Ui_TrainModel(object):
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:16pt;\">80 mph</span></p>\n"
 "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS Shell Dlg 2\'; font-size:16pt;\"><br /></p></body></html>"))
         self.commandedSpeed_label.setText(_translate("TrainModel", "Commanded Speed"))
-        self.commanedSpeed_text.setHtml(_translate("TrainModel", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+        self.commandedSpeed_text.setHtml(_translate("TrainModel", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
