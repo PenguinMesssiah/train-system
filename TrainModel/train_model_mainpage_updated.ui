@@ -92,12 +92,6 @@
       </item>
       <item row="1" column="3">
        <layout class="QGridLayout" name="brakeStatus_grid">
-        <item row="1" column="1">
-         <widget class="QDial" name="dial_2"/>
-        </item>
-        <item row="0" column="1">
-         <widget class="QDial" name="dial"/>
-        </item>
         <item row="0" column="0">
          <widget class="QLabel" name="serviceBrakes_label">
           <property name="font">
@@ -152,6 +146,45 @@
           </property>
          </widget>
         </item>
+        <item row="1" column="1">
+         <widget class="QLabel" name="emergencyBrakes_indicator">
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <pointsize>16</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ff0004;&quot;&gt;Disengaged&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLabel" name="serviceBrakes_indicator">
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <pointsize>16</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Disengaged</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item row="0" column="3">
@@ -180,6 +213,19 @@
       </item>
       <item row="1" column="4">
        <layout class="QGridLayout" name="page_buttons_grid">
+        <item row="1" column="0">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
         <item row="0" column="1">
          <widget class="QPushButton" name="passengerPage_button">
           <property name="text">
@@ -195,24 +241,11 @@
          </widget>
         </item>
         <item row="2" column="1">
-         <widget class="QPushButton" name="properties_button">
+         <widget class="QPushButton" name="propertiesPage_button">
           <property name="text">
            <string>Properties Page</string>
           </property>
          </widget>
-        </item>
-        <item row="1" column="0">
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
         </item>
         <item row="1" column="2">
          <spacer name="horizontalSpacer_2">
@@ -226,6 +259,13 @@
            </size>
           </property>
          </spacer>
+        </item>
+        <item row="3" column="1">
+         <widget class="QPushButton" name="testingPage_button">
+          <property name="text">
+           <string>Testing Page</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -779,16 +819,6 @@ p, li { white-space: pre-wrap; }
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
-         <widget class="QDial" name="dial_4"/>
-        </item>
-        <item row="0" column="1">
-         <widget class="QDial" name="dial_3">
-          <property name="tracking">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="0">
          <widget class="QLabel" name="engineFailure_label">
           <property name="font">
@@ -813,8 +843,59 @@ p, li { white-space: pre-wrap; }
           </property>
          </widget>
         </item>
+        <item row="1" column="1">
+         <widget class="QLabel" name="brakeStatus_indicator">
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <pointsize>16</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Working</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLabel" name="engineStatus_indicator">
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <pointsize>16</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Working</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
         <item row="2" column="1">
-         <widget class="QDial" name="dial_5"/>
+         <widget class="QLabel" name="signalpickupStatus_indicator">
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <pointsize>16</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Working</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>

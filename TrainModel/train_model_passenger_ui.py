@@ -183,12 +183,12 @@ class Passenger_UI(object):
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:16pt;\">12:00:00</span></p></body></html>"))
 
 
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Passenger_UI = QtWidgets.QDialog()
-    ui = Ui_Passenger_UI()
-    ui.setupUi(Passenger_UI)
-    Passenger_UI.show()
-    sys.exit(app.exec_())
+# if __name__ == "__main__":
+#     import sys
+#     app = QtWidgets.QApplication(sys.argv)
+#     Passenger_UI = QtWidgets.QDialog()
+#     ui = Ui_Passenger_UI()
+#     ui.setupUi(Passenger_UI)
+#     Passenger_UI.show()
+#     sys.exit(app.exec_())
 

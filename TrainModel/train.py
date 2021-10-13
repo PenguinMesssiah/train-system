@@ -17,7 +17,7 @@ class Train:
 
     # from Train Controller
     power = 0          # watts
-    brakeEngaged = False
+    serviceBrake = False
     emergencyBrake = False      # also from Passenger
     doorOpened = False
     temperature = 70.0

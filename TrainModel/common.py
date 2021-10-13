@@ -18,3 +18,10 @@ class Conversion:
 
     def meters_to_feet(m):
         return m*3.28084
+
+    def kg_to_tons(kg):
+        return kg*0.00110231
+
+class Constants:
+    
+    TIME_PERIOD = 0.1
