@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>InputDebug</class>
+ <widget class="QWidget" name="InputDebug">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>543</width>
+    <height>460</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>CTC Input Test</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QSplitter" name="splitter_52">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <widget class="QSplitter" name="splitter_51">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <widget class="QSplitter" name="splitter_24">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Section A</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QSplitter" name="splitter_23">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <widget class="QSplitter" name="splitter_6">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Block1</string>
+          </property>
+         </widget>
+         <widget class="QSplitter" name="splitter">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <widget class="QCheckBox" name="b1o">
+           <property name="text">
+            <string>Ocupied</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="b1b">
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="text">
+            <string>Broken</string>
+           </property>
+          </widget>
+         </widget>
+        </widget>
+        <widget class="QSplitter" name="splitter_7">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <widget class="QLabel" name="label_15">
+          <property name="text">
+           <string>Block2</string>
+          </property>
+         </widget>
+         <widget class="QSplitter" name="splitter_11">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <widget class="QCheckBox" name="b2o">
+           <property name="text">
+            <string>Ocupied</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="b2b">
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="text">
+            <string>Broken</string>
+           </property>
+          </widget>
+         </widget>
+        </widget>
+        <widget class="QSplitter" name="splitter_19">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <widget class="QLabel" name="label_17">
+          <property name="text">
+           <string>Block3</string>
+          </property>
+         </widget>
+         <widget class="QSplitter" name="splitter_20">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <widget class="QCheckBox" name="b3o">
+           <property name="text">
+            <string>Ocupied</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="b3b">
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="text">
+            <string>Broken</string>
+           </property>
+          </widget>
+         </widget>
+        </widget>
+        <widget class="QSplitter" name="splitter_15">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <widget class="QLabel" name="label_16">
+          <property name="text">
+           <string>Block4</string>
+          </property>
+         </widget>
+         <widget class="QSplitter" name="splitter_17">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <widget class="QCheckBox" name="b4o">
+           <property name="text">
+            <string>Ocupied</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="b4b">
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="text">
+            <string>Broken</string>
+           </property>
+          </widget>
+         </widget>
+        </widget>
+        <widget class="QSplitter" name="splitter_21">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <widget class="QLabel" name="label_18">
+          <property name="text">
+           <string>Block5</string>
+          </property>
+         </widget>
+         <widget class="QSplitter" name="splitter_22">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <widget class="QCheckBox" name="b5o">
+           <property name="text">
+            <string>Ocupied</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="b5b">
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="text">
+            <string>Broken</string>
+           </property>
+          </widget>
+         </widget>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QSplitter" name="splitter_25">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <widget class="QLabel" name="label_19">
+        <property name="text">
+         <string>Section B</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QSplitter" name="splitter_26">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <widget class="QSplitter" name="splitter_27">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <widget class="QLabel" name="label_20">
+          <property name="text">
+           <string>Block6</string>
+          </property>
+         </widget>
+         <widget class="QSplitter" name="splitter_28">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <widget class="QCheckBox" name="b6o">
+           <property name="text">
+            <string>Ocupied</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="b6b">
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="text">
+            <string>Broken</string>
+           </property>
+          </widget>
+         </widget>
+        </widget>
+        <widget class="QSplitter" name="splitter_29">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <widget class="QLabel" name="label_21">
+          <property name="text">
+           <string>Block7</string>
+          </property>
+         </widget>
+         <widget class="QSplitter" name="splitter_30">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <widget class="QCheckBox" name="b7o">
+           <property name="text">
+            <string>Ocupied</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="b7b">
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="text">
+            <string>Broken</string>
+           </property>
+          </widget>
+         </widget>
+        </widget>
+        <widget class="QSplitter" name="splitter_31">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <widget class="QLabel" name="label_22">
+          <property name="text">
+           <string>Block8</string>
+          </property>
+         </widget>
+         <widget class="QSplitter" name="splitter_32">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <widget class="QCheckBox" name="b8o">
+           <property name="text">
+            <string>Ocupied</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="b8b">
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="text">
+            <string>Broken</string>
+           </property>
+          </widget>
+         </widget>
+        </widget>
+        <widget class="QSplitter" name="splitter_33">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <widget class="QLabel" name="label_23">
+          <property name="text">
+           <string>Block9</string>
+          </property>
+         </widget>
+         <widget class="QSplitter" name="splitter_34">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <widget class="QCheckBox" name="b9o">
+           <property name="text">
+            <string>Ocupied</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="b9b">
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="text">
+            <string>Broken</string>
+           </property>
+          </widget>
+         </widget>
+        </widget>
+        <widget class="QSplitter" name="splitter_35">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <widget class="QLabel" name="label_24">
+          <property name="text">
+           <string>Block10</string>
+          </property>
+         </widget>
+         <widget class="QSplitter" name="splitter_36">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <widget class="QCheckBox" name="b10o">
+           <property name="text">
+            <string>Ocupied</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="b10b">
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="text">
+            <string>Broken</string>
+           </property>
+          </widget>
+         </widget>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QSplitter" name="splitter_37">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <widget class="QLabel" name="label_25">
+        <property name="text">
+         <string>Section C</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QSplitter" name="splitter_38">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <widget class="QSplitter" name="splitter_39">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <widget class="QLabel" name="label_26">
+          <property name="text">
+           <string>Block11</string>
+          </property>
+         </widget>
+         <widget class="QSplitter" name="splitter_40">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <widget class="QCheckBox" name="b11o">
+           <property name="text">
+            <string>Ocupied</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="b11b">
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="text">
+            <string>Broken</string>
+           </property>
+          </widget>
+         </widget>
+        </widget>
+        <widget class="QSplitter" name="splitter_41">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <widget class="QLabel" name="label_27">
+          <property name="text">
+           <string>Block12</string>
+          </property>
+         </widget>
+         <widget class="QSplitter" name="splitter_42">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <widget class="QCheckBox" name="b12o">
+           <property name="text">
+            <string>Ocupied</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="b12b">
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="text">
+            <string>Broken</string>
+           </property>
+          </widget>
+         </widget>
+        </widget>
+        <widget class="QSplitter" name="splitter_43">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <widget class="QLabel" name="label_28">
+          <property name="text">
+           <string>Block13</string>
+          </property>
+         </widget>
+         <widget class="QSplitter" name="splitter_44">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <widget class="QCheckBox" name="b13o">
+           <property name="text">
+            <string>Ocupied</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="b13b">
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="text">
+            <string>Broken</string>
+           </property>
+          </widget>
+         </widget>
+        </widget>
+        <widget class="QSplitter" name="splitter_45">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <widget class="QLabel" name="label_29">
+          <property name="text">
+           <string>Block14</string>
+          </property>
+         </widget>
+         <widget class="QSplitter" name="splitter_46">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <widget class="QCheckBox" name="b14o">
+           <property name="text">
+            <string>Ocupied</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="b14b">
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="text">
+            <string>Broken</string>
+           </property>
+          </widget>
+         </widget>
+        </widget>
+        <widget class="QSplitter" name="splitter_47">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <widget class="QLabel" name="label_30">
+          <property name="text">
+           <string>Block15</string>
+          </property>
+         </widget>
+         <widget class="QSplitter" name="splitter_48">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <widget class="QCheckBox" name="b15o">
+           <property name="text">
+            <string>Ocupied</string>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="b15b">
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="text">
+            <string>Broken</string>
+           </property>
+          </widget>
+         </widget>
+        </widget>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QSplitter" name="splitter_50">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <widget class="QLabel" name="label_31">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Switch Position</string>
+       </property>
+      </widget>
+      <widget class="QSplitter" name="splitter_49">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <widget class="QRadioButton" name="radioButton">
+        <property name="text">
+         <string>Normal</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="radioButton_2">
+        <property name="text">
+         <string>Reverse</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

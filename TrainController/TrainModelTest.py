@@ -6,9 +6,6 @@ class TrainModel(object):
 
     def getAuthority(self, num):
         return 20.0
-
-    def getVelocity(self, num):
-        return 0.0
             
     def getBeacon(self, num):
         return "155th Street"
