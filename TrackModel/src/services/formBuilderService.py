@@ -43,5 +43,3 @@ def updateLCDs(window: QDialog):
             
         elif(child.objectName() == 'lcdElev'):
             child.display(trackList[0].elev)        
-    
-    window.findChildren

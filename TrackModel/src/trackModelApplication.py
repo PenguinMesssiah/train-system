@@ -1,6 +1,6 @@
 '''
 Last Updated: Oct 12, 2021
-@author: willi
+@author: Will
 '''
 
 # Imports
