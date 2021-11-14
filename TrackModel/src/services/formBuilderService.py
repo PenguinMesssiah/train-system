@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import QDialog, QLCDNumber, QFormLayout, QLabel, QGroupBox,
 
 
 def updateBlockSelect(self, paramQWidget):
-        trackFile = trackBuilderService.readTrackFile()
+        trackFile = trackBuilderService.readDatabase()
             
         formLayout = QFormLayout()
         groupBox   = QGroupBox()
@@ -27,7 +27,7 @@ def updateBlockSelect(self, paramQWidget):
         
                 
 def updateLCDs(window: QDialog):
-    trackList = trackBuilderService.readTrackFile()
+    trackList = trackBuilderService.readDatabase()
     
     #Iterate through all the LCD Numbers
     children = window.findChildren(QLCDNumber)
