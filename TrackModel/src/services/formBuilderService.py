@@ -3,6 +3,7 @@ Last Updated: Oct 13, 2021
 @author: Will Scott
 '''
 #imports
+from models.trackBlock import trackBlock
 from services import trackBuilderService
 from PyQt5.QtWidgets import QDialog, QLCDNumber, QFormLayout, QLabel, QGroupBox,\
     QVBoxLayout, QScrollArea, QWidget
@@ -27,7 +28,68 @@ def updateBlockSelect(self, paramQWidget):
         layout.addWidget(paramQWidget)
         
                 
-def updateLCDs(window: QDialog):
+def initalizeLCDs(window: QDialog):
+    trackList = trackBuilderService.readDatabase()
+    
+    #Iterate through all the LCD Numbers
+    children = window.findChildren(QLCDNumber)
+    for child in children:
+        if(child.objectName() == 'lcdBlockSize'):
+            child.display(trackList[0].size)
+            
+        elif(child.objectName() == 'lcdEnvTemp'):
+            child.display(trackList[0].envTemp)
+            
+        elif(child.objectName() == 'lcdGrad'):
+            child.display(trackList[0].gradLevel)   
+            
+        elif(child.objectName() == 'lcdElev'):
+            child.display(trackList[0].elev)
+
+        elif(child.objectName() == 'lcdBrokenRail'):
+            child.display(trackList[0].failureBR)
+        
+        elif(child.objectName() == 'lcdTrackCircuit'):
+            child.display(trackList[0].failureTC)
+        
+        elif(child.objectName() == 'lcdPower'):
+            child.display(trackList[0].failurePF)
+
+def updateBlockLCDs(window: QDialog, blockNumber:int):
+    trackList = trackBuilderService.readDatabase()
+
+    #Find the Block
+    curBlock = trackList[0]
+    for curObject in trackList:
+        if(curObject.objType == 'Block' and curObject.blockNumber == blockNumber):
+            curBlock = curObject
+
+    print("\n\nCurrent Block = ", curBlock.blockNumber)
+    #Iterate through all the LCD Numbers
+    children = window.findChildren(QLCDNumber)
+    for child in children:
+        if(child.objectName() == 'lcdBlockSize'):
+            child.display(curBlock.size)
+            
+        elif(child.objectName() == 'lcdEnvTemp'):
+            child.display(curBlock.envTemp)
+            
+        elif(child.objectName() == 'lcdGrad'):
+            child.display(curBlock.gradLevel)   
+            
+        elif(child.objectName() == 'lcdElev'):
+            child.display(curBlock.elev)
+
+        elif(child.objectName() == 'lcdBrokenRail'):
+            child.display(curBlock.failureBR)
+        
+        elif(child.objectName() == 'lcdTrackCircuit'):
+            child.display(curBlock.failureTC)
+        
+        elif(child.objectName() == 'lcdPower'):
+            child.display(curBlock.failurePF)
+
+def updateSwitchLCDs(window: QDialog, elementId:int):
     trackList = trackBuilderService.readDatabase()
     
     #Iterate through all the LCD Numbers

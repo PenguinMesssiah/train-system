@@ -189,6 +189,7 @@ class Ui_Dialog(object):
         self.blockSelectSpinBox.valueChanged['int'].connect(self.lcdBlockSize.update)
         self.stationSelectLineEdit.textChanged['QString'].connect(self.lcdStationOccupancy.update)
         self.swSelectSpinBox.valueChanged['int'].connect(Dialog.update)
+        self.blockSelectSpinBox.valueChanged['int'].connect(Dialog.update)
         self.blockSelectSpinBox.valueChanged['int'].connect(self.lcdEnvTemp.update)
         self.blockSelectSpinBox.valueChanged['int'].connect(self.lcdGrad.update)
         self.blockSelectSpinBox.valueChanged['int'].connect(self.lcdElev.update)
