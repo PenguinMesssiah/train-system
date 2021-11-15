@@ -25,7 +25,7 @@
      <x>360</x>
      <y>140</y>
      <width>1251</width>
-     <height>781</height>
+     <height>831</height>
     </rect>
    </property>
   </widget>
@@ -33,7 +33,7 @@
    <property name="geometry">
     <rect>
      <x>1800</x>
-     <y>850</y>
+     <y>910</y>
      <width>111</width>
      <height>61</height>
     </rect>
@@ -46,7 +46,7 @@
    <property name="geometry">
     <rect>
      <x>1620</x>
-     <y>850</y>
+     <y>910</y>
      <width>171</width>
      <height>61</height>
     </rect>
@@ -59,7 +59,7 @@
    <property name="geometry">
     <rect>
      <x>1770</x>
-     <y>550</y>
+     <y>620</y>
      <width>141</width>
      <height>81</height>
     </rect>
@@ -82,7 +82,7 @@
    <property name="geometry">
     <rect>
      <x>1620</x>
-     <y>630</y>
+     <y>710</y>
      <width>141</width>
      <height>71</height>
     </rect>
@@ -93,8 +93,8 @@
    <widget class="QLCDNumber" name="lcdGrad">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>30</y>
+      <x>30</x>
+      <y>20</y>
       <width>81</width>
       <height>31</height>
      </rect>
@@ -105,7 +105,7 @@
    <property name="geometry">
     <rect>
      <x>1770</x>
-     <y>630</y>
+     <y>710</y>
      <width>141</width>
      <height>71</height>
     </rect>
@@ -128,7 +128,7 @@
    <property name="geometry">
     <rect>
      <x>1620</x>
-     <y>550</y>
+     <y>620</y>
      <width>141</width>
      <height>81</height>
     </rect>
@@ -186,8 +186,8 @@
   <widget class="QGroupBox" name="switches">
    <property name="geometry">
     <rect>
-     <x>180</x>
-     <y>350</y>
+     <x>190</x>
+     <y>450</y>
      <width>161</width>
      <height>251</height>
     </rect>
@@ -199,7 +199,7 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>30</y>
+      <y>20</y>
       <width>111</width>
       <height>211</height>
      </rect>
@@ -223,7 +223,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>350</y>
+     <y>450</y>
      <width>161</width>
      <height>251</height>
     </rect>
@@ -255,24 +255,27 @@
     </widget>
    </widget>
   </widget>
-  <widget class="QTextBrowser" name="textBrowser">
+  <widget class="QTextBrowser" name="fileBrowserTextBrowser">
    <property name="geometry">
     <rect>
-     <x>1625</x>
-     <y>810</y>
+     <x>1620</x>
+     <y>860</y>
      <width>281</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="acceptDrops">
+    <bool>true</bool>
    </property>
    <property name="html">
     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Browse File to Upload .... &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:9.75pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:7.8pt; font-style:italic;&quot;&gt;Browse File to Upload .... &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
-  <widget class="QGroupBox" name="signals_2">
+  <widget class="QGroupBox" name="failureStates">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -327,9 +330,9 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>220</x>
-      <y>40</y>
-      <width>64</width>
-      <height>23</height>
+      <y>30</y>
+      <width>81</width>
+      <height>31</height>
      </rect>
     </property>
    </widget>
@@ -337,9 +340,9 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>220</x>
-      <y>90</y>
-      <width>64</width>
-      <height>23</height>
+      <y>80</y>
+      <width>81</width>
+      <height>31</height>
      </rect>
     </property>
    </widget>
@@ -347,9 +350,9 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>220</x>
-      <y>150</y>
-      <width>64</width>
-      <height>23</height>
+      <y>130</y>
+      <width>81</width>
+      <height>31</height>
      </rect>
     </property>
    </widget>
@@ -390,20 +393,443 @@ p, li { white-space: pre-wrap; }
     </widget>
    </widget>
   </widget>
-  <widget class="QCheckBox" name="checkBox">
+  <widget class="QSpinBox" name="blockSelectSpinBox">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>620</y>
-     <width>161</width>
-     <height>51</height>
+     <x>1620</x>
+     <y>560</y>
+     <width>141</width>
+     <height>41</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="stationSelectLineEdit">
+   <property name="geometry">
+    <rect>
+     <x>1780</x>
+     <y>560</y>
+     <width>121</width>
+     <height>41</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="blockSelectTxt">
+   <property name="geometry">
+    <rect>
+     <x>1620</x>
+     <y>530</y>
+     <width>131</width>
+     <height>21</height>
     </rect>
    </property>
    <property name="text">
-    <string>Track Heater</string>
+    <string>Select Block:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="stationSelectTxt">
+   <property name="geometry">
+    <rect>
+     <x>1780</x>
+     <y>530</y>
+     <width>111</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Type Station:</string>
+   </property>
+  </widget>
+  <widget class="QGroupBox" name="stationOccupancyGroupBox">
+   <property name="geometry">
+    <rect>
+     <x>1770</x>
+     <y>790</y>
+     <width>141</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Station Occupancy</string>
+   </property>
+   <widget class="QLCDNumber" name="lcdStationOccupancy">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>20</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="trackHeaterGroupBox">
+   <property name="geometry">
+    <rect>
+     <x>1620</x>
+     <y>790</y>
+     <width>141</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Track Heater (On/Off):</string>
+   </property>
+   <widget class="QLCDNumber" name="lcdTrackHeater">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>20</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="swGroupBox">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>710</y>
+     <width>331</width>
+     <height>231</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Switch Information:</string>
+   </property>
+   <widget class="QLabel" name="switchSelectTxt">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>20</y>
+      <width>91</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Switch Select:</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="swSelectSpinBox">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>20</y>
+      <width>131</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="swStartBlockTxt">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>70</y>
+      <width>111</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Start Block:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="swEndBlockOneTxt">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>110</y>
+      <width>111</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>End Block One:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="swEndBlockTwoTxt">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>150</y>
+      <width>91</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>End Block Two:</string>
+    </property>
+   </widget>
+   <widget class="QLCDNumber" name="lcdStartBlock">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>60</y>
+      <width>91</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLCDNumber" name="lcdEndBlockOne">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>100</y>
+      <width>91</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLCDNumber" name="lcdEndBlockTwo">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>140</y>
+      <width>91</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="positionTxt">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>190</y>
+      <width>51</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Position:</string>
+    </property>
+   </widget>
+   <widget class="QLCDNumber" name="lcdPosition">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>180</y>
+      <width>91</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="powerFailureButton">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>350</y>
+     <width>151</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Send Power Failure</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="trackCircuitFailureButton">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>350</y>
+     <width>171</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Send Track Circuit Failure</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="brokenRailFailureButton">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>400</y>
+     <width>331</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Send Broken Rail Failure</string>
    </property>
   </widget>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>blockSelectSpinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lcdBlockSize</receiver>
+   <slot>update()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1690</x>
+     <y>580</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1683</x>
+     <y>665</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>stationSelectLineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>lcdStationOccupancy</receiver>
+   <slot>update()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1840</x>
+     <y>580</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1840</x>
+     <y>825</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>swSelectSpinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>Dialog</receiver>
+   <slot>update()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>260</x>
+     <y>645</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>959</x>
+     <y>539</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>blockSelectSpinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lcdEnvTemp</receiver>
+   <slot>update()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1690</x>
+     <y>580</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1833</x>
+     <y>665</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>blockSelectSpinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lcdGrad</receiver>
+   <slot>update()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1690</x>
+     <y>580</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1690</x>
+     <y>745</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>blockSelectSpinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lcdElev</receiver>
+   <slot>update()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1690</x>
+     <y>580</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1830</x>
+     <y>755</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>blockSelectSpinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lcdTrackHeater</receiver>
+   <slot>update()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1690</x>
+     <y>580</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1690</x>
+     <y>825</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>swSelectSpinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lcdStartBlock</receiver>
+   <slot>update()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>245</x>
+     <y>645</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>255</x>
+     <y>685</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>powerFailureButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>update()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>95</x>
+     <y>370</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>959</x>
+     <y>539</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>brokenRailFailureButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>update()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>185</x>
+     <y>420</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>959</x>
+     <y>539</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>uploadTrackButton</sender>
+   <signal>clicked()</signal>
+   <receiver>trackLayout</receiver>
+   <slot>repaint()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1705</x>
+     <y>940</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>985</x>
+     <y>530</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

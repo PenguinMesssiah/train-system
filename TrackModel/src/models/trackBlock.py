@@ -42,4 +42,8 @@ class trackBlock(object):
         self.cumElev     = cumEvel
         self.objType     = objType
         self.envTemp     = envTemp
+        self.failureBR   = 0
+        self.failurePF   = 0
+        self.failureTC   = 0
+
         
