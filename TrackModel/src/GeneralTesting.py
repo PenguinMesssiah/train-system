@@ -9,11 +9,9 @@ def main():
     
     trackList = trackBuilderService.readTrackFile()
 
-    trackLayout = trackBuilderService.readDatabase();
-
-    print("\n\n--------Track Layout Testing---------")
-    for curObject in trackLayout:
-        print('Current Object Type = ', curObject.objType);
+   # print("\n\n--------Track Layout Testing---------")
+    #for curObject in trackLayout:
+    #    print('Current Object Type = ', curObject.objType);
 
 if __name__ == '__main__':
     main()

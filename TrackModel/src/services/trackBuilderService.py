@@ -4,6 +4,7 @@ Last Updated: October 11, 2021
 '''
 
 # Imports
+import os
 import pylightxl as xl
 import xlsxwriter
 from openpyxl import load_workbook
@@ -18,13 +19,13 @@ from models.trackSwitch     import trackSwitch
 def readTrackFile() -> list:
     # Defined Variables
     trackLayout      = []
-    count, rowlength = 0, 17;
+    count, rowlength = 0, 150;
     switchCount = 0;
     
     # Opening & Reading Excel File
     database = xl.readxl(fn='C:/Users/willi/Documents/School/SystemsProjectEngineering/TrackLayoutVehicleDatavF2.xlsx')
     
-    for row in database.ws(ws='Blue Line').rows:
+    for row in database.ws(ws='Green Line').rows:
         # Skipping first row to avoid the section headers
         count += 1
         if(count == 1):
@@ -50,8 +51,18 @@ def readTrackFile() -> list:
         if(row[6] != ''):
             infraStr = row[6].replace(' ','')
             ## Checking & Adding Switch
-            if(infraStr.find('Switch') != -1):
-                infraStr = infraStr.replace('Switch', '')
+            if(infraStr.find('SWITCHTOYARD') != -1):
+                curSwitch = trackSwitch(str(switchCount), 57, 0, 0, 0, 'Switch')
+                trackLayout.append(curSwitch)
+                switchCount+=1;
+                
+            elif(infraStr.find('SWITCHFROMYARD') != -1):
+                curSwitch = trackSwitch(str(switchCount), 0, 63, 0, 0, 'Switch')
+                trackLayout.append(curSwitch)
+                switchCount+=1;
+            
+            elif(infraStr.find('SWITCH') != -1):
+                infraStr = infraStr.replace('SWITCH', '')
                 infraStr = infraStr[1 : len(infraStr)-1]
                 
                 swPosOne, swPosTwo = infraStr.rsplit(";");
@@ -69,12 +80,17 @@ def readTrackFile() -> list:
                 switchCount+=1;
                 
             ## Checking & Adding Station    
-            elif(infraStr.find('Station') != -1):
-                infraStr = infraStr.replace('Station', '')
+            elif(infraStr.find('STATION') != -1):
+                infraStr = infraStr.replace('STATION;', '')
                 
-                curStation = station(infraStr, 0, row[1], 'Station')
+                if(infraStr.find(';UNDERGROUND')):
+                    infraStr = infraStr.replace(';UNDERGROUND', '')
+                    curStation = station(infraStr, 0, row[1], 'Station', 1)
+                else:
+                    curStation = station(infraStr, 0, row[1], 'Station', 0)
+                
                 trackLayout.append(curStation)
-                print("\n---------------------Added Station: Station ", curStation.name,"-------------------")  
+                print("\n---------------------Added Station: ", curStation.name,"-------------------")  
         
      
     print("\nSuccessfully Finished Reading the Track Layout File")
@@ -83,11 +99,40 @@ def readTrackFile() -> list:
     writeDatabase(trackLayout);
     return trackLayout;
 
+# Method for Writing Failure States to the Database
+def writeFailureState(blockNumber: int, failureType: int):
+    path        = r"C:\Users\willi\eclipse-workspace\train-system\TrackModel\src\database.xlsx"
+    assert      os.path.isfile(path) 
+    db_workbook = load_workbook(path);
+    database    = db_workbook.active;
+
+    rowIndex = 0
+    #Reading Database File
+    for row in database.values:
+        rowIndex+=1
+
+        if(row[0] == 'Block' and row[3] == blockNumber):
+            print('rowIndex = ', rowIndex)
+            if(failureType == 0): #BR
+                database.cell(row=rowIndex, column= 10, value=1)
+                
+            elif(failureType == 1): #PF
+                database.cell(row=rowIndex, column= 11, value=1)
+                
+            elif(failureType == 2): #TC 
+                database.cell(row=rowIndex, column= 12, value=1)       
+            
+        
+            
+    db_workbook.save(r'C:\Users\willi\eclipse-workspace\train-system\TrackModel\src\database.xlsx')
+    db_workbook.close
+
 # Method for Writing to the Database
 def writeDatabase(trackLayout: list):
     rowIndex = 0;
     
-    database  = xlsxwriter.Workbook(r'C:\Users\willi\eclipse-workspace\train-system\TrackModel\src\database.xlsx');
+    path = r"C:\Users\willi\eclipse-workspace\train-system\TrackModel\src\database.xlsx"
+    database  = xlsxwriter.Workbook(path);
     worksheet = database.add_worksheet();
 
     for curObject in trackLayout:
@@ -97,29 +142,29 @@ def writeDatabase(trackLayout: list):
             #Track Object Specific 
             worksheet.write(rowIndex, 0, curObject.objType);    
             worksheet.write(rowIndex, 1, curObject.line);    
-            worksheet.write(rowIndex, 2, curObject.section);
+            worksheet.write(rowIndex, 2, curObject.section)
             worksheet.write(rowIndex, 3, curObject.blockNumber);    
             worksheet.write(rowIndex, 4, curObject.size);    
             worksheet.write(rowIndex, 5, curObject.gradLevel);    
             worksheet.write(rowIndex, 6, curObject.speedLimit);    
-            worksheet.write(rowIndex, 7, curObject.elev);
-            worksheet.write(rowIndex, 8, curObject.envTemp);
+            worksheet.write(rowIndex, 7, curObject.elev)
+            worksheet.write(rowIndex, 8, curObject.envTemp)
             #Failure States
-            worksheet.write(rowIndex, 9, curObject.failureBR);
-            worksheet.write(rowIndex, 10, curObject.failurePF);
-            worksheet.write(rowIndex, 11, curObject.failureTC);
+            worksheet.write(rowIndex, 9, curObject.failureBR)
+            worksheet.write(rowIndex, 10, curObject.failurePF)
+            worksheet.write(rowIndex, 11, curObject.failureTC)
             #Positioning Data
-            worksheet.write(rowIndex, 12, curObject.xPos);
-            worksheet.write(rowIndex, 13, curObject.yPos);
-            worksheet.write(rowIndex, 14, curObject.angle);
+            worksheet.write(rowIndex, 12, curObject.xPos)
+            worksheet.write(rowIndex, 13, curObject.yPos)
+            worksheet.write(rowIndex, 14, curObject.angle)
 
             rowIndex += 1;        
             
         elif(curObject.objType == 'Switch'):
             #Track Object Specific 
             worksheet.write(rowIndex, 0, curObject.objType);    
-            worksheet.write(rowIndex, 1, curObject.elementId);    
-            worksheet.write(rowIndex, 2, curObject.startBlock);
+            worksheet.write(rowIndex, 1, curObject.elementId);  
+            worksheet.write(rowIndex, 2, curObject.startBlock)
             worksheet.write(rowIndex, 3, curObject.endBlockOne);    
             worksheet.write(rowIndex, 4, curObject.endBlockTwo);    
             worksheet.write(rowIndex, 5, curObject.position);     
@@ -129,23 +174,26 @@ def writeDatabase(trackLayout: list):
         elif(curObject.objType == 'Station'):
             #Track Object Specific 
             worksheet.write(rowIndex, 0, curObject.objType); 
-            worksheet.write(rowIndex, 1, curObject.name);
-            worksheet.write(rowIndex, 2, curObject.occupancy);
-            worksheet.write(rowIndex, 3, curObject.section);   
+            worksheet.write(rowIndex, 1, curObject.name)
+            worksheet.write(rowIndex, 2, curObject.occupancy)
+            worksheet.write(rowIndex, 3, curObject.section)
+            worksheet.write(rowIndex, 4, curObject.underground)
 
             #Positioning Data
-            worksheet.write(rowIndex, 12, curObject.xPos);
-            worksheet.write(rowIndex, 13, curObject.yPos);  
+            worksheet.write(rowIndex, 12, curObject.xPos)
+            worksheet.write(rowIndex, 13, curObject.yPos); 
             rowIndex += 1;   
-        
-    database.close();
+
+    if(not(os.path.isfile(path))):
+        database.close()
 
 
 # Method for Reading the Database
 def readDatabase() -> list:
     tracklayout = [];
 
-    db_workbook = load_workbook(r'C:\Users\willi\eclipse-workspace\train-system\TrackModel\src\database.xlsx');
+    path        = r"C:\Users\willi\eclipse-workspace\train-system\TrackModel\src\database.xlsx"
+    db_workbook = load_workbook(path);
     database    = db_workbook.active;
     database.title = "Track Layout Information";
 
@@ -163,7 +211,7 @@ def readDatabase() -> list:
             tracklayout.append(curTrackSwitch);
 
         elif(row[0] == 'Station'):
-            curStation = station(row[1], int(row[2]), row[3], 'Station')
+            curStation = station(row[1], int(row[2]), row[3], 'Station', row[4])
             tracklayout.append(curStation)
 
     print('\n--------Closing Database Stream--------')
@@ -221,3 +269,14 @@ def generatePositioningData_blueLine(trackLayout: list):
         nextY = curObject.yPos
             
     writeDatabase(trackLayout); 
+    
+#Method for Updating Ticket Sales  
+def updateStationOccupancy(ticketSales: int):
+    trackLayout = readDatabase()
+        
+    for curObject in trackLayout:
+        if(curObject.objType == 'Station'):
+            curObject.occupancy = ticketSales;
+    
+    print('\n\n Occupancy for Station A = ', curObject.occupancy)
+    writeDatabase(trackLayout)
