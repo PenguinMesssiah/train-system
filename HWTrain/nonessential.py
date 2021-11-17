@@ -60,8 +60,11 @@ class nonessential(object):
     def getCabinLightStatus(self):
         return self.cabinlightStatus
 
-    def getDoorStatus(self):
-        return self.doorStatus
+    def getRightDoorStatus(self):
+        return self.rdoorStatus
+    
+    def getLeftDoorStatus(self):
+        return self.rdoorStatus
     
     #-------------------- Function to calculate Power -------------------------
     lastTime = 0.0
