@@ -19,14 +19,13 @@ class Train:
     power = 0          # watts
     serviceBrake = False
     emergencyBrake = False      # also from Passenger
-    doorOpened = False
+    doors = [False, False]
     temperature = 70.0
     announcements = ""
 
     # from Track Model
     blockRoute = []
     destination = 0
-    speedLimit = 0.0
     accelerationLimit = 0.0
     decelerationLimit = 0.0
     commandedSpeed = 0.0

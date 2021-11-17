@@ -43,6 +43,7 @@ class Train_Functions:
 
         connect.train_model_stop_run.connect(self.stopRun)
 
+        connect.train_model_toggleDoors.connect(self.receive_door)
 
         #connect.train_model_receive_passengers.connect(self.receive_passengers)
 
@@ -374,13 +375,26 @@ class Train_Functions:
         self.ui.commandedSpeed_text.setText(str(commandedSpeed))
 
     # Receive door open/closed from the Train Controller
-    def receive_door(self, train, opened):
-        self.trainList[train].doorOpened = opened
+    def receive_door(self, train, side):
+        
+        doors = self.trainList[train].doors
 
-        if opened:
-            self.ui.door_text.setText("OPEN")
-        else:
-            self.ui.door_text.setText("CLOSED")
+        if side == "left":
+            self.trainList[train].doors = [not(doors[0]), doors[1]]
+        elif side == "right":
+            self.trainList[train].doors = [doors[0], not(doors[1])]
+
+        doors = self.trainList[train].doors
+
+        # Change this to an indicator later maybe?
+        if doors[0] and doors[1]:
+            self.ui.doors_text.setText("LEFT OPEN; RIGHT OPEN")
+        elif not(doors[0]) and doors[1]:
+            self.ui.doors_text.setText("LEFT CLOSED; RIGHT OPEN")
+        if doors[0] and not(doors[1]):
+            self.ui.doors_text.setText("LEFT OPEN; RIGHT CLOSED")
+        elif not(doors[0]) and not(doors[1]):
+            self.ui.doors_text.setText("LEFT CLOSED; RIGHT CLOSED")
 
 # ---------------------------------------------------------------------------------------------
 # ---------------------------- INPUTS FROM FAILURES (MURPHY) ----------------------------------
