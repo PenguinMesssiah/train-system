@@ -5,10 +5,11 @@ Last Updated: October 8, 2021
 
 class trackLight(object):
     # Member Variables
-    lightId = None;
-    xPos    = None;
-    yPos    = None;
-    state   = None;
+    lightId  = None;
+    xPos     = None;
+    yPos     = None;
+    state    = None;
+    objType  = None;
 
     def __init__(self, lightId, xPos, yPos, state):
         # Constructor
