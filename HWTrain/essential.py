@@ -39,22 +39,7 @@ class essential(object):
         self.engineControlOff()
 
     #----------------------- Driver Display ----------------------------------
-    def driverWindow(self):
-
-        #Will integrate function calls to other methods that control the display such as increase_speed, decrease_speed, and emergency_brake
-        #display speed
-        #display temperature
-        #display headlights ON
-        #display headlights OFF
-        #display cabin lights ON
-        #display cabin lights OFF
-        #display doors ON
-        #display doors OFF
-        #display engine ON
-        #display engine OFF
-        #display service brake status
-        #display intercom status
-        #display mode status     
+    def driverWindow(self):   
 
 
     #------------------- Accessor functions for train model -------------------------
