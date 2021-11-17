@@ -133,9 +133,9 @@ class Mainpage_UI(object):
         self.diagnostics_button = QtWidgets.QPushButton(self.centralwidget)
         self.diagnostics_button.setObjectName("diagnostics_button")
         self.page_buttons_grid.addWidget(self.diagnostics_button, 1, 1, 1, 1)
-        self.propertiesPage_button = QtWidgets.QPushButton(self.centralwidget)
-        self.propertiesPage_button.setObjectName("propertiesPage_button")
-        self.page_buttons_grid.addWidget(self.propertiesPage_button, 2, 1, 1, 1)
+        #self.propertiesPage_button = QtWidgets.QPushButton(self.centralwidget)
+        #self.propertiesPage_button.setObjectName("propertiesPage_button")
+        #self.page_buttons_grid.addWidget(self.propertiesPage_button, 2, 1, 1, 1)
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.page_buttons_grid.addItem(spacerItem1, 1, 2, 1, 1)
         self.testingPage_button = QtWidgets.QPushButton(self.centralwidget)
@@ -565,7 +565,7 @@ class Mainpage_UI(object):
         self.brakeStatus_label.setText(_translate("TrainModel", "Brake Status"))
         self.passengerPage_button.setText(_translate("TrainModel", "Passenger Page"))
         self.diagnostics_button.setText(_translate("TrainModel", "Diagnostics Page"))
-        self.propertiesPage_button.setText(_translate("TrainModel", "Properties Page"))
+        #self.propertiesPage_button.setText(_translate("TrainModel", "Properties Page"))
         self.testingPage_button.setText(_translate("TrainModel", "Testing Page"))
         self.departureTime_label.setText(_translate("TrainModel", "Departure Time"))
         self.currentSpeed_label.setText(_translate("TrainModel", "Current Speed"))
@@ -666,12 +666,12 @@ class Mainpage_UI(object):
         self.trainNum_text.setText(_translate("TrainModel", str(self.currentTrainNum)))
 
 
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    TrainModel = QtWidgets.QMainWindow()
-    ui = Ui_TrainModel()
-    ui.setupUi(TrainModel)
-    TrainModel.show()
-    sys.exit(app.exec_())
+# if __name__ == "__main__":
+#     import sys
+#     app = QtWidgets.QApplication(sys.argv)
+#     TrainModel = QtWidgets.QMainWindow()
+#     ui = Ui_TrainModel()
+#     ui.setupUi(TrainModel)
+#     TrainModel.show()
+#     sys.exit(app.exec_())
 
