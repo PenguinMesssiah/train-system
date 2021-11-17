@@ -1,3 +1,9 @@
+class Beacon_Data:
+
+    def __init__(self, station, doors, final_station):
+        self.station = station
+        self.doors = doors
+        self.final_station = final_station
 
 class Track_Circuit_Data:
 
