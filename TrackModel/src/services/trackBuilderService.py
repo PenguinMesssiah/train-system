@@ -7,7 +7,9 @@ Last Updated: October 11, 2021
 import os
 import pylightxl as xl
 import xlsxwriter
+import random
 from openpyxl import load_workbook
+
 
 from PyQt5.QtCore           import pyqtSlot
 from models.trackBlock      import trackBlock
@@ -85,9 +87,9 @@ def readTrackFile() -> list:
                 
                 if(infraStr.find(';UNDERGROUND')):
                     infraStr = infraStr.replace(';UNDERGROUND', '')
-                    curStation = station(infraStr, 0, row[1], 'Station', 1)
+                    curStation = station(infraStr, 0, row[1], 'Station', 1, 0)
                 else:
-                    curStation = station(infraStr, 0, row[1], 'Station', 0)
+                    curStation = station(infraStr, 0, row[1], 'Station', 0, 0)
                 
                 trackLayout.append(curStation)
                 print("\n---------------------Added Station: ", curStation.name,"-------------------")  
@@ -121,9 +123,7 @@ def writeFailureState(blockNumber: int, failureType: int):
                 
             elif(failureType == 2): #TC 
                 database.cell(row=rowIndex, column= 12, value=1)       
-            
-        
-            
+              
     db_workbook.save(r'C:\Users\willi\eclipse-workspace\train-system\TrackModel\src\database.xlsx')
     db_workbook.close
 
@@ -178,6 +178,7 @@ def writeDatabase(trackLayout: list):
             worksheet.write(rowIndex, 2, curObject.occupancy)
             worksheet.write(rowIndex, 3, curObject.section)
             worksheet.write(rowIndex, 4, curObject.underground)
+            worksheet.write(rowIndex, 5, curObject.ticketSales)
 
             #Positioning Data
             worksheet.write(rowIndex, 12, curObject.xPos)
@@ -211,7 +212,7 @@ def readDatabase() -> list:
             tracklayout.append(curTrackSwitch);
 
         elif(row[0] == 'Station'):
-            curStation = station(row[1], int(row[2]), row[3], 'Station', row[4])
+            curStation = station(row[1], int(row[2]), row[3], 'Station', row[4], int(row[5]))
             tracklayout.append(curStation)
 
     print('\n--------Closing Database Stream--------')
@@ -271,12 +272,25 @@ def generatePositioningData_blueLine(trackLayout: list):
     writeDatabase(trackLayout); 
     
 #Method for Updating Ticket Sales  
-def updateStationOccupancy(ticketSales: int):
-    trackLayout = readDatabase()
-        
-    for curObject in trackLayout:
-        if(curObject.objType == 'Station'):
-            curObject.occupancy = ticketSales;
+def generateTicketSales():
+    #Maximum of 74 seated Passengers & Maximum of 148 standing Passengers = 222 Total
+    #Arbitrarily Set 10 as the Minimum & 50 as the Maximum number of Ticket Sales per Station 
     
-    print('\n\n Occupancy for Station A = ', curObject.occupancy)
-    writeDatabase(trackLayout)
+    path        = r"C:\Users\willi\eclipse-workspace\train-system\TrackModel\src\database.xlsx"
+    assert      os.path.isfile(path) 
+    db_workbook = load_workbook(path);
+    database    = db_workbook.active;
+
+    rowIndex = 0
+    #Reading Database File
+    for row in database.values:
+        rowIndex+=1
+        random.seed(rowIndex)
+
+        if(row[0] == 'Station'):
+            print('\nStation rowIndex = ', rowIndex)
+            
+            database.cell(row=rowIndex, column= 6, value=random.randrange(10, 50, 3))
+    
+    db_workbook.save(r'C:\Users\willi\eclipse-workspace\train-system\TrackModel\src\database.xlsx')
+    db_workbook.close
