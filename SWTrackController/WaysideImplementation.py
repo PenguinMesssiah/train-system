@@ -14,6 +14,8 @@ class WaysideImplementation(object):
 		#for i in range(len(self.listen)):
 		#	self.relevant[self.listen[i]] = 1
 		self.switches = dict()
+		self.crossings = dict()
+		self.lights = dict()
 		self.rules = dict()
 		self.blockAuth = dict() #output from PLC
 		self.blockOcc = dict()
@@ -37,6 +39,31 @@ class WaysideImplementation(object):
 	def addRule(self, situation, resolution):
 		self.rules.update({situation: resolution})
 		print(self.rules)
+
+	def addCrossing(self, location):
+		self.crossings.update({location: 0})
+		print(self.crossings)
+
+	def addLight(self, location):
+		self.lights.update({location: [0, 0, 0, 0]})
+		print(self.light)
+
+	def setSuperGreenLight(self, location):
+		self.lights.update({location: [0, 0, 0, 1]})
+		print(lights[location])
+
+	def setGreenLight(self, location):
+		self.lights.update({location: [0, 0, 1, 0]})
+		print(lights[location])
+
+	def setYellowLight(self, location):
+		self.lights.update({location: [0, 1, 0, 0]})
+		print(lights[location])
+
+	def setRedLight(self, location):
+		self.lights.update({location: [1, 0, 0, 0]})
+		print(lights[location])
+
 
 	def getTrackOcc(self, block):
 		#pull occ from track model
