@@ -103,33 +103,33 @@ def testInterface():
     # If the user wanted to change ALL Inputs
     #TODO: ADD TRY-EXCEPT CASES FOR ALLLLLLLLL INPUTS TO ENSURE GOOD INPUT
     if in_choiceOfTest == 1:
-        # Authority Limit (keep asking for input until valid one entered)
+        # Authority (keep asking for input until valid one entered)
         while True:
             try:
-                in_authorityLimit = int(input("Enter Authority Limit (0-7): "))
-                if (in_authorityLimit >= 0) and (in_authorityLimit <= 7):
-                    set_authorityLimit(in_authorityLimit)
+                in_authority = int(input("Enter Authority Limit (0-1023): "))
+                if (in_authority >= 0) and (in_authority <= 1023):
+                    set_authority(in_authority)
                     break
             except Exception as e:
                 print("Invalid input type, try again")
-        # Speed Limit (keep asking for input until valid one entered)
-        while True:
-            try:
-                in_speedLimit = int(input("Enter Speed Limit (0-63): "))
-                if (in_speedLimit >= 0) and (in_speedLimit <= 63):
-                    set_speedLimit(in_speedLimit)
-                    break
-            except Exception as e:
-                print("Invalid input type, try again")
-        # Suggested Speed (keep asking for input until valid one entered)
-        while True:
-            try:
-                in_suggestedSpeed = int(input("Enter Suggested Speed (0-63): "))
-                if (in_suggestedSpeed >= 0) and (in_suggestedSpeed <= 63):
-                    set_suggestedSpeed(in_suggestedSpeed)
-                    break
-            except Exception as e:
-                print("Invalid input type, try again")
+#        # Speed Limit (keep asking for input until valid one entered)
+#        while True:
+#            try:
+#                in_speedLimit = int(input("Enter Speed Limit (0-63): "))
+#                if (in_speedLimit >= 0) and (in_speedLimit <= 63):
+#                    set_speedLimit(in_speedLimit)
+#                    break
+#            except Exception as e:
+#                print("Invalid input type, try again")
+#        # Suggested Speed (keep asking for input until valid one entered)
+#        while True:
+#            try:
+#                in_suggestedSpeed = int(input("Enter Suggested Speed (0-63): "))
+#                if (in_suggestedSpeed >= 0) and (in_suggestedSpeed <= 63):
+#                    set_suggestedSpeed(in_suggestedSpeed)
+#                    break
+#            except Exception as e:
+#                print("Invalid input type, try again")
         # Switch Position from CTC (keep asking for input until valid one entered)
         while True:
             try:
@@ -151,165 +151,122 @@ def testInterface():
                     break
             except Exception as e:
                 print("Invalid input type, try again")
-        # Switch Position from Track Model (keep asking for input until valid one entered)
-        while True:
-            try:
-                in_switchPosition_TrackModel = int(input("Enter Switch Position from Track Model (6 or 11): "))
-                if in_switchPosition_TrackModel == 6:
-                    set_switchPosition_TrackModel(1)
-                    break
-                elif in_switchPosition_TrackModel == 11:
-                    set_switchPosition_TrackModel(0)
-                    break
-            except Exception as e:
-                print("Invalid input type, try again")
-        # Rail Failure (keep asking for input until valid one entered)
-        while True:
-            try:
-                in_railFailure = input("Rail Failure? (y/n): ")
-                if in_railFailure == 'y' or in_railFailure == 'Y':
-                    set_railFailure(1)
-                    break
-                elif in_railFailure == 'n' or in_railFailure == 'N':
-                    set_railFailure(0)
-                    break
-            except Exception as e:
-                print("Invalid input type, try again")
-        # Track Circuit Failure (keep asking for input until valid one entered)
-        while True:
-            try:
-                in_trackCircuitFailure = input("Track Circuit Failure? (y/n): ")
-                if in_trackCircuitFailure == 'y' or in_trackCircuitFailure == 'Y':
-                    set_trackCircuitFailure(1)
-                    break
-                elif in_trackCircuitFailure == 'n' or in_trackCircuitFailure == 'N':
-                    set_trackCircuitFailure(0)
-                    break
-            except Exception as e:
-                print("Invalid input type, try again")
-        # Power Failure (keep asking for input until valid one entered)
-        while True:
-            try:
-                in_powerFailure = input("Power Failure? (y/n): ")
-                if in_powerFailure == 'y' or in_powerFailure == 'Y':
-                    set_powerFailure(1)
-                    break
-                elif in_powerFailure == 'n' or in_powerFailure == 'N':
-                    set_powerFailure(0)
-                    break
-            except Exception as e:
-                print("Invalid input type, try again")
-        sleep(10)
-    # If the user wanted to specify which Input to change
+#        # Switch Position from Track Model (keep asking for input until valid one entered)
+#        while True:
+#            try:
+#                in_switchPosition_TrackModel = int(input("Enter Switch Position from Track Model (6 or 11): "))
+#                if in_switchPosition_TrackModel == 6:
+#                    set_switchPosition_TrackModel(1)
+#                    break
+#                elif in_switchPosition_TrackModel == 11:
+#                    set_switchPosition_TrackModel(0)
+#                    break
+#            except Exception as e:
+#                print("Invalid input type, try again")
+#        # Rail Failure (keep asking for input until valid one entered)
+#        while True:
+#            try:
+#                in_railFailure = input("Rail Failure? (y/n): ")
+#                if in_railFailure == 'y' or in_railFailure == 'Y':
+#                    set_railFailure(1)
+#                    break
+#                elif in_railFailure == 'n' or in_railFailure == 'N':
+#                    set_railFailure(0)
+#                    break
+#            except Exception as e:
+#                print("Invalid input type, try again")
+#        # Track Circuit Failure (keep asking for input until valid one entered)
+#        while True:
+#            try:
+#                in_trackCircuitFailure = input("Track Circuit Failure? (y/n): ")
+#                if in_trackCircuitFailure == 'y' or in_trackCircuitFailure == 'Y':
+#                    set_trackCircuitFailure(1)
+#                    break
+#                elif in_trackCircuitFailure == 'n' or in_trackCircuitFailure == 'N':
+#                    set_trackCircuitFailure(0)
+#                    break
+#            except Exception as e:
+#                print("Invalid input type, try again")
+#        # Power Failure (keep asking for input until valid one entered)
+#        while True:
+#            try:
+#                in_powerFailure = input("Power Failure? (y/n): ")
+#                if in_powerFailure == 'y' or in_powerFailure == 'Y':
+#                    set_powerFailure(1)
+#                    break
+#                elif in_powerFailure == 'n' or in_powerFailure == 'N':
+#                    set_powerFailure(0)
+#                    break
+#            except Exception as e:
+#                print("Invalid input type, try again")
+#        sleep(10)
+#    # If the user wanted to specify which Input to change
     elif in_choiceOfTest == 2:
         # Ask the user which Input they would like to change (keep asking until valid input received)
         while True:
             try:
-                in_choiceOfInput = int(input("Enter the number of the Input you would like to test (Authority Limit - 1, Speed Limit - 2, Suggested Speed - 3, Switch Position from CTC - 4, Occupancy - 5, Switch Position from Track Model - 6, Failures - 7): "))
+                in_choiceOfInput = int(input("Enter the number of the Input you would like to test (Lights - 1, Switch - 2, Crossing - 3, Authority - 4, Commanded Speed - 5, Occupancy - 6): "))
                 if (in_choiceOfInput >= 1) and (in_choiceOfInput <= 7):
                     break
             except Exception as e:
                 print("Invalid input type, try again")
         if in_choiceOfInput == 1:
-            # Authority Limit (keep asking for input until valid one entered)
+            # Lights (keep asking for input until valid one entered)
             while True:
                 try:
-                    in_authorityLimit = int(input("Enter Authority Limit (0-7): "))
-                    if (in_authorityLimit >= 0) and (in_authorityLimit <= 7):
-                        set_authorityLimit(in_authorityLimit)
+                    in_lights = int(input("Enter Lights state (0-1): "))
+                    if (in_lights >= 0) and (in_lights <= 1):
+                        set_lights(in_lights)
                         break
                 except Exception as e:
                     print("Invalid input type, try again")
         elif in_choiceOfInput == 2:
-            # Speed Limit (keep asking for input until valid one entered)
+            # Switch (keep asking for input until valid one entered)
             while True:
                 try:
-                    in_speedLimit = int(input("Enter Speed Limit (0-63): "))
-                    if (in_speedLimit >= 0) and (in_speedLimit <= 63):
-                        set_speedLimit(in_speedLimit)
+                    in_switch = int(input("Enter Switch state (0-1): "))
+                    if (in_switch >= 0) and (in_switch <= 1):
+                        set_switch(in_switch)
                         break
                 except Exception as e:
                     print("Invalid input type, try again")
         elif in_choiceOfInput == 3:
-            # Suggested Speed (keep asking for input until valid one entered)
+            # Crossing (keep asking for input until valid one entered)
             while True:
                 try:
-                    in_suggestedSpeed = int(input("Enter Suggested Speed (0-63): "))
-                    if (in_suggestedSpeed >= 0) and (in_suggestedSpeed <= 63):
-                        set_suggestedSpeed(in_suggestedSpeed)
+                    in_crossing = int(input("Enter Crossing state (0-1): "))
+                    if (in_crossing >= 0) and (in_crossing <= 1):
+                        set_crossing(in_crossing)
                         break
                 except Exception as e:
                     print("Invalid input type, try again")
         elif in_choiceOfInput == 4:
-            # Switch Position from CTC (keep asking for input until valid one entered)
+            # Authority (keep asking for input until valid one entered)
             while True:
                 try:
-                    in_switchPosition_CTC = int(input("Enter Switch Position from CTC (6 or 11): "))
-                    if in_switchPosition_CTC == 6:
-                        set_switchPosition_CTC(1)
-                        break
-                    elif in_switchPosition_CTC == 11:
-                        set_switchPosition_CTC(0)
+                    in_authority = int(input("Enter Authority (0-1023): "))
+                    if (in_authority >= 0) and (in_authority <= 7):
+                        set_authority(in_authority)
                         break
                 except Exception as e:
                     print("Invalid input type, try again")
         elif in_choiceOfInput == 5:
-            # Occupancy (keep asking for input until valid one entered)
+            # Commanded Speed (keep asking for input until valid one entered)
             while True:
                 try:
-                    in_occupancy = int(input("Enter Occupancy (0-127): "))
-                    if (in_occupancy >= 0) and (in_occupancy <= 127):
-                        set_occupancy(in_occupancy)
+                    in_commandedSpeed = int(input("Enter Commanded Speed (0-15): "))
+                    if (in_commandedSpeed >= 0) and (in_commandedSpeed <= 127):
+                        set_commandedSpeed(in_commandedSpeed)
                         break
                 except Exception as e:
                     print("Invalid input type, try again")
         elif in_choiceOfInput == 6:
-            # Switch Position from Track Model (keep asking for input until valid one entered)
+            # Occupancy (keep asking for input until valid one entered)
             while True:
                 try:
-                    in_switchPosition_TrackModel = int(input("Enter Switch Position from Track Model (6 or 11): "))
-                    if in_switchPosition_TrackModel == 6:
-                        set_switchPosition_TrackModel(1)
-                        break
-                    elif in_switchPosition_TrackModel == 11:
-                        set_switchPosition_TrackModel(0)
-                        break
-                except Exception as e:
-                    print("Invalid input type, try again")
-        elif in_choiceOfInput == 7:
-            # Rail Failure (keep asking for input until valid one entered)
-            while True:
-                try:
-                    in_railFailure = input("Rail Failure? (y/n): ")
-                    if in_railFailure == 'y' or in_railFailure == 'Y':
-                        set_railFailure(1)
-                        break
-                    elif in_railFailure == 'n' or in_railFailure == 'N':
-                        set_railFailure(0)
-                        break
-                except Exception as e:
-                    print("Invalid input type, try again")
-            # Track Circuit Failure (keep asking for input until valid one entered)
-            while True:
-                try:
-                    in_trackCircuitFailure = input("Track Circuit Failure? (y/n): ")
-                    if in_trackCircuitFailure == 'y' or in_trackCircuitFailure == 'Y':
-                        set_trackCircuitFailure(1)
-                        break
-                    elif in_trackCircuitFailure == 'n' or in_trackCircuitFailure == 'N':
-                        set_trackCircuitFailure(0)
-                        break
-                except Exception as e:
-                    print("Invalid input type, try again")
-            # Power Failure (keep asking for input until valid one entered)
-            while True:
-                try:
-                    in_powerFailure = input("Power Failure? (y/n): ")
-                    if in_powerFailure == 'y' or in_powerFailure == 'Y':
-                        set_powerFailure(1)
-                        break
-                    elif in_powerFailure == 'n' or in_powerFailure == 'N':
-                        set_powerFailure(0)
+                    in_occupancy = int(input("Enter Occupancy (0-1023): "))
+                    if (in_occupancy >= 0) and (in_occupancy <= 7):
+                        set_occupancy(in_occupancy)
                         break
                 except Exception as e:
                     print("Invalid input type, try again")
@@ -395,25 +352,42 @@ while True:
         file_contents = file.read()
     #set authority based on authorityLimit and occupancy
     # Train enters my Area of Control
+    reset_pins()
+    set_commandedSpeed(8) # either suggested speed (1) or 0 speed (0)
     set_authority(1016)
-    sleep(1)
-    #Train occupies first block
+    set_occupancy(1023)
+    sleep(2.5)
+    #Train occupies block 67
     set_authority(504)
-    sleep(1)
+    set_occupancy(511)
+    sleep(2.5)
+    #Train occupies block 68
     set_authority(248)
-    sleep(1)
+    set_occupancy(767)
+    sleep(2.5)
+    #Train occupies block 69
     set_authority(120)
-    sleep(1)
+    set_occupancy(895)
+    sleep(2.5)
+    #Train occupies block 70
     set_authority(56)
-    sleep(1)
+    set_occupancy(959)
+    sleep(2.5)
+    #Train occupies block 71
     set_authority(24)
-    sleep(1)
+    set_occupancy(991)
+    sleep(2.5)
+    #Train occupies block 72
     set_authority(8)
-    sleep(1)
-    # arrived at station
+    set_occupancy(1007)
+    sleep(2.5)
+    #Train occupies block 73 (Dormont station)
     set_lights(1)
     set_authority(0)
-    sleep(100000)
+    set_occupancy(1015)
+    #begin testing interface
+    while True:
+        testInterface()
 
 
 
@@ -469,5 +443,5 @@ while True:
 #    # If (10) trains have gone through the wayside's area of control, begin test interface demo
 #    if demoTrainCounter == 10:
 #        # Repeat testInterface() test over and over for demo purposes
-        while True:
-            testInterface()
+#        while True:
+#           testInterface()
