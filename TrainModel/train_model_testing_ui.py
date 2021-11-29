@@ -11,8 +11,8 @@ from connections import connect
 
 
 class Testing_UI(object):
-    def setupUi(self, Test, trainNum):
-        self.trainNum = trainNum
+    def setupUi(self, Test, currentTrainNum):
+        self.currentTrainNum = currentTrainNum
 
         Test.setObjectName("Test")
         Test.resize(795, 600)
@@ -177,11 +177,11 @@ class Testing_UI(object):
 
 
     def toggleLeftDoor(self):
-        connect.train_model_toggleDoors.emit(self.trainNum, "left")
+        connect.train_model_toggleDoors.emit(self.currentTrainNum, "left")
 
 
     def toggleRightDoor(self):
-        connect.train_model_toggleDoors.emit(self.trainNum, "right")
+        connect.train_model_toggleDoors.emit(self.currentTrainNum, "right")
 
     
     def stopRun(self):

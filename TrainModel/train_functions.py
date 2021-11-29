@@ -14,51 +14,17 @@ from common import *
 import threading
 from connections import connect
 import time
+from threading import Timer
 
 # Reminder for later!!!:  Guard the creation of the windows and dialogs to prevent disconnected duplicate windows
 
 class Train_Functions:
 
     # trainNum is temporary for iteration 2, needed a quick way to get functionality
-    def __init__(self, trainNum):
+    def __init__(self, trainNum, UI_mode):
 
-        connect.train_model_update_kinematics.connect(self.update_kinematics)
-        connect.train_model_dispatch_train.connect(self.dispatch_train)
-
-        connect.train_model_ui_passenger_button_pressed.connect(self.open_passenger_dialog)
-        connect.train_model_ui_diagnostics_button_pressed.connect(self.open_diagnostics_dialog)
-
-        connect.train_model_ui_testing_button_pressed.connect(self.open_testing_dialog)
-
-        connect.train_model_testing_send_serviceBrake.connect(self.receive_serviceBrake)
-
-        connect.train_model_diagnostics_toggleEngineFailure.connect(self.receive_engineFailure)
-        connect.train_model_diagnostics_toggleBrakeFailure.connect(self.receive_brakeFailure)
-        connect.train_model_diagnostics_toggleSignalPickupFailure.connect(self.receive_signalPickupFailure)
-
-        connect.train_model_receive_passenger_emergencyBrake.connect(self.receive_emergencyBrake)
-
-
-        connect.train_model_receive_blockList.connect(self.receive_blockList)
-
-        connect.train_model_stop_run.connect(self.stopRun)
-
-        connect.train_model_toggleDoors.connect(self.receive_door)
-
-        #connect.train_model_receive_passengers.connect(self.receive_passengers)
-
-
-        connect.train_model_send_testing_values.connect(self.receive_testing_values)
-
-
-        import sys
-
-        #for i in range(len(trainList)):
-        app = QtWidgets.QApplication(sys.argv)
-        TrainModel = QtWidgets.QMainWindow()
-        self.ui = Mainpage_UI()
-        self.ui.setupUi(TrainModel, trainNum)       # this trainNum should be temporary too
-        TrainModel.show()
+        self.currentTrainNum = trainNum
+        self.UI_mode = UI_mode
 
         self.FRICTION = 0.4
         self.GRAVITY_ACC = 9.80665               # m/s^2
@@ -74,26 +40,64 @@ class Train_Functions:
         self.trainList = []
         self.blockList = []
 
-        tempBlock1 = Block("A0", 50, 50000, 20, 0.5, "ABC", "beacon1")
-        tempBlock2 = Block("A1", 75, 70000, 10, 0.5, "ABC", "beacon2")
-        tempBlock3 = Block("A2", 60, 40000,  0, 0, 'A', "beacon3")
-        tempList = []
-        tempList.append(tempBlock1)
-        tempList.append(tempBlock2)
-        self.blockList = tempList
-        tempTC = Track_Circuit_Data(60, 70)
-        self.dispatch_train(5, tempList, tempTC)
 
-        print("init")
+        connect.train_model_update_kinematics.connect(self.update_kinematics)
+        connect.train_model_dispatch_train.connect(self.dispatch_train)
 
-        self._translate = QtCore.QCoreApplication.translate
+        connect.train_model_receive_blockList.connect(self.receive_blockList)
+
+        connect.train_model_stop_run.connect(self.stopRun)
+
+        connect.train_model_toggleDoors.connect(self.receive_door)
+        
+
+        if UI_mode:
+            connect.train_model_ui_passenger_button_pressed.connect(self.open_passenger_dialog)
+            connect.train_model_ui_diagnostics_button_pressed.connect(self.open_diagnostics_dialog)
+
+            connect.train_model_ui_testing_button_pressed.connect(self.open_testing_dialog)
+
+            connect.train_model_testing_send_serviceBrake.connect(self.receive_serviceBrake)
+
+            connect.train_model_diagnostics_toggleEngineFailure.connect(self.receive_engineFailure)
+            connect.train_model_diagnostics_toggleBrakeFailure.connect(self.receive_brakeFailure)
+            connect.train_model_diagnostics_toggleSignalPickupFailure.connect(self.receive_signalPickupFailure)
+
+            connect.train_model_receive_passenger_emergencyBrake.connect(self.receive_emergencyBrake)
+
+            connect.train_model_send_testing_values.connect(self.receive_testing_values)
+
+            import sys
+
+            #for i in range(len(trainList)):
+            app = QtWidgets.QApplication(sys.argv)
+            TrainModel = QtWidgets.QMainWindow()
+            self.ui = Mainpage_UI()
+            self.ui.setupUi(TrainModel, trainNum)       # this trainNum should be temporary too
+            TrainModel.show()
+
+            self._translate = QtCore.QCoreApplication.translate
+
+            sys.exit(app.exec_())
+
+
+        #connect.train_model_receive_passengers.connect(self.receive_passengers)
+
+        # tempBlock1 = Block("A0", 50, 50000, 20, 0.5, "ABC", "beacon1")
+        # tempBlock2 = Block("A1", 75, 70000, 10, 0.5, "ABC", "beacon2")
+        # tempBlock3 = Block("A2", 60, 40000,  0, 0, 'A', "beacon3")
+        # tempList = []
+        # tempList.append(tempBlock1)
+        # tempList.append(tempBlock2)
+        # self.blockList = tempList
+        # tempTC = Track_Circuit_Data(60, 70)
+        # self.dispatch_train(5, tempList, tempTC)
+
+        # print("init")
+
 
         self.already_run = False
         self.run_continously = True
-
-        #self.update_UI()
-
-        sys.exit(app.exec_())
 
 
     def open_passenger_dialog(self, trainNum):
@@ -148,7 +152,7 @@ class Train_Functions:
     def dispatch_train(self, destination, blockRoute, trackCircuitInput):
 
         dispatchedTrain = Train(destination, blockRoute)
-
+        self.blockList = blockRoute
         self.trainList.append(dispatchedTrain)
 
         connect.train_ctrl_train_dispatched.emit(trackCircuitInput)
@@ -156,12 +160,21 @@ class Train_Functions:
 
     def update_continuously(self, trainNum, power):  
         self.already_run = True
-        self.timer = QtCore.QTimer()
-        self.update_continuously_trainNum = trainNum
-        self.update_continuously_power = power
-        self.timer.timeout.connect(self.update_continuously_kinematics)
-        self.timer.start(Constants.TIME_PERIOD*100) # in ms, so x 100
-        #threading.Timer(Constants.TIME_PERIOD, self.update_continuously(trainNum, power))
+
+
+        # self.timer = QtCore.QTimer()
+        # self.update_continuously_trainNum = trainNum
+        # self.update_continuously_power = power
+        # self.timer.timeout.connect(self.update_continuously_kinematics)
+        # self.timer.start(Constants.TIME_PERIOD*100) # in ms, so x 100
+
+        #print("hi")
+        #Timer(Constants.TIME_PERIOD, self.update_kinematics(trainNum, power)).start()
+
+        while self.run_continously:
+            time.sleep(Constants.TIME_PERIOD)
+            self.update_kinematics(trainNum, power)
+
         # if self.run_continously:
         #     self.update_kinematics(trainNum, power)
 
@@ -171,22 +184,20 @@ class Train_Functions:
         
 
     def update_kinematics(self, trainNum, power):
-        
-        #print("in function")
         if self.run_continously:
-
-            #print("updating kinematics")
-
+            
+            # Convert from kW to W
             power = power*1000
 
+            # Cap at power limit
             if power > self.POWER_LIMIT:
                 power = self.POWER_LIMIT
 
+            # Can't run if engine isn't working
             if self.trainList[trainNum].engineFailure:
                 power = 0
 
             # From train class
-            commandedSpeed = self.trainList[trainNum].commandedSpeed
             currentSpeed = self.trainList[trainNum].currentSpeed
             prevPosition = self.trainList[trainNum].position
             prevAcceleration = self.trainList[trainNum].acceleration
@@ -195,13 +206,13 @@ class Train_Functions:
             emergencyBrake = self.trainList[trainNum].emergencyBrake
             currentBlockNum = self.trainList[trainNum].currentBlock
 
-           # print(type(currentBlockNum))
-            if len(self.blockList) > 0:
-                currentBlock = self.blockList[currentBlockNum]
+            # If blocklist exists, set current block
+            #if len(self.blockList) > 0:
+            #print("curr blockNum =",currentBlockNum)
+            currentBlock = self.blockList[0]
 
             # From track class
             currentBlockLength = currentBlock.blockLength
-            speedLimit = currentBlock.speedLimit
             slope = currentBlock.slope
 
             # For calculations
@@ -209,7 +220,7 @@ class Train_Functions:
 
             # --------------------- FORCE CALCULATIONS ---------------------
             # --------------------------------------------------------------
-            if (brake or emergencyBrake):
+            if (brake or emergencyBrake or power == 0):
                 force = 0
             else:
                 if (currentSpeed == 0):
@@ -234,10 +245,6 @@ class Train_Functions:
 
             # --------------------- VELOCITY CALCULATIONS ---------------------
             # -----------------------------------------------------------------
-            print("acc")
-            print(acceleration)
-            print("prev acc")
-            print(prevAcceleration)
             velocity = currentSpeed + ( (timePeriod / 2) * (acceleration + prevAcceleration) )
 
             if (velocity > self.VELOCITY_LIMIT):
@@ -249,25 +256,28 @@ class Train_Functions:
             # -----------------------------------------------------------------
             position = prevPosition + (velocity * timePeriod)
 
-            # commented out for iteraion 2
-            # Move position to next block on track
-            # if (position > currentBlockLength):
+            #Move position to next block on track
+            if (position > currentBlockLength):
+                
+                # This if statement is only for testing, not needed for functionality
+                if len(self.blockList) <= 1:
+                    self.blockList.pop(0)
+                    position = currentBlockLength
 
-            #     # temp for iteration 2
-            #     if len(self.blockList) == 0:
-            #         self.destination_reached = True
-            #         self.run_continously = False
-            #     else:
-            #         # Fix block length
-            #         position -= currentBlockLength
+                    self.destination_reached = True
+                    self.run_continously = False
+                else:
+                    # Fix block length
+                    position -= currentBlockLength
 
-            #         # Remove traveled block from list and update current block
-            #         self.blockList.pop(0)
-            #         self.trainList[trainNum].currentBlock = self.blockList[0]
-            #         currentBlock = 0#self.blockList[0]  commented out for iteration 2
+                    # Remove traveled block from list and update current block
+                    self.blockList.pop(0)
+                    self.trainList[trainNum].currentBlock = self.blockList[0]
+                    currentBlock = self.blockList[0]
+                    #self.currentBlockNum += 1
 
-            #         # Send block occupancy to track model
-            #         connect.track_model_update_block_occupancy.emit(trainNum, currentBlock)
+                    # Send block occupancy to track model
+                    connect.track_model_update_block_occupancy.emit(trainNum, currentBlock)
             
             # Update rest of values
             self.trainList[trainNum].position = position
@@ -282,10 +292,11 @@ class Train_Functions:
             # connect.train_model_update_ui.emit("acceleration", acceleration)
             # connect.train_model_update_ui.emit("blockName", currentBlock.name)
 
-            self.ui.power_text.setText(str(power))
-            self.ui.currentSpeed_text.setText(str(velocity))
-            #self.ui.currentSpeed_text.setText(str(acceleration))
-            self.ui.block_text.setText(str(currentBlock.name))
+            if self.UI_mode:
+                self.ui.power_text.setText(str(power))
+                self.ui.currentSpeed_text.setText(str(velocity))
+                #self.ui.currentSpeed_text.setText(str(acceleration))
+                self.ui.block_text.setText(str(currentBlock.name))
         
 # ---------------------------------------------------------------------------------------------
 # -------------------------------- INPUTS FROM TRACK MODEL ------------------------------------
@@ -344,35 +355,44 @@ class Train_Functions:
     #temp for iteration 2:
 
     def receive_serviceBrake(self, train):
-        self.trainList[train].serviceBrake = not(self.trainList[train].serviceBrake)
-        #self.ui.serviceBrake_toggle.set(brake)
-        connect.train_model_update_UI_serviceBrake.emit(self.trainList[train].serviceBrake)
-        if self.trainList[train].serviceBrake:
-            self.ui.serviceBrakes_indicator.setText(self._translate("TrainModel", "<html><head/><body><p><span style=\" color:#ff0004;\">Engaged</span></p></body></html>"))
+
+        if not self.trainList[train].brakeFailure:
+            self.trainList[train].serviceBrake = not(self.trainList[train].serviceBrake)
         else:
-            self.ui.serviceBrakes_indicator.setText("Disengaged")
+            self.trainList[train].serviceBrake = False
+        
+        #self.ui.serviceBrake_toggle.set(brake)
+
+        if self.UI_mode:
+            connect.train_model_update_UI_serviceBrake.emit(self.trainList[train].serviceBrake)
+            if self.trainList[train].serviceBrake:
+                self.ui.serviceBrakes_indicator.setText(self._translate("TrainModel", "<html><head/><body><p><span style=\" color:#ff0004;\">Engaged</span></p></body></html>"))
+            else:
+                self.ui.serviceBrakes_indicator.setText("Disengaged")
 
 
     # Receive emergency brake from the Train Controller or Passenger
     def receive_emergencyBrake(self, train, emergencyBrake):
         self.trainList[train].emergencyBrake = emergencyBrake
-        print(self.trainList[train].emergencyBrake)
         #self.ui.emergencyBrake_toggle.set(emergencyBrake)
-        #connect.train_model_send_emergencyBrake_passenger_UI.emit(emergencyBrake)
-        if emergencyBrake:
-            self.ui.emergencyBrakes_indicator.setText(self._translate("TrainModel", "<html><head/><body><p><span style=\" color:#ff0004;\">Engaged</span></p></body></html>"))
-        else:
-            self.ui.emergencyBrakes_indicator.setText("Disengaged")
+        #connect.train_model_send_emergencyBrake_passenger_UI.emit(emergencyBrake),
+        if self.UI_mode:
+            if emergencyBrake:
+                self.ui.emergencyBrakes_indicator.setText(self._translate("TrainModel", "<html><head/><body><p><span style=\" color:#ff0004;\">Engaged</span></p></body></html>"))
+            else:
+                self.ui.emergencyBrakes_indicator.setText("Disengaged")
         
     # Receive temperature control from the Train Controller
     def receive_temperature(self, train, temperature):
         self.trainList[train].temperature = temperature
-        self.ui.temp_text.setText(str(temperature))
+        if self.UI_mode:
+            self.ui.temp_text.setText(str(temperature))
 
     # Receive commanded speed from the Train Controller
     def receive_commandedSpeed(self, train, commandedSpeed):
         self.trainList[train].commandedSpeed = commandedSpeed
-        self.ui.commandedSpeed_text.setText(str(commandedSpeed))
+        if self.UI_mode:
+            self.ui.commandedSpeed_text.setText(str(commandedSpeed))
 
     # Receive door open/closed from the Train Controller
     def receive_door(self, train, side):
@@ -387,14 +407,15 @@ class Train_Functions:
         doors = self.trainList[train].doors
 
         # Change this to an indicator later maybe?
-        if doors[0] and doors[1]:
-            self.ui.doors_text.setText("LEFT OPEN; RIGHT OPEN")
-        elif not(doors[0]) and doors[1]:
-            self.ui.doors_text.setText("LEFT CLOSED; RIGHT OPEN")
-        if doors[0] and not(doors[1]):
-            self.ui.doors_text.setText("LEFT OPEN; RIGHT CLOSED")
-        elif not(doors[0]) and not(doors[1]):
-            self.ui.doors_text.setText("LEFT CLOSED; RIGHT CLOSED")
+        if self.UI_mode:
+            if doors[0] and doors[1]:
+                self.ui.doors_text.setText("LEFT OPEN; RIGHT OPEN")
+            elif not(doors[0]) and doors[1]:
+                self.ui.doors_text.setText("LEFT CLOSED; RIGHT OPEN")
+            if doors[0] and not(doors[1]):
+                self.ui.doors_text.setText("LEFT OPEN; RIGHT CLOSED")
+            elif not(doors[0]) and not(doors[1]):
+                self.ui.doors_text.setText("LEFT CLOSED; RIGHT CLOSED")
 
 # ---------------------------------------------------------------------------------------------
 # ---------------------------- INPUTS FROM FAILURES (MURPHY) ----------------------------------
@@ -404,28 +425,34 @@ class Train_Functions:
     def receive_brakeFailure(self, train):
         self.trainList[train].brakeFailure = not(self.trainList[train].brakeFailure)
         #self.ui.engineStatus_indicator.setText(brakeFailure)
-        if self.trainList[train].brakeFailure:
-            self.ui.brakeStatus_indicator.setText(self._translate("TrainModel", "<html><head/><body><p><span style=\" color:#ff0004;\">FAILURE</span></p></body></html>"))
-        else:
-            self.ui.brakeStatus_indicator.setText(self._translate("TrainModel", "<html><head/><body><p><span style=\" color:#00ff00;\">Working</span></p></body></html>"))
+
+        if self.UI_mode:
+            if self.trainList[train].brakeFailure:
+                self.ui.brakeStatus_indicator.setText(self._translate("TrainModel", "<html><head/><body><p><span style=\" color:#ff0004;\">FAILURE</span></p></body></html>"))
+            else:
+                self.ui.brakeStatus_indicator.setText(self._translate("TrainModel", "<html><head/><body><p><span style=\" color:#00ff00;\">Working</span></p></body></html>"))
 
     # Receive signal pickup failure from Murphy
     def receive_signalPickupFailure(self, train):
         self.trainList[train].signalPickupFailure = not(self.trainList[train].signalPickupFailure)
         #self.ui.signalPickupFailure_set(signalPickupFailure)
-        if self.trainList[train].signalPickupFailure:
-            self.ui.signalpickupStatus_indicator.setText(self._translate("TrainModel", "<html><head/><body><p><span style=\" color:#ff0004;\">FAILURE</span></p></body></html>"))
-        else:
-            self.ui.signalpickupStatus_indicator.setText(self._translate("TrainModel", "<html><head/><body><p><span style=\" color:#00ff00;\">Working</span></p></body></html>"))
+
+        if self.UI_mode:
+            if self.trainList[train].signalPickupFailure:
+                self.ui.signalpickupStatus_indicator.setText(self._translate("TrainModel", "<html><head/><body><p><span style=\" color:#ff0004;\">FAILURE</span></p></body></html>"))
+            else:
+                self.ui.signalpickupStatus_indicator.setText(self._translate("TrainModel", "<html><head/><body><p><span style=\" color:#00ff00;\">Working</span></p></body></html>"))
         
     # Receive engine failure from Murphy
     def receive_engineFailure(self, train):
         self.trainList[train].engineFailure = not(self.trainList[train].engineFailure)
         #self.ui.engineFailure_set(engineFailure)
-        if self.trainList[train].engineFailure:
-            self.ui.engineStatus_indicator.setText(self._translate("TrainModel", "<html><head/><body><p><span style=\" color:#ff0004;\">FAILURE</span></p></body></html>"))
-        else:
-            self.ui.engineStatus_indicator.setText(self._translate("TrainModel", "<html><head/><body><p><span style=\" color:#00ff00;\">Working</span></p></body></html>"))
+
+        if self.UI_mode:
+            if self.trainList[train].engineFailure:
+                self.ui.engineStatus_indicator.setText(self._translate("TrainModel", "<html><head/><body><p><span style=\" color:#ff0004;\">FAILURE</span></p></body></html>"))
+            else:
+                self.ui.engineStatus_indicator.setText(self._translate("TrainModel", "<html><head/><body><p><span style=\" color:#00ff00;\">Working</span></p></body></html>"))
 
 # ---------------------------------------------------------------------------------------------
 # ---------------------------------- INPUTS FROM PASSENGER ------------------------------------
@@ -435,7 +462,8 @@ class Train_Functions:
     def receive_passengers(self, train, passengers):
         self.trainList[train].passengers = passengers
         self.trainList[train].mass = self.trainList[train].mass * (passengers*Conversion.kg_to_tons(62))        # Average mass of a human is 62 kg
-        self.ui.passengers_text.setText(str(passengers))
+        if self.UI_mode:
+            self.ui.passengers_text.setText(str(passengers))
 
 # ---------------------------------------------------------------------------------------------
 # ----------------------- PASS THRU OUTPUTS TO TRAIN CONTROLLER -------------------------------
@@ -462,8 +490,8 @@ class Train_Functions:
         self.trainList[train].engineFailure = engineFailure
         connect.train_model_send_failure.emit("engineFailure", engineFailure)
 
-if __name__ == '__main__':
-    functions = Train_Functions(0)
+#if __name__ == '__main__':
+    #functions = Train_Functions(0)
 
 # if __name__ == "__main__":
 #     import sys

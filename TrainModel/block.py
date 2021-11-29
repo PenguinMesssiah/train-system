@@ -1,6 +1,6 @@
 class Block:
 
-    def __init__(self, name, blockLength, speedLimit, elevation, slope, station, beacon):
+    def __init__(self, name, blockLength, elevation, slope, station, beacon):
 
         # Block properties
         self.name = name                 # Block name
