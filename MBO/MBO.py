@@ -138,6 +138,7 @@ class MBO(object):
     def changeStartTime(self):
         self.startTime = self.displayMainUI.timeSelector.value()
         print("New Start Time is: ", int(self.startTime), ":00 ")
+        ## self.makeScheduleGreen()
 
     def changeThroughput(self):
         self.throughput = self.displayMainUI.throSelector.value()
@@ -580,7 +581,7 @@ if __name__ == "__main__":
     MBO1.makeScheduleGreen()
     ## --- MBO1.makeSchedule()
 
-   ## self.tableView = QtGui.QTableView(self.centralwidget)
+##    self.tableView = QtGui.QTableView(self.centralwidget)
 ##    self.tableView.setObjectName(_fromUtf8("tableView"))
 ##    
 ##    col_headers = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']

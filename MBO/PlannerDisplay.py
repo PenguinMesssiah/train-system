@@ -304,7 +304,7 @@ class Display(object):
         self.tableView.setObjectName("tableView")
         ##        
         ##        col_headers = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
-        self.tableView.setGeometry(QtCore.QRect(100, 330, 100, 50))
+        self.tableView.setGeometry(QtCore.QRect(100, 360, 100, 50))
        ## self.tableView.setHorizontalHeaderLabels(col_headers)
 ##        table = MyTable(QTableWidget)
 ##        self.tableView.table.open_sheet()
