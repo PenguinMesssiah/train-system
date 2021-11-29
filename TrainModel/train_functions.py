@@ -15,6 +15,7 @@ import threading
 from connections import connect
 import time
 from threading import Timer
+from random import randint
 
 # Reminder for later!!!:  Guard the creation of the windows and dialogs to prevent disconnected duplicate windows
 
@@ -50,7 +51,6 @@ class Train_Functions:
 
         connect.train_model_toggleDoors.connect(self.receive_door)
         
-
         if UI_mode:
             connect.train_model_ui_passenger_button_pressed.connect(self.open_passenger_dialog)
             connect.train_model_ui_diagnostics_button_pressed.connect(self.open_diagnostics_dialog)
@@ -58,10 +58,6 @@ class Train_Functions:
             connect.train_model_ui_testing_button_pressed.connect(self.open_testing_dialog)
 
             connect.train_model_testing_send_serviceBrake.connect(self.receive_serviceBrake)
-
-            connect.train_model_diagnostics_toggleEngineFailure.connect(self.receive_engineFailure)
-            connect.train_model_diagnostics_toggleBrakeFailure.connect(self.receive_brakeFailure)
-            connect.train_model_diagnostics_toggleSignalPickupFailure.connect(self.receive_signalPickupFailure)
 
             connect.train_model_receive_passenger_emergencyBrake.connect(self.receive_emergencyBrake)
 
@@ -93,9 +89,6 @@ class Train_Functions:
         # tempTC = Track_Circuit_Data(60, 70)
         # self.dispatch_train(5, tempList, tempTC)
 
-        # print("init")
-
-
         self.already_run = False
         self.run_continously = True
 
@@ -105,7 +98,6 @@ class Train_Functions:
         self.passenger_ui = Passenger_UI()
         self.passenger_ui.setupUi(self.passenger_dialog, trainNum)
         self.passenger_dialog.show()
-        #sys.exit(app.exec_())
 
 
     def open_diagnostics_dialog(self, trainNum):
@@ -123,7 +115,7 @@ class Train_Functions:
 
 
     def receive_testing_values(self, trainNum, passengers, temperature, suggestedSpeed, commandedSpeed, speedLimit, power):
-        self.receive_passengers(trainNum, passengers)
+        self.receive_passengers(trainNum)
         self.receive_temperature(trainNum, temperature)
         self.receive_suggestedSpeed(trainNum, suggestedSpeed)
         self.receive_commandedSpeed(trainNum, commandedSpeed)
@@ -137,8 +129,6 @@ class Train_Functions:
 
         self.update_continuously(trainNum, power)
         self.run_continously = True
-
-        #self.update_kinematics(trainNum, power)
 
 
     def stopRun(self):
@@ -155,7 +145,8 @@ class Train_Functions:
         self.blockList = blockRoute
         self.trainList.append(dispatchedTrain)
 
-        connect.train_ctrl_train_dispatched.emit(trackCircuitInput)
+        # Send track circuit data
+        connect.train_model_send_train_dispatched_ctrl.emit(trackCircuitInput)
 
 
     def update_continuously(self, trainNum, power):  
@@ -301,12 +292,12 @@ class Train_Functions:
 # ---------------------------------------------------------------------------------------------
 # -------------------------------- INPUTS FROM TRACK MODEL ------------------------------------
 # ---------------------------------------------------------------------------------------------
-    # Receives acceleration limit from the Track Model
+    # Receives acceleration limit from the Track Model   # DONT NEED
     def receive_accelerationLimit(self, train, accelerationLimit):
         self.trainList[train].accelerationLimit = accelerationLimit
         self.ui.accLimit_text.setText(str(accelerationLimit))
 
-    # Receives authority from the Track Model
+    # Receives authority from the Track Model   # DONT NEED
     def receive_authority(self, train, authority):
         self.trainList[train].authority = authority
         self.ui.authority_text.setText(str(authority))
@@ -315,12 +306,12 @@ class Train_Functions:
     def receive_beacon(self, train, beacon):
         self.trainList[train].beacon = beacon
 
-    # Receive suggested speed from the Track Model
+    # Receive suggested speed from the Track Model   # DONT NEED
     def receive_suggestedSpeed(self, train, suggestedSpeed):
         connect.train_model_send_suggestedSpeed_ctrl.emit(train, suggestedSpeed)
         self.ui.suggestedSpeed_text.setText(str(suggestedSpeed))
 
-    # Receive deceleration limit from the Track Model
+    # Receive deceleration limit from the Track Model   # DONT NEED
     def receive_decelerationLimit(self, train, decelerationLimit):
         self.trainList[train].decelerationLimit = decelerationLimit
         self.ui.decelerationLimit_text.setText(str(decelerationLimit))
@@ -330,9 +321,9 @@ class Train_Functions:
         self.trainList[train].lights = lights
         #self.ui.lightToggle.set(lights)
 
-    # Receive speed limit from the Track Model
+    # Receive speed limit from the Track Model   # DONT NEED
     def receive_speedLimit(self, train, speedLimit):
-        self.trainList[train].speedLimit = speedLimit
+        #self.trainList[train].speedLimit = speedLimit
         self.ui.speedLimit_text.setText(str(speedLimit))
 
     def receive_blockList(self, blockList):
@@ -459,8 +450,10 @@ class Train_Functions:
 # ---------------------------------------------------------------------------------------------
 
     # Receive passengers from station
-    def receive_passengers(self, train, passengers):
-        self.trainList[train].passengers = passengers
+    def receive_passengers(self, train):
+        passengers = self.trainList[train].passengerCount
+        passengers += randint(-222, 222)
+        self.trainList[train].passengerCount = passengers
         self.trainList[train].mass = self.trainList[train].mass * (passengers*Conversion.kg_to_tons(62))        # Average mass of a human is 62 kg
         if self.UI_mode:
             self.ui.passengers_text.setText(str(passengers))
@@ -473,22 +466,22 @@ class Train_Functions:
     def send_trackCircuit(self, train, trackCircuit):
         # Send to Train Controller if signal pickup isn't failing
         if not(self.TrainList[train].signalPickupFailure):
-            connect.train_model_send_trackCircuit(trackCircuit)
+            connect.train_model_send_trackCircuit_ctrl(trackCircuit)
 
     # Receive brake failure from Murphy
     def send_brakeFailure(self, train, brakeFailure):
         self.trainList[train].brakeFailure = brakeFailure
-        connect.train_model_send_failure.emit("brakeFailure", brakeFailure)
+        connect.train_model_send_failure_ctrl.emit("brakeFailure", brakeFailure)
 
     # Receive signal pickup failure from Murphy
     def send_signalPickupFailure(self, train, signalPickupFailure):
         self.trainList[train].signalPickupFailure = signalPickupFailure
-        connect.train_model_send_failure.emit("signalPickupFailure", signalPickupFailure)
+        connect.train_model_send_failure_ctrl.emit("signalPickupFailure", signalPickupFailure)
         
     # Receive engine failure from Murphy
     def send_engineFailure(self, train, engineFailure):
         self.trainList[train].engineFailure = engineFailure
-        connect.train_model_send_failure.emit("engineFailure", engineFailure)
+        connect.train_model_send_failure_ctrl.emit("engineFailure", engineFailure)
 
 #if __name__ == '__main__':
     #functions = Train_Functions(0)

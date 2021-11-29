@@ -1,0 +1,46 @@
+# blocks: 67, 68, 69, 70, 71, 72, 73, 74, 75, 76
+
+# sample authority limit/schedule: 1   1   1   1   1   1   1   0   0   0
+# 		 		  67s 68s 69s 70s 71s 72s 73s 74s 75s 76s
+#		s for schedule,  0 = not scheduled, 1 = scheduled
+# sample occupancy:    		   1   1   1   1   1   1   1   1   1   1 
+#		 		  67o 68o 69o 70o 71o 72o 73o 74o 75o 76o
+#		o for occupancy, 0 = occupied 1 = available
+
+# a for authority
+67a = 67s & 67o
+68a = 68s & 68o
+69a = 69s & 69o
+70a = 70s & 70o
+71a = 71s & 71o
+72a = 72s & 72o
+73a = 73s & 73o
+74a = 74s & 74o
+75a = 75s & 75o
+76a = 76s & 76o
+
+
+# l for lights
+67l = 0
+68l = 0
+69l = 0
+70l = 0
+71l = 0
+72l = 0
+73l = 
+74l = 0
+75l = 0
+76l = 0
+
+
+# do for other variables that we can represent as binary
+67 = 
+68 = 
+69 = 
+70 = 
+71 = 
+72 = 
+73 = 
+74 = 
+75 = 
+76 = 

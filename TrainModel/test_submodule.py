@@ -18,7 +18,6 @@ class test:
     def test1(self):
         print("Test 1")
 
-
     def test2(self):
         print("Test 2")
 

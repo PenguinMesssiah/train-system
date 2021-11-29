@@ -7,8 +7,7 @@ class TrainController(object):
 
     #---------------------- Constructor where train number is assigned and variables are assigned -------------------------
     def __init__(self, number, ui, model):
-        self.speed = 0.0
-        self.currentVelocity = 0.0
+        self.setSpeed = 0.0
         self.temperature = 70
         self.nextStation = 'NONE'
         self.headlightStatus = False
@@ -17,7 +16,6 @@ class TrainController(object):
         self.kp = 9000.0
         self.ki = 100.0
         self.faultStatus = 'NONE'
-        self.faultStatusHold = 0
         self.mode = 'AUTOMATIC'
         self.engineStatus = True
         self.serviceBrake = False
@@ -32,6 +30,7 @@ class TrainController(object):
         self.beaconMessage = "NONE"
         self.announcement = "NONE"
         self.maxPower = 150000
+        self.actualSpeed = 0.0
         
         self.trainNumber = number
         self.trainModel = model
@@ -46,7 +45,7 @@ class TrainController(object):
 
         #Control links
         self.displayUI.speedInput.valueChanged.connect(self.speedControl)
-        self.displayUI.temperatureInput.valueChanged.connect(self.tempControl)
+        self.displayUI.temperatureInput.valueChanged.connect(self.temperatureControl)
         self.displayUI.headlightOnButton.clicked.connect(self.headlightControlOn)
         self.displayUI.headlightOffButton.clicked.connect(self.headlightControlOff)
         self.displayUI.cabinlightOnButton.clicked.connect(self.cabinlightControlOn)
@@ -58,7 +57,7 @@ class TrainController(object):
         self.displayUI.servicebrakeButton.pressed.connect(self.serviceBrakeControl)
         self.displayUI.emergencybrakeButton.pressed.connect(self.serviceBrakeControl)
         self.displayUI.announcementButton.pressed.connect(self.intercomControl)
-        self.displayUI.automaticModeButton.pressed.connect(self.automaticControl)
+        self.displayUI.automaticModeButton.pressed.connect(self.modeControl)
 
         #Timer to refresh inputs every half second
         self.timer = QtCore.QTimer()
@@ -92,12 +91,15 @@ class TrainController(object):
 
     def getKp(self):
         return self.kp
+
+    def getKi(self):
+        return self.ki
         
     def getAnnouncement(self):
         return self.announcement
 
     def getSetSpeed(self):
-        return self.speed
+        return self.setSpeed
     
 
 
@@ -106,12 +108,10 @@ class TrainController(object):
     def getTrainModelInputs(self):
         if self.engineStatus:
             self.authority = self.trainModel.getAuthority(self.trainNumber)
-            self.currentVelocity = self.trainModel.getVelocity(self.trainNumber)
             self.beaconMessage = self.trainModel.getBeacon(self.trainNumber)
             self.commanded = self.trainModel.getCommanded(self.trainNumber)
             self.speedLimit = self.trainModel.getSpeedLimit(self.trainNumber)
             self.displayUI.nextstationOutput.setText(self.beaconMessage)
-            self.displayUI.actualSpeed.setText(str(self.currentVelocity))
             print('inputs received from train model')
 
     
@@ -130,7 +130,7 @@ class TrainController(object):
         self.timeChange = self.currentTime - self.startTime
 
         #Compute working error variables
-        self.error = self.speed - self.currentVelocity
+        self.error = self.setSpeed - self.actualSpeed
         if self.power < self.maxPower:
             self.errSum = self.previous_errSum + (self.timeChange/2)*(self.error + self.previous_error)
         else:
@@ -140,6 +140,7 @@ class TrainController(object):
         self.power = (self.kp * self.error) + (self.ki * self.errSum)
 
         self.displayUI.powerOutput.setText(str(round(self.power,2)))
+        print(self.power)
 
         self.startTime = self.currentTime
         self.previous_error = self.error
@@ -150,30 +151,21 @@ class TrainController(object):
     #--------------------------- Emergency Brake Control --------------------------------------------
     def emergencyBrakeControl(self):
         if self.engineStatus:
-            if self.emergencyBrake == False:
-                self.emergencyBrake = True
-            else:
-                self.emergencyBrake = False
-                
-            while(self.emergencyBrake == True and self.speed > 0):
-                self.speed = self.speed - .0001
-                self.calculatePower()
-                self.displayUI.speedInput.setValue(self.speed)
+            self.emergencyBrake = True
+            self.displayUI.speedInput.setValue(0.0)
+            self.displayUI.actualSpeed.setText("0.0")
+            self.displayUI.powerOutput.setText("0.0")
+            self.emergencyBrake = False
 
 
     #------------------------ Service Brake Control -----------------------------------
     def serviceBrakeControl(self):
         if self.engineStatus:
-            if self.serviceBrake == False:
-                self.serviceBrake = True
-            else:
-                self.serviceBrake = False
-            while(self.serviceBrake == True and self.speed > 0):
-                self.speed = self.speed - .0001
-                self.calculatePower()
-                self.displayUI.speedInput.setValue(self.speed)
-
-
+            self.serviceBrake = True
+            self.displayUI.speedInput.setValue(0.0)
+            self.displayUI.actualSpeed.setText("0.0")
+            self.displayUI.powerOutput.setText("0.0")
+            self.serviceBrake = False
 
     #--------------------------- Announcement Control ------------------------
     def intercomControl(self):
@@ -185,7 +177,7 @@ class TrainController(object):
 
 
     #---------------------------- Automatic/Manual Control --------------------------
-    def automaticControl(self):
+    def modeControl(self):
         if self.engineStatus:
             if self.automaticMode == False:
                 self.automaticMode = True
@@ -194,12 +186,14 @@ class TrainController(object):
                 self.displayUI.automaticModeButton.setText("SWITCH TO\nMANUAL\nMODE")
                 self.displayUI.speedInput.setReadOnly(True)
                 if self.commanded <= self.speedLimit:
-                    self.speed = self.commanded
-                    self.displayUI.speedInput.setValue(self.speed)
+                    self.setSpeed = self.commanded
+                    self.displayUI.speedInput.setValue(self.setSpeed)
+                    self.displayUI.actualSpeed.setText(str(self.setSpeed))
                     self.calculatePower()
                 else:
-                    self.speed = self.speedLimit
-                    self.displayUI.speedInput.setValue(self.speed)
+                    self.setSpeed = self.speedLimit
+                    self.displayUI.speedInput.setValue(self.setSpeed)
+                    self.displayUI.actualSpeed.setText(str(self.setSpeed))
                     self.calculatePower()
             else:
                 self.automaticMode = False
@@ -230,21 +224,27 @@ class TrainController(object):
     def speedControl(self):
         if self.engineStatus:
             if self.automaticMode == False:
-                self.speed = self.displayUI.speedInput.value()
+                self.setSpeed = self.displayUI.speedInput.value()
+                self.actualSpeed = self.displayUI.speedInput.value()
                 if self.authority == 0:
                     self.serviceBrakeControl()
-                if self.speed >= self.commanded:
-                    self.speed = self.commanded
-                    self.displayUI.speedInput.setValue(self.speed)
-                if self.speed >= self.speedLimit:
-                    self.speed = self.speedLimit
-                    self.displayUI.speedInput.setValue(self.speed)
-            self.calculatePower()
+                if self.setSpeed >= self.commanded:
+                    self.setSpeed = self.commanded
+                    self.actualSpeed = self.commanded
+                    self.displayUI.speedInput.setValue(self.setSpeed)
+                    self.displayUI.actualSpeed.setText(str(self.setSpeed))
+                if self.setSpeed >= self.speedLimit:
+                    self.setSpeed = self.speedLimit
+                    self.actualSpeed = self.speedLimit
+                    self.displayUI.speedInput.setValue(self.setSpeed)
+                    self.displayUI.actualSpeed.setText(str(self.setSpeed))
+                self.displayUI.actualSpeed.setText(str(self.setSpeed))
+                self.calculatePower()
 
 
 
     #--------------------------- Temperature Control --------------------------------------
-    def tempControl(self):
+    def temperatureControl(self):
         if self.engineStatus:
             self.temperature = self.displayUI.temperatureInput.value()
 
@@ -253,13 +253,13 @@ class TrainController(object):
     def headlightControlOn(self):
         if self.engineStatus:
             self.displayUI.headlightOnButton.setStyleSheet("background-color:rgb(0, 255, 0)")
-            self.displayUI.headlightOffButton.setStyleSheet("background-color:rgb(216, 216, 162)")
+            self.displayUI.headlightOffButton.setStyleSheet("background-color:rgb(224,232,245)")
             self.headlightStatus = True
 
     def headlightControlOff(self):
         if self.engineStatus:
             self.displayUI.headlightOffButton.setStyleSheet("background-color:rgb(0, 255, 0)")
-            self.displayUI.headlightOnButton.setStyleSheet("background-color:rgb(216, 216, 162)")
+            self.displayUI.headlightOnButton.setStyleSheet("background-color:rgb(224,232,245)")
             self.headlightStatus = False
 
 
@@ -268,13 +268,13 @@ class TrainController(object):
     def cabinlightControlOn(self):
         if self.engineStatus:
             self.displayUI.cabinlightOnButton.setStyleSheet("background-color:rgb(0, 255, 0)")
-            self.displayUI.cabinlightOffButton.setStyleSheet("background-color:rgb(216, 216, 162)")
+            self.displayUI.cabinlightOffButton.setStyleSheet("background-color:rgb(224,232,245)")
             self.cabinlightStatus = True
 
     def cabinlightControlOff(self):
         if self.engineStatus:
             self.displayUI.cabinlightOffButton.setStyleSheet("background-color:rgb(0, 255, 0)")
-            self.displayUI.cabinlightOnButton.setStyleSheet("background-color:rgb(216, 216, 162)")
+            self.displayUI.cabinlightOnButton.setStyleSheet("background-color:rgb(224,232,245)")
             self.cabinlightStatus = False
 
 
@@ -282,25 +282,25 @@ class TrainController(object):
     #-------------------------------- Door Control ----------------------------
     def doorControlOpen(self):
         if self.engineStatus:
-            if self.currentVelocity > 0:
+            if self.actualSpeed > 0:
                 return
             self.displayUI.doorOpenButton.setStyleSheet("background-color:rgb(0, 255, 0)")
-            self.displayUI.doorCloseButton.setStyleSheet("background-color:rgb(216, 216, 162)")
+            self.displayUI.doorCloseButton.setStyleSheet("background-color:rgb(224,232,245)")
             self.doorStatus = True
 
     def doorControlClose(self):
         if self.engineStatus:
-            if self.currentVelocity > 0:
+            if self.actualSpeed > 0:
                 return
             self.displayUI.doorCloseButton.setStyleSheet("background-color:rgb(0, 255, 0)")
-            self.displayUI.doorOpenButton.setStyleSheet("background-color:rgb(216, 216, 162)")
+            self.displayUI.doorOpenButton.setStyleSheet("background-color:rgb(224,232,245)")
             self.doorStatus = False
 
     
     #---------------------------------------- Engine control ----------------------------------------
     def engineControlOn(self):
         self.displayUI.engineOnButton.setStyleSheet("background-color:rgb(0, 255, 0)")
-        self.displayUI.engineOffButton.setStyleSheet("background-color:rgb(216, 216, 162)")
+        self.displayUI.engineOffButton.setStyleSheet("background-color:rgb(224,232,245)")
         self.engineStatus = True
         self.displayUI.automaticModeButton.setText("SWITCH TO\nAUTOMATIC\nMODE")
         self.automaticMode = False
@@ -314,19 +314,20 @@ class TrainController(object):
         self.displayUI.kiInput.setText(str(self.ki))
         self.displayUI.kpInput.setText(str(self.kp))
         self.displayUI.temperatureInput.setValue(self.temperature)
+        self.displayUI.actualSpeed.setText("0.0")
 
     def engineControlOff(self):
         self.displayUI.engineOffButton.setStyleSheet("background-color:rgb(0, 255, 0)")
-        self.displayUI.engineOnButton.setStyleSheet("background-color:rgb(216, 216, 162)")
+        self.displayUI.engineOnButton.setStyleSheet("background-color:rgb(224,232,245)")
         self.engineStatus = False
-        self.displayUI.doorCloseButton.setStyleSheet("background-color:rgb(216, 216, 162)")
-        self.displayUI.doorOpenButton.setStyleSheet("background-color:rgb(216, 216, 162)")
+        self.displayUI.doorCloseButton.setStyleSheet("background-color:rgb(224,232,245)")
+        self.displayUI.doorOpenButton.setStyleSheet("background-color:rgb(224,232,245)")
         self.doorStatus = False
-        self.displayUI.cabinlightOffButton.setStyleSheet("background-color:rgb(216, 216, 162)")
-        self.displayUI.cabinlightOnButton.setStyleSheet("background-color:rgb(216, 216, 162)")
+        self.displayUI.cabinlightOffButton.setStyleSheet("background-color:rgb(224,232,245)")
+        self.displayUI.cabinlightOnButton.setStyleSheet("background-color:rgb(224,232,245)")
         self.cabinlightStatus = False
-        self.displayUI.headlightOffButton.setStyleSheet("background-color:rgb(216, 216, 162)")
-        self.displayUI.headlightOnButton.setStyleSheet("background-color:rgb(216, 216, 162)")
+        self.displayUI.headlightOffButton.setStyleSheet("background-color:rgb(224,232,245)")
+        self.displayUI.headlightOnButton.setStyleSheet("background-color:rgb(224,232,245)")
         self.headlightStatus = False
         
         self.displayUI.nextstationOutput.setText("")
@@ -336,6 +337,7 @@ class TrainController(object):
         self.displayUI.kpInput.setText("")
         self.displayUI.temperatureInput.setValue(0.0)
         self.displayUI.speedInput.setValue(0.0)
+        self.displayUI.actualSpeed.setText("")
         self.displayUI.powerOutput.setText("")
         self.displayUI.actualSpeed.setText("")
 
