@@ -11,8 +11,8 @@ from connections import connect
 
 
 class Testing_UI(object):
-    def setupUi(self, Test, trainNum):
-        self.currentTrainNum = trainNum
+    def setupUi(self, Test, currentTrainNum):
+        self.currentTrainNum = currentTrainNum
 
         Test.setObjectName("Test")
         Test.resize(795, 600)
