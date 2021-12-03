@@ -12,7 +12,6 @@ class trackBlock(object):
     size        = None
     section     = None
     gradLevel   = None
-    envTemp     = None
     speedLimit  = None
     occupancy   = None
     authority   = None
@@ -29,8 +28,8 @@ class trackBlock(object):
     failurePF = None  # Power Failure
     failureTC = None   # Track Circuit Failure
     
-    # Member Functions
-    def __init__(self, line, section, blockNumber, size, gradLevel, speedLimit, elev, cumEvel, objType, envTemp):
+    # Member Functions 1     2        3            4        5        6           7      8        9      10
+    def __init__(self, line, section, blockNumber, size, gradLevel, speedLimit, elev, cumEvel, objType, occupancy):
         # Constructor
         self.line        = line
         self.section     = section
@@ -41,9 +40,12 @@ class trackBlock(object):
         self.elev        = elev
         self.cumElev     = cumEvel
         self.objType     = objType
-        self.envTemp     = envTemp
+        self.occupancy   = occupancy
         self.failureBR   = 0
         self.failurePF   = 0
         self.failureTC   = 0
 
-        
+    def setFailureStates(self, failureBR: int, failurePF: int, failureTC: int):
+        self.failureBR = failureBR
+        self.failurePF = failurePF
+        self.failureTC = failureTC
