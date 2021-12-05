@@ -24,6 +24,9 @@ def retrieveBlockOccupancy(section: str) -> list:
         if(row[0] == 'Block' and row[2] == section):
             occupancyList.append(row[8])
 
+    db_workbook.save(r'C:\Users\willi\eclipse-workspace\train-system\TrackModel\src\database.xlsx')
+    db_workbook.close
+
     return occupancyList
 
 def setBlockOccupancyHigh(blockNumber: int):
@@ -38,6 +41,9 @@ def setBlockOccupancyHigh(blockNumber: int):
         if(row[0] == 'Block' and row[3]==blockNumber):
             print('\nSuccessful Writing')
             database.cell(row=rowIndex, column= 8, value=1)
+    
+    db_workbook.save(r'C:\Users\willi\eclipse-workspace\train-system\TrackModel\src\database.xlsx')
+    db_workbook.close
 
 def setBlockOccupancyLow(blockNumber: int):
     path        = r"C:\Users\willi\eclipse-workspace\train-system\TrackModel\src\database.xlsx"
@@ -50,6 +56,9 @@ def setBlockOccupancyLow(blockNumber: int):
         rowIndex+=1
         if(row[0] == 'Block' and row[3]==blockNumber):
             database.cell(row=rowIndex, column= 8, value=0)
+    
+    db_workbook.save(r'C:\Users\willi\eclipse-workspace\train-system\TrackModel\src\database.xlsx')
+    db_workbook.close
 
 def setStationOccupancyHigh(name: str):
     path        = r"C:\Users\willi\eclipse-workspace\train-system\TrackModel\src\database.xlsx"
@@ -62,6 +71,9 @@ def setStationOccupancyHigh(name: str):
         rowIndex+=1
         if(row[0] == 'Station' and row[1]==name):
             database.cell(row=rowIndex, column= 2, value=1)
+    
+    db_workbook.save(r'C:\Users\willi\eclipse-workspace\train-system\TrackModel\src\database.xlsx')
+    db_workbook.close
 
 def setStationOccupancyLow(name: str):
     path        = r"C:\Users\willi\eclipse-workspace\train-system\TrackModel\src\database.xlsx"
@@ -74,3 +86,6 @@ def setStationOccupancyLow(name: str):
         rowIndex+=1
         if(row[0] == 'Station' and row[1]==station):
             database.cell(row=rowIndex, column= 2, value=0)
+
+    db_workbook.save(r'C:\Users\willi\eclipse-workspace\train-system\TrackModel\src\database.xlsx')
+    db_workbook.close
