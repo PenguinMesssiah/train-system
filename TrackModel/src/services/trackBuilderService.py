@@ -36,7 +36,7 @@ def readTrackFile() -> list:
             break;
         
         # Saving Block Information
-        curTrackBlock = trackBlock(row[0], row[1], int(row[2]), int(row[3]), int(row[4]), int(row[5]), int(row [8]), int(row[9]), 'Block', 72)
+        curTrackBlock = trackBlock(row[0], row[1], int(row[2]), int(row[3]), int(row[4]), int(row[5]), int(row [8]), int(row[9]), 'Block', 0)
         trackLayout.append(curTrackBlock)
         
         print('\n----------------------------Added Block----------------------')
@@ -148,15 +148,12 @@ def writeDatabase(trackLayout: list):
             worksheet.write(rowIndex, 5, curObject.gradLevel);    
             worksheet.write(rowIndex, 6, curObject.speedLimit);    
             worksheet.write(rowIndex, 7, curObject.elev)
-            worksheet.write(rowIndex, 8, curObject.envTemp)
+            worksheet.write(rowIndex, 8, curObject.occupancy)
+            worksheet.write(rowIndex, 12, curObject.cumElev)
             #Failure States
             worksheet.write(rowIndex, 9, curObject.failureBR)
             worksheet.write(rowIndex, 10, curObject.failurePF)
             worksheet.write(rowIndex, 11, curObject.failureTC)
-            #Positioning Data
-            worksheet.write(rowIndex, 12, curObject.xPos)
-            worksheet.write(rowIndex, 13, curObject.yPos)
-            worksheet.write(rowIndex, 14, curObject.angle)
 
             rowIndex += 1;        
             
@@ -204,7 +201,8 @@ def readDatabase() -> list:
     #Reading Database File
     for row in database.values:
         if(row[0] == 'Block'):
-            curTrackBlock = trackBlock(row[1], row[2], int(row[3]), int(row[4]), int(row[5]), int(row[6]), int(row [7]), int(row[8]), row[0], 72);
+            curTrackBlock = trackBlock(row[1], row[2], int(row[3]), int(row[4]), int(row[5]), int(row[6]), int(row [7]), int(row[12]), row[0], int(row[8]));
+            curTrackBlock.setFailureStates(row[9], row[10], row[11])
             tracklayout.append(curTrackBlock);
 
         elif(row[0] == 'Switch'):

@@ -20,17 +20,11 @@ def initalizeLCDs(window: QDialog):
         if(child.objectName() == 'lcdBlockSize'):
             child.display(trackList[0].size)
             
-        elif(child.objectName() == 'lcdEnvTemp'):
-            child.display(trackList[0].envTemp)
-            
         elif(child.objectName() == 'lcdGrad'):
             child.display(trackList[0].gradLevel)   
             
         elif(child.objectName() == 'lcdElev'):
             child.display(trackList[0].elev)
-
-        elif(child.objectName() == 'lcdTrackHeater'):
-            child.display(trackList[0].envTemp < 72)
         
         elif(child.objectName() == 'lcdStationOccupancy'):
             child.display(0)
