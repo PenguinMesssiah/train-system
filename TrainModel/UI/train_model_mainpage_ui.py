@@ -7,10 +7,9 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from train_model_passenger_ui import Passenger_UI
 from connections import connect
 
-class Ui_TrainModel(object):
+class Mainpage_UI(object):
     def setupUi(self, TrainModel, currentTrainNum):
         self.currentTrainNum = currentTrainNum
         TrainModel.setObjectName("TrainModel")
@@ -126,19 +125,22 @@ class Ui_TrainModel(object):
         self.gridLayout.addWidget(self.brakeStatus_label, 0, 3, 1, 1)
         self.page_buttons_grid = QtWidgets.QGridLayout()
         self.page_buttons_grid.setObjectName("page_buttons_grid")
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.page_buttons_grid.addItem(spacerItem, 1, 0, 1, 1)
         self.passengerPage_button = QtWidgets.QPushButton(self.centralwidget)
         self.passengerPage_button.setObjectName("passengerPage_button")
         self.page_buttons_grid.addWidget(self.passengerPage_button, 0, 1, 1, 1)
         self.diagnostics_button = QtWidgets.QPushButton(self.centralwidget)
         self.diagnostics_button.setObjectName("diagnostics_button")
         self.page_buttons_grid.addWidget(self.diagnostics_button, 1, 1, 1, 1)
-        self.properties_button = QtWidgets.QPushButton(self.centralwidget)
-        self.properties_button.setObjectName("properties_button")
-        self.page_buttons_grid.addWidget(self.properties_button, 2, 1, 1, 1)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.page_buttons_grid.addItem(spacerItem, 1, 0, 1, 1)
+        #self.propertiesPage_button = QtWidgets.QPushButton(self.centralwidget)
+        #self.propertiesPage_button.setObjectName("propertiesPage_button")
+        #self.page_buttons_grid.addWidget(self.propertiesPage_button, 2, 1, 1, 1)
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.page_buttons_grid.addItem(spacerItem1, 1, 2, 1, 1)
+        self.testingPage_button = QtWidgets.QPushButton(self.centralwidget)
+        self.testingPage_button.setObjectName("testingPage_button")
+        self.page_buttons_grid.addWidget(self.testingPage_button, 3, 1, 1, 1)
         self.gridLayout.addLayout(self.page_buttons_grid, 1, 4, 1, 1)
         self.departureTime_label = QtWidgets.QLabel(self.centralwidget)
         font = QtGui.QFont()
@@ -480,9 +482,9 @@ class Ui_TrainModel(object):
         self.doors_text.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.doors_text.setObjectName("doors_text")
         self.gridLayout.addWidget(self.doors_text, 9, 4, 1, 1)
-        self.textBrowser = QtWidgets.QTextBrowser(self.centralwidget)
-        self.textBrowser.setObjectName("textBrowser")
-        self.gridLayout.addWidget(self.textBrowser, 6, 4, 1, 1)
+        self.lights_text = QtWidgets.QTextBrowser(self.centralwidget)
+        self.lights_text.setObjectName("lights_text")
+        self.gridLayout.addWidget(self.lights_text, 6, 4, 1, 1)
         self.trainNum_label = QtWidgets.QLabel(self.centralwidget)
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -502,8 +504,8 @@ class Ui_TrainModel(object):
         self.menu.setObjectName("menu")
         self.menuDiagnostics_Page = QtWidgets.QMenu(self.menubar)
         self.menuDiagnostics_Page.setObjectName("menuDiagnostics_Page")
-        self.menuProperties_Page = QtWidgets.QMenu(self.menubar)
-        self.menuProperties_Page.setObjectName("menuProperties_Page")
+        #self.menuProperties_Page = QtWidgets.QMenu(self.menubar)
+        #self.menuProperties_Page.setObjectName("menuProperties_Page")
         self.menuTesting_Page = QtWidgets.QMenu(self.menubar)
         self.menuTesting_Page.setObjectName("menuTesting_Page")
         TrainModel.setMenuBar(self.menubar)
@@ -512,17 +514,21 @@ class Ui_TrainModel(object):
         TrainModel.setStatusBar(self.statusbar)
         self.menubar.addAction(self.menu.menuAction())
         self.menubar.addAction(self.menuDiagnostics_Page.menuAction())
-        self.menubar.addAction(self.menuProperties_Page.menuAction())
+        #self.menubar.addAction(self.menuProperties_Page.menuAction())
         self.menubar.addAction(self.menuTesting_Page.menuAction())
 
         self.retranslateUi(TrainModel)
         QtCore.QMetaObject.connectSlotsByName(TrainModel)
 
-        self.diagnostics_button.clicked.connect(self.diagnostics_button_pressed)
         self.passengerPage_button.clicked.connect(self.passenger_button_pressed)
+        self.diagnostics_button.clicked.connect(self.diagnostics_button_pressed)
+
+        self.testingPage_button.clicked.connect(self.testing_button_pressed)
+
+        
+
 
     def passenger_button_pressed(self):
-        print("passenger")
 
         # self.passenger_page_window = QtWidgets.QDialog()
         # self.passenger_page_window.setModal(True)
@@ -541,9 +547,10 @@ class Ui_TrainModel(object):
         connect.train_model_ui_passenger_button_pressed.emit(self.currentTrainNum)
 
     def diagnostics_button_pressed(self):
-
-        print("connect!")
         connect.train_model_ui_diagnostics_button_pressed.emit(self.currentTrainNum)
+
+    def testing_button_pressed(self):
+        connect.train_model_ui_testing_button_pressed.emit(self.currentTrainNum)
 
     def retranslateUi(self, TrainModel):
         _translate = QtCore.QCoreApplication.translate
@@ -558,7 +565,8 @@ class Ui_TrainModel(object):
         self.brakeStatus_label.setText(_translate("TrainModel", "Brake Status"))
         self.passengerPage_button.setText(_translate("TrainModel", "Passenger Page"))
         self.diagnostics_button.setText(_translate("TrainModel", "Diagnostics Page"))
-        self.properties_button.setText(_translate("TrainModel", "Properties Page"))
+        #self.propertiesPage_button.setText(_translate("TrainModel", "Properties Page"))
+        self.testingPage_button.setText(_translate("TrainModel", "Testing Page"))
         self.departureTime_label.setText(_translate("TrainModel", "Departure Time"))
         self.currentSpeed_label.setText(_translate("TrainModel", "Current Speed"))
         self.suggestedSpeed_text.setHtml(_translate("TrainModel", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
@@ -635,9 +643,9 @@ class Ui_TrainModel(object):
         self.brakeFailureStatus_label.setText(_translate("TrainModel", "Brake Status:"))
         self.signalPickupFailure_label.setText(_translate("TrainModel", "Signal Pickup Status:"))
         self.engineFailure_label.setText(_translate("TrainModel", "Engine Status:"))
-        self.brakeStatus_indicator.setText(_translate("TrainModel", "<html><head/><body><p><span style=\" color:#00ff00;\">Working</span></p></body></html>"))
-        self.engineStatus_indicator.setText(_translate("TrainModel", "<html><head/><body><p><span style=\" color:#00ff00;\">Working</span></p></body></html>"))
-        self.signalpickupStatus_indicator.setText(_translate("TrainModel", "<html><head/><body><p><span style=\" color:#00ff00;\">Working</span></p></body></html>"))
+        self.brakeStatus_indicator.setText(_translate("TrainModel", "Working"))
+        self.engineStatus_indicator.setText(_translate("TrainModel", "Working"))
+        self.signalpickupStatus_indicator.setText(_translate("TrainModel", "Working"))
         self.block_label.setText(_translate("TrainModel", "Block"))
         self.authority_label.setText(_translate("TrainModel", "Authority"))
         self.currentTime_text.setHtml(_translate("TrainModel", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
@@ -653,9 +661,19 @@ class Ui_TrainModel(object):
         self.trainNum_label.setText(_translate("TrainModel", "Train Number"))
         self.menu.setTitle(_translate("TrainModel", "Passenger Page"))
         self.menuDiagnostics_Page.setTitle(_translate("TrainModel", "Diagnostics Page"))
-        self.menuProperties_Page.setTitle(_translate("TrainModel", "Properties Page"))
+        #self.menuProperties_Page.setTitle(_translate("TrainModel", "Properties Page"))
         self.menuTesting_Page.setTitle(_translate("TrainModel", "Testing Page"))
-        self.trainNum_text.setText(_translate("TrainModel", str(self.currentTrainNum)))
+        #self.trainNum_text.setText(_translate("TrainModel", str(self.currentTrainNum)))
+        self.lights_text.setHtml(_translate("TrainModel", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:18pt;\">Off</span></p></body></html>"))
+        self.trainNum_text.setHtml(_translate("TrainModel", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:18pt;\">0</span></p></body></html>"))
 
 
 if __name__ == "__main__":
