@@ -14,10 +14,13 @@ class Train(object):
         Train.train_count += 1
         self.position = 0.0
         self.block = 0
+        self.yardBool = False
         self.currentSpeed = 0.0
         self.lineCol = lineColor
         if self.lineCol == 'B':
             self.line = BlueLine()
+        elif self.lineCol == 'G'
+            self.line = GreenLine()
         self.authority = 0.0
         self.suggestedSpeed = self.line.getSpeedLimit(self.block)
         self.DestinationBlock = 0
@@ -185,6 +188,10 @@ class Train(object):
                     self.destX += self.position 
                     for x in range(self.DestinationBlock,self.block):
                         self.destX+= self.line.getBlockLength(x)
+        elif self.lineCol == 'G':
+            if self.DestinationBlock == 65:
+                if self.yardBool == True:
+                    self.destX = 
 
         self.safeStoppingDistance =  (0 - self.currentSpeed ** 2)/(2*self.regDecel)
 
