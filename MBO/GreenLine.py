@@ -4,7 +4,8 @@ class GreenLine(object):
 
     speedLimitArray = [0, 13.8889, 13.8889, 13.8889, 13.8889, 13.8889, 13.8889, 13.8889, 13.8889, 13.8889, 13.8889, 13.8889, 13.8889, 13.8889, 13.8889, 13.8889]
     blockCount = 15
-    blockLengthArray = [0, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50]
+    blockLengthArray = [0, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 150, 150, 150, 150, 150, 150, 150, 150, 300, 300, 300, 300, 200, 100, 50, 50, 50, 50, 50 , 50, 50, 50, 50, 50, 50 , 50, 50, 50, 50, 50, 50 , 50, 50, 50, 50, 50, 50 , 50, 50, 50, 50, 50, 50 , 50, 50, 50, 50, 50, 50 , 50,100, 100, 200, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 300,  300, 300, 300,  300, 300, 300, 100, 86.6, 100, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 35, 100, 100, 80, 100, 100, 90, 100, 100, 100, 100, 100, 100, 162, 100, 100, 50, 50, 40, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 184, 40, 35]
+
     stationIndex = 0
     stationArray = ["GLENBURY", "DORMONT", "MT LEBANON", "POPLAR", "CASTLE SHANNON", "MT LEBANON", "GLENBURY", "OVERBROOK", "INGLEWOOD","CENTRAL", "WHITED", "UNNAMED", "EDGEBROOK", "PIONEER", "UNNAMED", "WHITED", "SOUTH BANK", "CENTRAL", "INGLEWOOD", "OVERBROOK"]
     stationCount = 20
@@ -18,6 +19,9 @@ class GreenLine(object):
     ## plus 30*20 = 600 seconds for dwell
     ## 2465 - 2457 - 2455 - 2451 - 
     ## need to get down to 2400
+    def getBlockCount(self):
+        return len(self.blockLengthArray)
+    
     def getSpeedLimit(self,num):
 
         return self.speedLimitArray[num]
@@ -27,7 +31,7 @@ class GreenLine(object):
         return self.blockLengthArray[num]
 
     def getDwell(self):
-        return dwell
+        return self.dwell
 
     def getCurrentStation(self):
         return self.stationArray[self.stationIndex]
