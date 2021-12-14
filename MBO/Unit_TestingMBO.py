@@ -183,13 +183,104 @@ def unit_test_three():
     assert    os.path.isfile(path)
     print("\ntest 3 passed")
 
+#Unit Test 4: Properly checking Authority Calculations for the Green Line
+def unit_test_four():
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    DisplayTestWindow = QtWidgets.QMainWindow()
+    DisplayWindow = QtWidgets.QMainWindow()
+    
+    test_UI = TestDisplay()
+    test_UI.setupUI(DisplayTestWindow)
+    ##DisplayTestWindow.show()
+
+    main_UI = Display()
+    main_UI.setupUI(DisplayWindow)
+    ##DisplayWindow.show()
+
+    trainA = Train('G')
+    trainB = Train('G')
+    trainC = Train('G')
+    trainD = Train('G')
+
+    # first test will be from station glenbury to station dormont
+    trainA.setBlock(65)
+    trainA.setDBlock(73)
+    trainA.controlSpeed()
+    trainA.setPosition(200)
+    print("Authority Calculated as")
+    print(trainA.getAuthority())
+    assert    trainA.getAuthority() > 742 and trainA.getAuthority() < 743
+
+    print("\ntest 4 passed")
+
+    trainA.setBlock(66)
+    trainA.controlSpeed()
+    trainA.setPosition(50)
+    # move the train 50 meters down the block to see updated authority
+    print("Authority Calculated as")
+    print(trainA.getAuthority())
+    assert    trainA.getAuthority() > 692 and trainA.getAuthority() < 693
+
+    print("\ntest 5 passed")
+
+    # The train has moved to the station Edgebrook and is headed towards Pioneer
+    trainA.setBlock(9)
+    trainA.setDBlock(2)
+    trainA.controlSpeed()
+    trainA.setPosition(100)
+
+    print("Authority Calculated as")
+    print(trainA.getAuthority())
+    # the total distance should be 700
+    # speed lim is 12.5 m/s
+    # safe stopping distance is 65.10m
+    # authority should be 700 - 65.10 = 634.896m
+    assert    trainA.getAuthority() > 634 and trainA.getAuthority() < 635
+
+    print("\ntest 6 passed")
+
+    # the train just finished at station central underground. Next dest is WHITED in section F
+    trainA.setBlock(141)
+    trainA.setDBlock(22)
+    trainA.controlSpeed()
+    trainA.setPosition(50)
+
+    print("Authority Calculated as")
+    print(trainA.getAuthority())
+    # the total distance should be 1859m
+    # speed lim in block 141 is 5.55 m/s
+    # safe stopping distance is 12.86m
+    # authority should be 1859 - 12.86 = 1846.14m
+    assert    trainA.getAuthority() > 1846 and trainA.getAuthority() < 1847
+
+    print("\ntest 7 passed")
+
+    # the train just moved to block 28, section F, still heading towards WHITED
+    trainA.setBlock(28)
+    trainA.controlSpeed()
+    trainA.setPosition(20)
+
+    print("Authority Calculated as")
+    print(trainA.getAuthority())
+    # the total distance should be 1280m
+    # speed lim in block 28 is 8.33 m/s
+    # safe stopping distance is 28.94m
+    # authority should be 1280m - 28.94m = 1251.06m
+    assert    trainA.getAuthority() > 1251 and trainA.getAuthority() < 1252
+
+    print("\ntest 8 passed")
+
 def main():
     #Call Test One
-    unit_test_one()
+    #unit_test_one()
     #Call Test Two
-    unit_test_two()
+    #unit_test_two()
     #Call Test Three
-    unit_test_three()
+    #unit_test_three()
+    #Call Test Four
+    unit_test_four()
+    
 
 if __name__ == '__main__':
     main() 

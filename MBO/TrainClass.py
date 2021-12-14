@@ -3,7 +3,7 @@ import csv
 from BlueLineSet import BlueLine
 from PathSet import Path
 from TrainDriver import Driver
-
+from GreenLine import GreenLine
 import math
 class Train(object):
 
@@ -19,7 +19,7 @@ class Train(object):
         self.lineCol = lineColor
         if self.lineCol == 'B':
             self.line = BlueLine()
-        elif self.lineCol == 'G'
+        elif self.lineCol == 'G':
             self.line = GreenLine()
         self.authority = 0.0
         self.suggestedSpeed = self.line.getSpeedLimit(self.block)
@@ -188,13 +188,114 @@ class Train(object):
                     self.destX += self.position 
                     for x in range(self.DestinationBlock,self.block):
                         self.destX+= self.line.getBlockLength(x)
+        # This section will calculate the total distance between the train and the destination(where the train needs to stop).
+        # This section is for trains on the Green Line.
+        
         elif self.lineCol == 'G':
-            if self.DestinationBlock == 65:
-                    for x in range(self.block+1,self.DestinationBlock+1)
+            
+            # This statement handles distance calculations when the destination is between block 57 and 77.
+            # The distance of every block the train does not currently occupy to the destination is added to destX.
+            # Finally, to complete the distance addition, the remaining distance on the current block is added to destX.
+            # This same algorithm is used for every stretch of the track when the track is unidirectional.
+            if self.DestinationBlock > 57 and self.DestinationBlock < 77:
+                    for x in range(self.block+1,self.DestinationBlock+1):
                         self.destX += self.line.getBlockLength(x)
                     self.destX += self.line.getBlockLength(self.block) - self.position
+            
+            # This statement handles distance calculations when the destination is from block 77 to 85, aka on section N
+            elif self.DestinationBlock >= 77 and self.DestinationBlock <=85:
+                    if self.block < 77:
+                        for x in range(self.block+1,self.DestinationBlock+1):
+                            self.destX += self.line.getBlockLength(x)
+                        self.destX += self.line.getBlockLength(self.block) - self.position
+                    elif self.block >=77 and self.block <= 85:
+                            for x in range(self.DestinationBlock,self.block):
+                                self.destX += self.line.getBlockLength(x)
+                            self.destX += self.line.getBlockLength(self.block) - self.position
+                    else:
+                        for x in range(self.block+1,self.DestinationBlock+1):
+                            self.destX += self.line.getBlockLength(x)
+                        self.destX += self.line.getBlockLength(self.block) - self.position
+                        for x in range(77, 86):
+                            self.destX += self.line.getBlockLength(x)
+            # This statement handles distance calculations when the destination is between block 85 and 100(inclusive).            
+            elif self.DestinationBlock > 85 and self.DestinationBlock <= 100:
+                    for x in range(self.block+1,self.DestinationBlock+1):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position          
+                    
+            # This statement handles block R to station glenbury coming from U.
+            # If the train is still at Mt Lebanon, regard position as 0 at station.
+            elif self.DestinationBlock >= 101 and self.DestinationBlock <= 114:
+                    if self.block == 77:
+                        for x in range(101,self.DestinationBlock+1):
+                            self.destX += self.line.getBlockLength(x)
+                    else:
+                        for x in range(self.block+1,self.DestinationBlock+1):
+                            self.destX += self.line.getBlockLength(x)
+                        self.destX += self.line.getBlockLength(self.block) - self.position
                         
+            # This statement handles station glenbury to the end of block 150, which is the last block of block Z.
+            # This whole section of track is unidirectional
+            elif self.DestinationBlock > 114 and self.DestinationBlock <= 150:
+                    for x in range(self.block+1,self.DestinationBlock+1):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
 
+            # This statement handles the bidirectional track starting at section F.
+            # It determines which direction the train is coming from, so that the distances can be added properly
+            elif self.DestinationBlock > 21 and self.DestinationBlock <=28:
+                    if self.block >= 141:
+                        for x in range(self.block+1,151):
+                            self.destX += self.line.getBlockLength(x)
+                        self.destX += self.line.getBlockLength(self.block) - self.position
+                        # add distance for F line
+                        for x in range(self.DestinationBlock, 28+1):
+                            self.destX += self.line.getBlockLength(x)
+                    # if train currently is heading up the F section    
+                    elif self.block > self.DestinationBlock:
+                            for x in range(self.DestinationBlock,self.block):
+                                self.destX += self.line.getBlockLength(x)
+                            self.destX += self.line.getBlockLength(self.block) - self.position
+                    # if train heading towards F section from D-F sections        
+                    else:
+                        for x in range(self.block+1,self.DestinationBlock+1):
+                            self.destX += self.line.getBlockLength(x)
+                        self.destX += self.line.getBlockLength(self.block) - self.position
+           # This statement handles the E + D + block 21 section.
+            elif self.DestinationBlock > 12 and self.DestinationBlock <=21:
+                    if self.block >= self.DestinationBlock:
+                        for x in range(self.DestinationBlock,self.block):
+                                self.destX += self.line.getBlockLength(x)
+                        self.destX += self.line.getBlockLength(self.block) - self.position
+                    # handles A section in distance calculation to section D        
+                    else:
+                        if self.block < 3:
+                            if self.block == 2:
+                                self.destX += self.line.getBlockLength(1)
+                            else:
+                                self.destX += self.line.getBlockLength(self.block) - self.position 
+                        # add distance for D line
+                            for x in range(13,self.DestinationBlock+1):
+                                self.destX += self.line.getBlockLength(x)
+                        else:
+                            # regular direction
+                            for x in range(self.block+1,self.DestinationBlock+1):
+                                self.destX += self.line.getBlockLength(x)
+                            self.destX += self.line.getBlockLength(self.block) - self.position
+            # This statement handles if the train is in sections C, B, or A.
+            elif self.DestinationBlock <=12:
+                    for x in range(self.DestinationBlock,self.block):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+
+            # This statement jumps to destinations in line G to end of I. This is the last section of the distance calculations.               
+            elif self.DestinationBlock > 28 and self.DestinationBlock <=57:
+                    for x in range(self.DestinationBlock,self.block):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+
+                    
         self.safeStoppingDistance =  (0 - self.currentSpeed ** 2)/(2*self.regDecel)
 
         #--print(self.safeStoppingDistance)
