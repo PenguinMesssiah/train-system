@@ -54,6 +54,14 @@ class Connections(QObject):
     # Train Model -> MBO
     train_model_send_velocity_mbo = pyqtSignal(int, float)
     train_model_send_gps_mbo = pyqtSignal(int, float)
+    train_model_send_gps_velocity_mbo = pyqtSignal(int, float, int, float)
+
+    # MBO -> Train Controller
+    mbo_send_authority_tc = pyqt(int, float)
+    mbo_send_sugg_speed_tc = pyqt(int, float)
+    # need one to send schedule to TC and to CTC
+
+    
 
 
 connect = Connections()

@@ -190,8 +190,10 @@ class Train(object):
                         self.destX+= self.line.getBlockLength(x)
         elif self.lineCol == 'G':
             if self.DestinationBlock == 65:
-                if self.yardBool == True:
-                    self.destX = 
+                    for x in range(self.block+1,self.DestinationBlock+1)
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+                        
 
         self.safeStoppingDistance =  (0 - self.currentSpeed ** 2)/(2*self.regDecel)
 
