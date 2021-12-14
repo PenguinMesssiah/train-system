@@ -199,9 +199,6 @@ def unit_test_four():
     ##DisplayWindow.show()
 
     trainA = Train('G')
-    trainB = Train('G')
-    trainC = Train('G')
-    trainD = Train('G')
 
     # first test will be from station glenbury to station dormont
     trainA.setBlock(65)
