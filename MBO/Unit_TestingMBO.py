@@ -8,6 +8,7 @@ from TrainClass import Train
 from BlueLineSet import BlueLine
 from PathSet import Path
 from GreenLine import GreenLine
+from RedLine import RedLine
 import math
 import csv
 from MBO import MBO
@@ -267,6 +268,65 @@ def unit_test_four():
     assert    trainA.getAuthority() > 1251 and trainA.getAuthority() < 1252
 
     print("\ntest 8 passed")
+    
+#Unit Test 5: Confirming that the Red Line track layout is stored properly in the classes
+# if not, all vital calculations will fail
+def unit_test_five():
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    DisplayTestWindow = QtWidgets.QMainWindow()
+    DisplayWindow = QtWidgets.QMainWindow()
+    
+    test_UI = TestDisplay()
+    test_UI.setupUI(DisplayTestWindow)
+    ##DisplayTestWindow.show()
+
+    main_UI = Display()
+    main_UI.setupUI(DisplayWindow)
+    ##DisplayWindow.show()
+
+    red = RedLine()
+    # there are 76 blocks, plus 1 for the yard in position 0 = 77 speeds
+    assert    red.getSpeedCount() ==  77
+
+    print("\n Speed count is correct")
+    # check that speed limit at various blocks is correct after conversion
+    # first block 1
+    assert  red.getSpeedLimit(1) > 11 and red.getSpeedLimit(1) < 11.20
+
+    print("\nSpeed Limit at Block 1 is correct")
+
+    # block 17 - 55 km/hr to 15.2777 m/s
+    assert  red.getSpeedLimit(17) > 15.20 and red.getSpeedLimit(17) < 15.30
+
+    print("\nSpeed Limit at Block 17 is correct")
+
+    # block 48 - 70 km/hr to 19.44m/s
+    assert  red.getSpeedLimit(48) > 19.40 and red.getSpeedLimit(48) < 19.50
+
+    print("\nSpeed Limit at Block 48 is correct")
+
+    # block 49 - first block in long stretch not to be 70 km/hr. 60 km/hr to 16.667 m/s
+    assert  red.getSpeedLimit(49) > 16.60 and red.getSpeedLimit(49) < 16.70
+
+    print("\nSpeed Limit at Block 49 is correct")
+
+    # block 51 - first of 55 km/hr blocks. the rest are also 55 km/hr. Should be 15.278 m/s
+    assert  red.getSpeedLimit(51) > 15.270 and red.getSpeedLimit(51) < 15.280
+
+    print("\nSpeed Limit at Block 51 is correct")
+
+    # block 76 - final block. Should be 15.278 m/s
+    assert  red.getSpeedLimit(76) > 15.270 and red.getSpeedLimit(76) < 15.280
+
+    print("\nSpeed Limit at Block 76 is correct")
+
+    print("This is the block count for the red line:")
+    print(red.getBlockCount())
+    # make sure every block is accounted for
+    assert red.getBlockCount() == 77
+
+    print("\n There are lengths for all 76 blocks in the Red Line and 1 for the yard")
 
 def main():
     #Call Test One
@@ -276,7 +336,8 @@ def main():
     #Call Test Three
     #unit_test_three()
     #Call Test Four
-    unit_test_four()
+    #unit_test_four()
+    unit_test_five()
     
 
 if __name__ == '__main__':
