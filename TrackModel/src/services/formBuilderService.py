@@ -64,9 +64,6 @@ def updateBlockLCDs(window: QDialog, blockNumber:int):
         elif(child.objectName() == 'lcdElev'):
             child.display(curBlock.elev)
 
-        elif(child.objectName() == 'lcdTrackHeater'):
-            child.display(curBlock.envTemp < 72)
-
         elif(child.objectName() == 'lcdBrokenRail'):
             child.display(curBlock.failureBR)
         
