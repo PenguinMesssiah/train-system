@@ -35,18 +35,12 @@ class Connections(QObject):
     # Track Model -> Train Model
     train_model_dispatch_train = pyqtSignal(str, int, list, Track_Circuit_Data)
     train_model_receive_blockList = pyqtSignal(list)
-    train_model_receive_track_circuit = pyqtSignal(int, list)     # Includes authority and commanded speed
+    train_model_receive_track_circuit = pyqtSignal(int, Track_Circuit_Data)     # Includes authority and commanded speed
     train_model_receive_beacon = pyqtSignal(int, Beacon_Data)
     train_model_receive_authority = pyqtSignal(int, float)
     train_model_receive_lights = pyqtSignal(int, bool)
 
-    # Track Model -> SW Wayside Controller
-    track_model_send_blockOccupancy = pyqtSignal(dict)
-
-    # SW Wayside Controller -> Track Model
-    sw_wayside_send_blockList = pyqtSignal(list)
-
-    # Diagnostics / Murphy interactive signals
+     # Diagnostics / Murphy interactive signals
     train_model_diagnostics_toggleEngineFailure = pyqtSignal(int)
     train_model_diagnostics_toggleBrakeFailure = pyqtSignal(int)
     train_model_diagnostics_toggleSignalPickupFailure = pyqtSignal(int)
@@ -63,5 +57,41 @@ class Connections(QObject):
     # Train Model -> MBO
     train_model_send_gps_velocity_mbo = pyqtSignal(int, float, int, float)
 
+    # MBO -> Train Controller
+    mbo_send_authority_velocity_tc = pyqtSignal(int, float, float)
+
+    # HW Train Controller -> SW Train Controller
+    HWTrainSendsKpTo = pyqtSignal(float);
+    HWTrainSendsKiTo = pyqtSignal(float);
+    
+    HWTrainSendsTempTo = pyqtSignal(bool);
+    HWTrainSendsEngineTo = pyqtSignal(bool);
+    HWTrainSendsAnnounceTo = pyqtSignal(bool);
+    
+    HWTrainSendsRDoorTo = pyqtSignal(bool);
+    HWTrainSendsLDoorTo = pyqtSignal(bool);
+    
+    HWTrainSendsIncSpeedTo = pyqtSignal(bool);
+    HWTrainSendsDecSpeedTo = pyqtSignal(bool);
+    
+    HWTrainSendsCabinLightsTo = pyqtSignal(bool);
+    HWTrainSendsHeadLightsTo = pyqtSignal(bool);
+    
+    HWTrainSendsAutoModeTo = pyqtSignal(bool);
+    HWTrainSendsManModeTo = pyqtSignal(bool);
+    
+    HWTrainSendsEmergBrakeTo = pyqtSignal(bool);
+    HWTrainSendsServBrakeTo = pyqtSignal(bool);
+
+    # HW Track Controller -> SW Track Controller
+    hw_track_controller_send_lights_switch_crossing_commandedspeed_authority = pyqtSignal(dict, dict, dict, dict, dict)
+    hw_track_controller_receive_suggestedspeed_authoritylimit_occupancyTM= pyqtSignal(dict, dict, dict)
+
+    # SW Track Controller -> HW Track Controller
+    sw_track_controller_send_suggestedspeed_authoritylimit_occupancyTM= pyqtSignal(dict, dict, dict)
+
+    # SW Track Controller -> CTC
+
+    # SW Track Controller -> Track Model
 
 link = Connections()

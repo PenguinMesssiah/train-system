@@ -1,0 +1,6 @@
+/usr/lib/python2.7/dist-packages/sipconfig.py
+/usr/lib/python2.7/dist-packages/sipdistutils.py
+/usr/include/python2.7/sip.h
+/usr/bin/sip
+/usr/lib/python2.7/dist-packages/sip.pyi
+/usr/lib/python2.7/dist-packages/sip.so

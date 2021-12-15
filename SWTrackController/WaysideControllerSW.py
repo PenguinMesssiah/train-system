@@ -2,12 +2,20 @@
 #author: Elissa Wilton
 
 import time
+import sys
+
 from waysideUi import WaysideUi
 from PLCInterpreter import PLCInterpreter
 from WaysideImplementation import WaysideImplementation
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit, QFileDialog
 from PyQt5.QtGui import QIcon
+
+sys.path.append("..")
+
+from Shared.connections import *
+from Shared.common import *
+
 
 
 #will have specific Wayside controller for each section of track
@@ -29,14 +37,22 @@ class WaysideControllerSW(object): #for PyQt
 		
 		self.plc = PLCInterpreter()
 
-		self.wayside3 = WaysideImplementation([61, 62, 63, 64, 65, 66], [0, 58, 59, 60])
-		self.wayside3.addSwitch(62)
+		############################# GREEN LINE #############################
 
-		#may need to add listeners for lights
-		self.wayside4 = WaysideImplementation([67, 68, 69, 70, 71, 72, 73], [65, 66, 74, 75])
+		self.waysidehw = WaysideImplementation([19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 150],[17, 18, 34, 35, 36])
+		self.waysidehw.blockOcc.update({25: 0})
+		self.waysidehw.blockOcc.update({19: 0})
 
-		#self.blockOccupancy = {0:0, 61:0, 62:0, 63:0, 63:0, 64:0, 65:0, 66:0}
-		#self.blockAuthority = {0:0, 61:1, 62:1, 63:1, 63:1, 64:1, 65:1, 66:1}
+
+
+		############################# RED LINE ################################
+
+		self.wrAF = WaysideImplementation([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],[0, 19, 20, 21])
+		self.wrAF.addSwitch(9)
+		self.wrAF.addSwitch(16)
+
+		self.wrFT = WaysideImplementation([19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 74, 75, 76],[16, 17, 18, 30, 31, 72, 73])
+
 
 		self.ui = ui
 		self.waysideWindow()
@@ -159,7 +175,7 @@ class WaysideControllerSW(object): #for PyQt
 		#	switchState += 'Switch 1: ' + state + '\n'
 
 		blockOccStr = str(self.blockOccupancy)
-		switchState = str(self.wayside3.switches)
+		switchState = str(self.waysidehw.switches)
 		blockAuthStr = str(self.blockAuthority)
 			
 		self.ui.trackOccTxt.setText(blockOccStr)
@@ -224,14 +240,41 @@ class WaysideControllerSW(object): #for PyQt
 		path = filename[0]
 		print (path)
 
-		self.plc.newPLC(path, self.wayside4)
+		self.plc.runPLC(path, self.waysidehw)
 		self.blockOccupancy = {0:1, 61:0, 62:0, 63:0, 63:0, 64:0, 65:0, 66:0}
 		self.blockAuthority = {0:1, 61:0, 62:0, 63:1, 63:1, 64:1, 65:1, 66:1}
 		self.display()
 
 		#with open(path, "r") as f:
 			#print(f.readline())
-			
+
+	def toHW (self) :
+		self.waysidehw.blockSuggestedSpeedCTC = {19: "this", 20: "is", 21: "a", 22: "test"}
+		self.waysidehw.blockCTCAuth = {19: "the", 20: "auth", 21: "!!", 22: "??"}
+		self.waysidehw.blockOcc = {19: "occ0", 20: "occ1", 21: "occ2", 22: "occ3"}
+
+
+		link.sw_track_controller_send_suggestedspeed_authoritylimit_occupancyTM.emit(self.waysidehw.blockSuggestedSpeedCTC, self.waysidehw.blockCTCAuth, self.waysidehw.blockOcc)
+		return 0
+	
+
+	def fromHW (self) :
+		return 0
+		link.hw_track_controller_send_lights_switch_crossing_commandedspeed_authority.connect(self.updateHW)
+	
+
+	def updateHW(self, lights, switches, crossings, commSpeed, auth) :
+		self.waysidehw.lights = lights
+		self.waysidehw.switches = switches
+		self.waysidehw.crossings = crossings
+		self.waysidehw.blockCommandedSpeed = commSpeed
+		self.waysidehw.blockAuth = auth
+
+		print(self.waysidehw.lights)
+		print(self.waysidehw.switches)
+		print(self.waysidehw.crossings)
+		print(self.waysidehw.blockCommandedSpeed)
+		print(self.waysidehw.blockAuth)
 		
 if __name__ == "__main__":
 	import sys
@@ -244,6 +287,9 @@ if __name__ == "__main__":
 
 	#blue = WaysideControllerSW(waysideBlue_ui, 15, 1, 0, 0)
 	topLevel = WaysideControllerSW(wayside_ui)
+
+	topLevel.toHW()
+	topLevel.fromHW()
 	
 	#Data for auto mode
 	#blue.blockOccupancy[2] = 1
