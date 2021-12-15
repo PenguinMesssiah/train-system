@@ -17,6 +17,7 @@ sys.path.append("..")
 
 from Shared.common import *
 from Shared.connections import *
+from TrainModel.Models.block import *
 
 Ui_MainGUI, MainBaseClass = uic.loadUiType('UI/MainGUI.ui')
 Ui_InputDebug, InputDebugBaseClass = uic.loadUiType('UI/InputsDebug.ui')
@@ -207,14 +208,18 @@ class InputDebugWindow(InputDebugBaseClass):
             targetBlock.setStyleSheet("background-color: #99c1f1;")
 
 def deployTrain(block, route, trackCircut):
-   connect.train_model_dispatch_train.emit(block, route, trackCircut) 
+
+    tempTC = Track_Circuit_Data(450, 40)
+
+    link.train_model_dispatch_train.emit("Overbrook", block, route, tempTC) 
 
 def parseCommand(inputString):
     command = list(map(int, inputString.split()))
 
     #dispatch
+    temp_data = [63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74]
     if command[0] == 0:
-        deployTrain(63, [63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73], 0);
+        deployTrain(63, temp_data, 0);
 
 
 class MainWindow(MainBaseClass):
@@ -225,9 +230,13 @@ class MainWindow(MainBaseClass):
         self.ui = Ui_MainGUI()
         self.ui.setupUi(self)
 
-        self.ui.actionInput_Debug.triggered.connect(self.openInputDebug);
-        self.ui.actionEdit_Schedule.triggered.connect(self.openScheduling);
-        self.ui.actionDEPLOY_TRAIN.triggered.connect(deployTrain);
+        tempList = []
+        block = Block("A1", 50, 0.25)
+        tempList.append(block)
+
+        self.ui.actionInput_Debug.triggered.connect(self.openInputDebug)
+        self.ui.actionEdit_Schedule.triggered.connect(self.openScheduling)
+        self.ui.actionDEPLOY_TRAIN.triggered.connect(lambda: deployTrain(63, tempList, 0))
 
         #define real blocks
         #self.blocks = []
