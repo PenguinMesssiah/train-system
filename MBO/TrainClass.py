@@ -88,7 +88,7 @@ class Train(object):
         #--self.getAuthority()
 
     def setSuggestedSpeed(self):
-        self.suggestedSpeed = self.line.getSpeedLimit(self.block)
+        self.suggestedSpeed = 0.85*self.line.getSpeedLimit(self.block)
         #--self.getAuthority()
     
     def getSuggestedSpeed(self):

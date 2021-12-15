@@ -57,5 +57,8 @@ class Connections(QObject):
     # Train Model -> MBO
     train_model_send_gps_velocity_mbo = pyqtSignal(int, float, int, float)
 
+    # MBO -> Train Controller
+    mbo_send_authority_velocity_tc = pyqtSignal(int, float, float)
+
 
 link = Connections()
