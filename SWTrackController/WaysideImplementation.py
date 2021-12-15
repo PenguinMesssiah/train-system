@@ -8,7 +8,8 @@ class WaysideImplementation(object):
 	def __init__(self, blocks, listen):
 		self.blocks = blocks
 		self.listen = listen
-		self.relevant = [0] * 151;
+		self.relevant = blocks + listen
+		print("relevant: ", self.relevant)
 		#for i in range(len(self.blocks)):
 		#	self.relevant[self.blocks[i]] = 1
 		#for i in range(len(self.listen)):
@@ -18,7 +19,7 @@ class WaysideImplementation(object):
 		self.lights = dict()
 		self.rules = dict()
 		self.blockAuth = dict() #output from PLC
-		self.blockOcc = dict()
+		self.blockOcc = dict() #from tracak model
 		self.blockCTCAuth = dict()
 		self.blockSuggestedSpeedCTC = dict() # should contain speed numbers
 		self.blockCommandedSpeed = dict()
@@ -51,7 +52,7 @@ class WaysideImplementation(object):
 
 	def addLight(self, location):
 		self.lights.update({location: [0, 0, 0, 0]})
-		print(self.light)
+		print(self.lights)
 
 	def setSuperGreenLight(self, location):
 		self.lights.update({location: [0, 0, 0, 1]})

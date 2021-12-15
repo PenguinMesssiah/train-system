@@ -43,13 +43,71 @@ class PLCInterpreter(object):
 					print(wayside.switches)
 				elif data == 'c':
 					print('commanded speed')
-					wayside.crossings.update({currBlock: self.parseCommandedSpeed(line[5:], wayside)}) #should skip equal sign
+					wayside.blockCommandedSpeed.update({currBlock: self.parseCommandedSpeed(line[5:], wayside)}) #should skip equal sign
 					print(wayside.blockCommandedSpeed)
 
 			f.close()
 		#print(file)
 
 	def parseAuthority(self, rule, wayside):
+		cursor = 0
+		result = 0
+		logic = rule[4]
+		#args = [] #add arg values to an array and then and them
+		#or running calculation <- try this first
+		while cursor < len(rule):
+			argBlock = rule[cursor:cursor+3].strip()
+			try: 
+				argBlock = int(argBlock)
+			except:
+				argBlock = argBlock #doesn't like when you don't have anything
+			print(argBlock)
+
+			cursor = cursor+3
+			print(cursor)
+			if cursor >= len(rule):
+				break
+			src = rule[cursor]
+			print("src= " + src)
+			if src == 'a':
+				print ('auth')
+				arg = wayside.blockAuth[argBlock]
+				print(argBlock, ":", arg)
+			elif src == 's':
+				print('schedule')
+				arg = wayside.blockCTCAuth[argBlock]
+				print(argBlock, ":", arg)
+			elif src =='o':
+				print('occ')
+				print(argBlock)
+				arg = wayside.blockOcc[argBlock]
+				print(argBlock, ":", arg)
+			elif src == 'w':
+				print('switch')
+				arg = wayside.switches[argBlock]
+				print(argBlock, ":", arg)
+
+			cursor = cursor + 1
+			if cursor >= len(rule):
+				break
+
+			#and or or
+			if logic == '&':
+				if cursor <=4:
+					result = arg and arg
+				else:
+					result = result and arg
+			elif logic == '|':
+				if cursor <=4:
+					result = arg or arg
+				else:
+					result = result or arg
+
+			print("result= ", result)
+			cursor = cursor + 1
+		return result
+
+	def parseCommandedSpeed(self, rule, wayside):
 		cursor = 0
 		result = 0
 		logic = rule[4]
