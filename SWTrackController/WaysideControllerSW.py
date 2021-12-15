@@ -16,6 +16,8 @@ sys.path.append("..")
 from Shared.connections import *
 from Shared.common import *
 
+#from HWTrack.waysideHW import *
+
 
 
 #will have specific Wayside controller for each section of track
@@ -35,11 +37,13 @@ class WaysideControllerSW(object): #for PyQt
 		#self.crossingPosition = [0] * numCrossings
 		#self.lightColor = [[0 for i in range(4)] for j in range(numLights)] #red, yellow, green, super green for each light
 		
+		#self.hw = WaysideControllerHW()
 		self.plc = PLCInterpreter()
 
 		############################# GREEN LINE #############################
 
 		self.waysidehw = WaysideImplementation([19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 150],[17, 18, 34, 35, 36])
+		self.waysidehw.addSwitch(29)
 		self.waysidehw.blockOcc.update({25: 0})
 		self.waysidehw.blockOcc.update({19: 0})
 
@@ -81,8 +85,8 @@ class WaysideControllerSW(object): #for PyQt
 		self.ui.checkBox14.stateChanged.connect(lambda: self.checkBox(self.ui.checkBox14, 14))
 		self.ui.checkBox15.stateChanged.connect(lambda: self.checkBox(self.ui.checkBox15, 15))
 		
-		self.ui.radioButton.pressed.connect(lambda: self.switch(0))
-		self.ui.radioButton_2.pressed.connect(lambda: self.switch(1))
+		self.ui.radioButton.pressed.connect(lambda: self.switch(29, 0))
+		self.ui.radioButton_2.pressed.connect(lambda: self.switch(29, 1))
 
 		self.ui.uploadPLC.clicked.connect(self.uploadPLC_handler)
 
@@ -174,9 +178,9 @@ class WaysideControllerSW(object): #for PyQt
 		#		state = "5/11"
 		#	switchState += 'Switch 1: ' + state + '\n'
 
-		blockOccStr = str(self.blockOccupancy)
+		blockOccStr = str(self.waysidehw.blockOcc)
 		switchState = str(self.waysidehw.switches)
-		blockAuthStr = str(self.blockAuthority)
+		blockAuthStr = str(self.waysidehw.blockAuth)
 			
 		self.ui.trackOccTxt.setText(blockOccStr)
 		self.ui.speedTxt.setText(blockSpeedStr)
@@ -219,15 +223,16 @@ class WaysideControllerSW(object): #for PyQt
 		self.blockSpeed[blockNum]=1
 		self.display()
 		
-	def switch(self, state):
-		curr = self.switchPosition[0]
+	def switch(self, block, state):
+		#curr = self.waysidehw.switches[block]
+		self.waysidehw.switches.update({block: state})
 		
 		#hardcoded because no PLC
-		if state != curr:
-			if (self.blockOccupancy[4]==1 or self.blockOccupancy[5]==1 or self.blockOccupancy[10]==1):
-				self.switchPosition[0] = curr
-			else:
-				self.switchPosition[0] =state
+		#if state != curr:
+			#if (self.blockOccupancy[4]==1 or self.blockOccupancy[5]==1 or self.blockOccupancy[10]==1):
+				#self.switchPosition[0] = curr
+			#else:
+				#self.switchPosition[0] =state
 			
 		self.display()
 
@@ -241,20 +246,16 @@ class WaysideControllerSW(object): #for PyQt
 		print (path)
 
 		self.plc.runPLC(path, self.waysidehw)
-		self.blockOccupancy = {0:1, 61:0, 62:0, 63:0, 63:0, 64:0, 65:0, 66:0}
-		self.blockAuthority = {0:1, 61:0, 62:0, 63:1, 63:1, 64:1, 65:1, 66:1}
+		#self.blockOccupancy = {0:1, 61:0, 62:0, 63:0, 63:0, 64:0, 65:0, 66:0}
+		#self.blockAuthority = {0:1, 61:0, 62:0, 63:1, 63:1, 64:1, 65:1, 66:1}
 		self.display()
 
 		#with open(path, "r") as f:
 			#print(f.readline())
 
 	def toHW (self) :
-		self.waysidehw.blockSuggestedSpeedCTC = {19: "this", 20: "is", 21: "a", 22: "test"}
-		self.waysidehw.blockCTCAuth = {19: "the", 20: "auth", 21: "!!", 22: "??"}
-		self.waysidehw.blockOcc = {19: "occ0", 20: "occ1", 21: "occ2", 22: "occ3"}
-
-
 		link.sw_track_controller_send_suggestedspeed_authoritylimit_occupancyTM.emit(self.waysidehw.blockSuggestedSpeedCTC, self.waysidehw.blockCTCAuth, self.waysidehw.blockOcc)
+		print("sent")
 		return 0
 	
 
@@ -264,6 +265,7 @@ class WaysideControllerSW(object): #for PyQt
 	
 
 	def updateHW(self, lights, switches, crossings, commSpeed, auth) :
+		print("recevied")
 		self.waysidehw.lights = lights
 		self.waysidehw.switches = switches
 		self.waysidehw.crossings = crossings
