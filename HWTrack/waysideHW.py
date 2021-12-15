@@ -21,7 +21,7 @@ from Shared.connections import *
 board = ArduinoMega("COM3", baudrate=57600)
 
 # Declare list of all 27 pins that are in use
-PINS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53]
+PINS = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53]
 
 lights_PINS = [4, 5, 6, 7]
 switch_PINS = 3
@@ -239,7 +239,7 @@ class WaysideControllerHW(object):
 
         self.suggested_speed_dict.update({self.control[i].getNumber(): 0})
         self.authority_limit_dict.update({self.control[i].getNumber(): 0})
-        self.occupancyCTC_dict.update({self.control[i].getNumber(): 0})
+        self.occupancyCTC_dict.update({self.control[i].getNumber(): 1})
       # listened
       for i in range(len(self.listen)):
           self.suggested_speed_dict.update({self.listen[i].getNumber(): 0})
@@ -357,133 +357,133 @@ class WaysideControllerHW(object):
     #self.control[10].addSwitch()# Switch on 29
 
 
-    # TEST "INTERFACE" FUNCTION
-    #make a function that asks for a bunch of inputs and then reflects those inputs on the hardware LEDs
-    def testInterface():
-        # Ask user which kind of test they want to run (keep asking for input until valid one entered)
+# TEST "INTERFACE" FUNCTION
+#make a function that asks for a bunch of inputs and then reflects those inputs on the hardware LEDs
+def testInterface():
+    # Ask user which kind of test they want to run (keep asking for input until valid one entered)
+    while True:
+        try:
+            in_choiceOfTest = int(input("Enter 1 to change all Inputs, Enter 2 to choose which Input to change: "))
+            if in_choiceOfTest == 1 or in_choiceOfTest == 2:
+                break
+        except Exception as e:
+            print("Invalid input type, try again")
+    # If the user wanted to change ALL Inputs
+    #TODO: ADD TRY-EXCEPT CASES FOR ALLLLLLLLL INPUTS TO ENSURE GOOD INPUT
+    if in_choiceOfTest == 1:
+        # Authority (keep asking for input until valid one entered)
         while True:
             try:
-                in_choiceOfTest = int(input("Enter 1 to change all Inputs, Enter 2 to choose which Input to change: "))
-                if in_choiceOfTest == 1 or in_choiceOfTest == 2:
+                in_authority = int(input("Enter Authority Limit (0-1023): "))
+                if (in_authority >= 0) and (in_authority <= 1023):
+                    set_authority(in_authority)
                     break
             except Exception as e:
                 print("Invalid input type, try again")
-        # If the user wanted to change ALL Inputs
-        #TODO: ADD TRY-EXCEPT CASES FOR ALLLLLLLLL INPUTS TO ENSURE GOOD INPUT
-        if in_choiceOfTest == 1:
+        # Switch Position from CTC (keep asking for input until valid one entered)
+        while True:
+            try:
+                in_switchPosition_CTC = int(input("Enter Switch Position from CTC (6 or 11): "))
+                if in_switchPosition_CTC == 6:
+                    set_switchPosition_CTC(1)
+                    break
+                elif in_switchPosition_CTC == 11:
+                    set_switchPosition_CTC(0)
+                    break
+            except Exception as e:
+                print("Invalid input type, try again")
+        # Occupancy (keep asking for input until valid one entered)
+        while True:
+            try:
+                in_occupancy = int(input("Enter Occupancy (0-127): "))
+                if (in_occupancy >= 0) and (in_occupancy <= 127):
+                    set_occupancy(in_occupancy)
+                    break
+            except Exception as e:
+                print("Invalid input type, try again")
+#    # If the user wanted to specify which Input to change
+    elif in_choiceOfTest == 2:
+        # Ask the user which Input they would like to change (keep asking until valid input received)
+        while True:
+            try:
+                in_choiceOfInput = int(input("Enter the number of the Input you would like to test (Lights - 1, Switch - 2, Crossing - 3, Authority - 4, Commanded Speed - 5, Occupancy - 6): "))
+                if (in_choiceOfInput >= 1) and (in_choiceOfInput <= 7):
+                    break
+            except Exception as e:
+                print("Invalid input type, try again")
+        if in_choiceOfInput == 1:
+            # Lights (keep asking for input until valid one entered)
+            while True:
+                try:
+                    in_lights = int(input("Enter Lights state (0-1): "))
+                    if (in_lights >= 0) and (in_lights <= 1):
+                        set_lights(in_lights)
+                        break
+                except Exception as e:
+                    print("Invalid input type, try again")
+        elif in_choiceOfInput == 2:
+            # Switch (keep asking for input until valid one entered)
+            while True:
+                try:
+                    in_switch = int(input("Enter Switch state (0-1): "))
+                    if (in_switch >= 0) and (in_switch <= 1):
+                        set_switch(in_switch)
+                        break
+                except Exception as e:
+                    print("Invalid input type, try again")
+        elif in_choiceOfInput == 3:
+            # Crossing (keep asking for input until valid one entered)
+            while True:
+                try:
+                    in_crossing = int(input("Enter Crossing state (0-1): "))
+                    if (in_crossing >= 0) and (in_crossing <= 1):
+                        set_crossing(in_crossing)
+                        break
+                except Exception as e:
+                    print("Invalid input type, try again")
+        elif in_choiceOfInput == 4:
             # Authority (keep asking for input until valid one entered)
             while True:
                 try:
-                    in_authority = int(input("Enter Authority Limit (0-1023): "))
-                    if (in_authority >= 0) and (in_authority <= 1023):
+                    in_authority = int(input("Enter Authority (0-1023): "))
+                    if (in_authority >= 0) and (in_authority <= 7):
                         set_authority(in_authority)
                         break
                 except Exception as e:
                     print("Invalid input type, try again")
-            # Switch Position from CTC (keep asking for input until valid one entered)
+        elif in_choiceOfInput == 5:
+            # Commanded Speed (keep asking for input until valid one entered)
             while True:
                 try:
-                    in_switchPosition_CTC = int(input("Enter Switch Position from CTC (6 or 11): "))
-                    if in_switchPosition_CTC == 6:
-                        set_switchPosition_CTC(1)
-                        break
-                    elif in_switchPosition_CTC == 11:
-                        set_switchPosition_CTC(0)
+                    in_commandedSpeed = int(input("Enter Commanded Speed (0-15): "))
+                    if (in_commandedSpeed >= 0) and (in_commandedSpeed <= 127):
+                        set_commandedSpeed(in_commandedSpeed)
                         break
                 except Exception as e:
                     print("Invalid input type, try again")
+        elif in_choiceOfInput == 6:
             # Occupancy (keep asking for input until valid one entered)
             while True:
                 try:
-                    in_occupancy = int(input("Enter Occupancy (0-127): "))
-                    if (in_occupancy >= 0) and (in_occupancy <= 127):
+                    in_occupancy = int(input("Enter Occupancy (0-1023): "))
+                    if (in_occupancy >= 0) and (in_occupancy <= 7):
                         set_occupancy(in_occupancy)
                         break
                 except Exception as e:
                     print("Invalid input type, try again")
-    #    # If the user wanted to specify which Input to change
-        elif in_choiceOfTest == 2:
-            # Ask the user which Input they would like to change (keep asking until valid input received)
-            while True:
-                try:
-                    in_choiceOfInput = int(input("Enter the number of the Input you would like to test (Lights - 1, Switch - 2, Crossing - 3, Authority - 4, Commanded Speed - 5, Occupancy - 6): "))
-                    if (in_choiceOfInput >= 1) and (in_choiceOfInput <= 7):
-                        break
-                except Exception as e:
-                    print("Invalid input type, try again")
-            if in_choiceOfInput == 1:
-                # Lights (keep asking for input until valid one entered)
-                while True:
-                    try:
-                        in_lights = int(input("Enter Lights state (0-1): "))
-                        if (in_lights >= 0) and (in_lights <= 1):
-                            set_lights(in_lights)
-                            break
-                    except Exception as e:
-                        print("Invalid input type, try again")
-            elif in_choiceOfInput == 2:
-                # Switch (keep asking for input until valid one entered)
-                while True:
-                    try:
-                        in_switch = int(input("Enter Switch state (0-1): "))
-                        if (in_switch >= 0) and (in_switch <= 1):
-                            set_switch(in_switch)
-                            break
-                    except Exception as e:
-                        print("Invalid input type, try again")
-            elif in_choiceOfInput == 3:
-                # Crossing (keep asking for input until valid one entered)
-                while True:
-                    try:
-                        in_crossing = int(input("Enter Crossing state (0-1): "))
-                        if (in_crossing >= 0) and (in_crossing <= 1):
-                            set_crossing(in_crossing)
-                            break
-                    except Exception as e:
-                        print("Invalid input type, try again")
-            elif in_choiceOfInput == 4:
-                # Authority (keep asking for input until valid one entered)
-                while True:
-                    try:
-                        in_authority = int(input("Enter Authority (0-1023): "))
-                        if (in_authority >= 0) and (in_authority <= 7):
-                            set_authority(in_authority)
-                            break
-                    except Exception as e:
-                        print("Invalid input type, try again")
-            elif in_choiceOfInput == 5:
-                # Commanded Speed (keep asking for input until valid one entered)
-                while True:
-                    try:
-                        in_commandedSpeed = int(input("Enter Commanded Speed (0-15): "))
-                        if (in_commandedSpeed >= 0) and (in_commandedSpeed <= 127):
-                            set_commandedSpeed(in_commandedSpeed)
-                            break
-                    except Exception as e:
-                        print("Invalid input type, try again")
-            elif in_choiceOfInput == 6:
-                # Occupancy (keep asking for input until valid one entered)
-                while True:
-                    try:
-                        in_occupancy = int(input("Enter Occupancy (0-1023): "))
-                        if (in_occupancy >= 0) and (in_occupancy <= 7):
-                            set_occupancy(in_occupancy)
-                            break
-                    except Exception as e:
-                        print("Invalid input type, try again")
-        # Ask the user if they would like to continue testing
-        while True:
-            try:
-                in_continueTesting = input("Continue Testing? (y/n): ")
-                if in_continueTesting == 'y' or in_continueTesting == 'Y':
-                    # Go back to the start of the method
-                    break
-                elif in_continueTesting == 'n' or in_continueTesting == 'N':
-                    # Exit the method
-                    return None
-                    break
-            except Exception as e:
-                print("Invalid input type, try again")
+    # Ask the user if they would like to continue testing
+    while True:
+        try:
+            in_continueTesting = input("Continue Testing? (y/n): ")
+            if in_continueTesting == 'y' or in_continueTesting == 'Y':
+                # Go back to the start of the method
+                break
+            elif in_continueTesting == 'n' or in_continueTesting == 'N':
+                # Exit the method
+                return None
+                break
+        except Exception as e:
+            print("Invalid input type, try again")
 
 
 
@@ -565,7 +565,7 @@ def set_crossing(ctrl):
 
 # Reset all pins to LOW
 def reset_pins():
-    for i in authority_PINS:
+    for i in PINS:
         board.digital[i].write(0)
 
 # Main function
@@ -627,6 +627,19 @@ if __name__ == "__main__":
 
   sleep(10)
   reset_pins()
+
+
+  while True:
+      try:
+          in_test = int(input("Enter 1 to test, enter 2 to quit: "))
+          if (in_test >= 1) and (in_test <= 2):
+              break
+      except Exception as e:
+          print("Invalid input, try again")
+
+  if (in_test == 1):
+    while True:
+      testInterface()
 
   # merging my info and sending to Elissa
   #wayside.merge_and_send_dicts()

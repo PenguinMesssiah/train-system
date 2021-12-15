@@ -63,30 +63,30 @@ class Connections(QObject):
 
     # MBO -> Train Controller
     mbo_send_authority_velocity = pyqtSignal(int, float)
-    
+
     # Train Controller -> MBO
-    TrainControllerSendsBeaconSignal = pyqtSignal(str) 
+    TrainControllerSendsBeaconSignal = pyqtSignal(str)
 
     # HW Train Controller -> SW Train Controller
     HWTrainSendsKpTo = pyqtSignal(float);
     HWTrainSendsKiTo = pyqtSignal(float);
-    
+
     HWTrainSendsTempTo = pyqtSignal(bool);
     HWTrainSendsEngineTo = pyqtSignal(bool);
     HWTrainSendsAnnounceTo = pyqtSignal(bool);
-    
+
     HWTrainSendsRDoorTo = pyqtSignal(bool);
     HWTrainSendsLDoorTo = pyqtSignal(bool);
-    
+
     HWTrainSendsIncSpeedTo = pyqtSignal(bool);
     HWTrainSendsDecSpeedTo = pyqtSignal(bool);
-    
+
     HWTrainSendsCabinLightsTo = pyqtSignal(bool);
     HWTrainSendsHeadLightsTo = pyqtSignal(bool);
-    
+
     HWTrainSendsAutoModeTo = pyqtSignal(bool);
     HWTrainSendsManModeTo = pyqtSignal(bool);
-    
+
     HWTrainSendsEmergBrakeTo = pyqtSignal(bool);
     HWTrainSendsServBrakeTo = pyqtSignal(bool);
 
