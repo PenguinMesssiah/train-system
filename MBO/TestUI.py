@@ -19,7 +19,7 @@ class TestDisplay(object):
         self.trainSelector = QtWidgets.QDoubleSpinBox(self.centralwidget)
         self.trainSelector.setGeometry(QtCore.QRect(300, 120, 111, 31))
         self.trainSelector.setStyleSheet("background-color: rgb(224,232,245);")    
-        self.trainSelector.setMaximum(2)
+        self.trainSelector.setMaximum(12)
         self.trainSelector.setMinimum(1)
         self.trainSelector.setTabletTracking(False)
         self.trainSelector.setObjectName("trainSelector")
@@ -35,7 +35,7 @@ class TestDisplay(object):
         self.positionInput.setStyleSheet("background-color: rgb(224,232,245);")
         #--self.positionInput.setAlignment(QtCore.Qt.AlignCenter)
         self.positionInput.setObjectName("positionInput")
-        self.positionInput.setMaximum(50)
+        self.positionInput.setMaximum(300)
         self.positionInput.setMinimum(0)
 
         self.positionLabel = QtWidgets.QLabel(self.centralwidget)
@@ -50,7 +50,7 @@ class TestDisplay(object):
         self.blockInput.setStyleSheet("background-color: rgb(224,232,245);")
         self.blockInput.setAlignment(QtCore.Qt.AlignCenter)
         self.blockInput.setObjectName("blockInput")
-        self.blockInput.setMaximum(15)
+        self.blockInput.setMaximum(150)
         self.blockInput.setMinimum(1)
 
         self.blockLabel = QtWidgets.QLabel(self.centralwidget)
@@ -65,7 +65,7 @@ class TestDisplay(object):
         self.destInput.setStyleSheet("background-color: rgb(224,232,245);")
         self.destInput.setAlignment(QtCore.Qt.AlignCenter)
         self.destInput.setObjectName("destInput")
-        self.destInput.setMaximum(15)
+        self.destInput.setMaximum(150)
         self.destInput.setMinimum(1)
 
         self.destLabel = QtWidgets.QLabel(self.centralwidget)
@@ -113,6 +113,12 @@ class TestDisplay(object):
         self.speedLabel2.setGeometry(QtCore.QRect(90, 440, 200, 31))
         self.speedLabel2.setStyleSheet("font: 10pt \"MS Shell Dlg 2\";")
         self.speedLabel2.setObjectName("speedLabel2")
+
+        #-- button to make authority
+        self.AuthButton = QtWidgets.QPushButton(self.centralwidget)
+        self.AuthButton.setGeometry(QtCore.QRect(500, 375, 100, 50))
+        self.AuthButton.setStyleSheet("background-color:rgb(224,232,245)")
+        self.AuthButton.setObjectName("AuthButton")
         
         TestDisplayWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(TestDisplayWindow)
@@ -143,7 +149,7 @@ class TestDisplay(object):
 
         self.speedLabel2.setText(_translate("TestDisplayWindow", "Suggested Speed (m/s)"))
 
-
+        self.AuthButton.setText(_translate("TestDisplayWindow", "Calculate Authority"))
        #-- self.authButton.setText(_translate("TestDisplayWindow", "CALCULATE AUTHORITY"))
         
 

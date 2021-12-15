@@ -61,7 +61,7 @@ class MBO(object):
         self.displayTestUI.blockInput.valueChanged.connect(self.updateBlock)
         self.displayTestUI.speedInput.valueChanged.connect(self.updateSpeed)
         self.displayTestUI.destInput.valueChanged.connect(self.updateDest)
-       #-- self.displayTestUI.authButton.pressed.connect(self.calculateAuthority)
+        self.displayTestUI.AuthButton.pressed.connect(self.displayAuthority)
         
      
 
@@ -86,47 +86,54 @@ class MBO(object):
         
     def updateTrainSel(self):
         
-       self.trainSel = self.displayTestUI.trainSelector.value() - 1
+       self.trainSel = int(self.displayTestUI.trainSelector.value() - 1)
        
        print(self.trainSel)
+       print(len(self.trainSets))
             
 
 
     def updatePosition(self):
 
         self.trainSets[self.trainSel].setPosition(self.displayTestUI.positionInput.value())
-        self.authority = self.trainSets[self.trainSel].getAuthority()
-        self.displayTestUI.authorityOutput.setText(str(self.authority))
-        print(self.trainSets[self.trainSel].getPosition())
-        #--self.displayUI.posOutput1.setText(str(self.trainSets[self.trainSel].getPosition()))
+        
+      # --  self.displayUI.posOutput1.setText(str(self.trainSets[self.trainSel].getPosition()))
         
     def updateBlock(self):
 
         self.trainSets[self.trainSel].setBlock(self.displayTestUI.blockInput.value())
-        self.authority = self.trainSets[self.trainSel].getAuthority()
-        self.displayTestUI.authorityOutput.setText(str(self.authority))
-        print(self.trainSets[self.trainSel].getBlock())
+##        self.authority = self.trainSets[self.trainSel].getAuthority()
+##        self.displayTestUI.authorityOutput.setText(str(self.authority))
+##        print(self.trainSets[self.trainSel].getBlock())
        #-- self.displayTestUI.authorityOutput.setText(str(self.trainSets[self.trainSel].authority))
+        
         self.suggestedSpeed = self.trainSets[self.trainSel].getSuggestedSpeed()
         self.displayTestUI.speedOutput.setText(str(self.suggestedSpeed))
 
     def updateSpeed(self):
 
         self.trainSets[self.trainSel].setCurrentSpeed(self.displayTestUI.speedInput.value())
-        self.authority = self.trainSets[self.trainSel].getAuthority()
-        self.displayTestUI.authorityOutput.setText(str(self.authority))
+##        self.authority = self.trainSets[self.trainSel].getAuthority()
+##        self.displayTestUI.authorityOutput.setText(str(self.authority))
        #-- self.displayTestUI.authorityOutput.setText(str(self.trainSets[self.trainSel].authority))
         print(self.trainSets[self.trainSel].getCurrentSpeed())
 
     def updateDest(self):
 
         self.trainSets[self.trainSel].setDBlock(self.displayTestUI.destInput.value())
-        self.authority = self.trainSets[self.trainSel].getAuthority()
-        self.displayTestUI.authorityOutput.setText(str(self.authority))
+##        self.authority = self.trainSets[self.trainSel].getAuthority()
+##        self.displayTestUI.authorityOutput.setText(str(self.authority))
         #--self.displayTestUI.authorityOutput.setText(str(self.trainSets[self.trainSel].authority))
         print(self.trainSets[self.trainSel].getDBlock())
 
 
+    def displayAuthority(self):
+
+        self.authority = self.trainSets[self.trainSel].getAuthority()
+        self.displayTestUI.authorityOutput.setText(str(self.authority))
+
+        
+                                                  
 ##    def updateMain(self):
 ##
 ##        self.displayUI.trainNameOutput1.setText(str(self.trainSets[0].driverTrain.getName()))

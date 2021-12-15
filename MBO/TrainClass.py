@@ -89,7 +89,7 @@ class Train(object):
 
     def setPosition(self,num):
         self.position = num
-        self.getAuthority()
+        #--self.getAuthority()
 
     def setBlock(self,num):
         self.block = int(num)
