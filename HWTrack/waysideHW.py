@@ -24,6 +24,9 @@ class WaysideControllerHW(object):
         self.occupancyCTC_dict = dict()
         self.commanded_speed_dict = dict()
         self.authority_dict = dict()
+        self.suggested_speed_dict = dict()
+        self.authority_limit_dict = dict()
+        self.occupancy_tm_dict = dict()
         #controlled blocks indicies:
         # 0  | 19
         # 1  | 20
@@ -220,79 +223,86 @@ class WaysideControllerHW(object):
         # receive info
         link.hw_track_controller_receive_suggestedspeed_authoritylimit_occupancyTM.connect(self.update)
 
-    def update(self, lights_d, switch_d, crossing_d, commanded_speed_d, authority_d):
+    def update(self, suggested_speed_d, authority_limit_d, occupancy_tm_d):
         # update info
-        self.lights_dict = lights_d
-        self.switch_dict = switch_d
-        self.crossing_dict = crossing_d
-        #self.occupancyCTC_dict
-        self.commanded_speed_dict = commanded_speed_d
-        self.authority_dict = authority_d
+#        self.lights_dict = lights_d
+#        self.switch_dict = switch_d
+#        self.crossing_dict = crossing_d
+#        #self.occupancyCTC_dict
+#        self.commanded_speed_dict = commanded_speed_d
+#        self.authority_dict = authority_d
+
+        self.suggested_speed_dict = suggested_speed_d
+        self.authority_limit_dict = authority_limit_d
+        self.occupancy_tm_dict = occupancy_tm_d
+        print(self.suggested_speed_dict)
+        print(self.authority_limit_dict)
+        print(self.occupancy_tm_dict)
 
         # Lights
         #block 21
-        if self.lights_dict.get(21) == [0, 0, 0, 1]:
-            self.setSuperGreenLight(2)
-        elif self.lights_dict.get(21) == [0, 0, 1, 0]:
-            self.setBlockGreenLights(2)
-        elif self.lights_dict.get(21) == [0, 1, 0, 0]:
-            self.setBlockYellowLights(2)
-        elif self.lights_dict.get(21) == [1, 0, 0, 0]:
-            self.setBlockRedLights(2)
+#        if self.lights_dict.get(21) == [0, 0, 0, 1]:
+#            self.setSuperGreenLight(2)
+#        elif self.lights_dict.get(21) == [0, 0, 1, 0]:
+#            self.setBlockGreenLights(2)
+#        elif self.lights_dict.get(21) == [0, 1, 0, 0]:
+#            self.setBlockYellowLights(2)
+#        elif self.lights_dict.get(21) == [1, 0, 0, 0]:
+#            self.setBlockRedLights(2)
 
         #block 23
-        if self.lights_dict.get(23) == [0, 0, 0, 1]:
-            self.setBlockSuperGreenLights(4)
-        elif self.lights_dict.get(23) == [0, 0, 1, 0]:
-            self.setBlockGreenLights(4)
-        elif self.lights_dict.get(23) == [0, 1, 0, 0]:
-            self.setBlockYellowLights(4)
-        elif self.lights_dict.get(23) == [1, 0, 0, 0]:
-            self.setBlockRedLights(4)
+#        if self.lights_dict.get(23) == [0, 0, 0, 1]:
+#            self.setBlockSuperGreenLights(4)
+#        elif self.lights_dict.get(23) == [0, 0, 1, 0]:
+#            self.setBlockGreenLights(4)
+#        elif self.lights_dict.get(23) == [0, 1, 0, 0]:
+#            self.setBlockYellowLights(4)
+#        elif self.lights_dict.get(23) == [1, 0, 0, 0]:
+#            self.setBlockRedLights(4)
 
         #block 29
-        if self.lights_dict.get(29) == [0, 0, 0, 1]:
-            self.setBlockSuperGreenLights(10)
-        elif self.lights_dict.get(29) == [0, 0, 1, 0]:
-            self.setBlockGreenLights(10)
-        elif self.lights_dict.get(29) == [0, 1, 0, 0]:
-            self.setBlockYellowLights(10)
-        elif self.lights_dict.get(29) == [1, 0, 0, 0]:
-            self.setBlockRedLights(10)
+#        if self.lights_dict.get(29) == [0, 0, 0, 1]:
+#            self.setBlockSuperGreenLights(10)
+#        elif self.lights_dict.get(29) == [0, 0, 1, 0]:
+#            self.setBlockGreenLights(10)
+#        elif self.lights_dict.get(29) == [0, 1, 0, 0]:
+#            self.setBlockYellowLights(10)
+#        elif self.lights_dict.get(29) == [1, 0, 0, 0]:
+#            self.setBlockRedLights(10)
 
         #block 30
-        if self.lights_dict.get(30) == [0, 0, 0, 1]:
-            self.setBlockSuperGreenLights(11)
-        elif self.lights_dict.get(30) == [0, 0, 1, 0]:
-            self.setBlockGreenLights(11)
-        elif self.lights_dict.get(30) == [0, 1, 0, 0]:
-            self.setBlockYellowLights(11)
-        elif self.lights_dict.get(30) == [1, 0, 0, 0]:
-            self.setBlockRedLights(11)
+#        if self.lights_dict.get(30) == [0, 0, 0, 1]:
+#            self.setBlockSuperGreenLights(11)
+#        elif self.lights_dict.get(30) == [0, 0, 1, 0]:
+#            self.setBlockGreenLights(11)
+#        elif self.lights_dict.get(30) == [0, 1, 0, 0]:
+#            self.setBlockYellowLights(11)
+#        elif self.lights_dict.get(30) == [1, 0, 0, 0]:
+#            self.setBlockRedLights(11)
 
         #block 32
-        if self.lights_dict.get(32) == [0, 0, 0, 1]:
-            self.setBlockSuperGreenLights(13)
-        elif self.lights_dict.get(32) == [0, 0, 1, 0]:
-            self.setBlockGreenLights(13)
-        elif self.lights_dict.get(32) == [0, 1, 0, 0]:
-            self.setBlockYellowLights(13)
-        elif self.lights_dict.get(32) == [1, 0, 0, 0]:
-            self.setBlockRedLights(13)
+#        if self.lights_dict.get(32) == [0, 0, 0, 1]:
+#            self.setBlockSuperGreenLights(13)
+#        elif self.lights_dict.get(32) == [0, 0, 1, 0]:
+#            self.setBlockGreenLights(13)
+#        elif self.lights_dict.get(32) == [0, 1, 0, 0]:
+#            self.setBlockYellowLights(13)
+#        elif self.lights_dict.get(32) == [1, 0, 0, 0]:
+#            self.setBlockRedLights(13)
 
         #block 150
-        if self.lights_dict.get(150) == [0, 0, 0, 1]:
-            self.setBlockSuperGreenLights(15)
-        elif self.lights_dict.get(150) == [0, 0, 1, 0]:
-            self.setBlockGreenLights(15)
-        elif self.lights_dict.get(150) == [0, 1, 0, 0]:
-            self.setBlockYellowLights(15)
-        elif self.lights_dict.get(150) == [1, 0, 0, 0]:
-            self.setBlockRedLights(15)
+#        if self.lights_dict.get(150) == [0, 0, 0, 1]:
+#            self.setBlockSuperGreenLights(15)
+#        elif self.lights_dict.get(150) == [0, 0, 1, 0]:
+#            self.setBlockGreenLights(15)
+#        elif self.lights_dict.get(150) == [0, 1, 0, 0]:
+#            self.setBlockYellowLights(15)
+#        elif self.lights_dict.get(150) == [1, 0, 0, 0]:
+#            self.setBlockRedLights(15)
 
         # Crossings
         #block 19
-        self.control[0].setBlockCrossingState(0, self.crossing_dict.get(19))   # Crossing on 19
+#        self.control[0].setBlockCrossingState(0, self.crossing_dict.get(19))   # Crossing on 19
 
         # Switch
 
@@ -316,13 +326,9 @@ if __name__ == "__main__":
 
     sleep(9)
 
-    # receive info from Elissa
-    receive()
-
-    # update my info with received info
-    
-
+    # receive info from Elissa, calls update automatically
+    wayside.receive()
 
 
     # merging my info and sending to Elissa
-    merge_and_send_dicts()
+    wayside.merge_and_send_dicts()
