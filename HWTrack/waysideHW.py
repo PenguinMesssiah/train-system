@@ -30,7 +30,6 @@ class WaysideControllerHW(object):
     self.suggested_speed_dict = dict()
     self.authority_limit_dict = dict()
     self.occupancy_tm_dict = dict()
-    self.plc = PLCInterpreter()
     #controlled blocks indicies:
     # 0  | 19
     # 1  | 20
@@ -236,8 +235,6 @@ class WaysideControllerHW(object):
 #    self.commanded_speed_dict = commanded_speed_d
 #    self.authority_dict = authority_d
 
-    self.plc.runPLC("hwPLC.txt", self)
-
     self.suggested_speed_dict = suggested_speed_d
     self.authority_limit_dict = authority_limit_d
     self.occupancy_tm_dict = occupancy_tm_d
@@ -327,13 +324,27 @@ class WaysideControllerHW(object):
 if __name__ == "__main__":
   # Instantiate controller, first list is controlled blocks second list is listened blocks
   wayside = WaysideControllerHW()
-  # Choose PLC
-  # enter name of PLC file
 
-  sleep(9)
+
+
 
   # receive info from Elissa, calls update automatically
   wayside.receive()
+
+
+  # Instantiate PLC
+  plc = PLCInterpreter()
+
+  # Choose PLC
+
+  # enter name of PLC file
+
+  # Run PLC
+  plc.runPLC(r"C:\Users\Mike\Documents\GitHub\train-system\HWTrack\hwPLC.txt", wayside)
+
+
+
+  #sleep(9)
 
 
   # merging my info and sending to Elissa

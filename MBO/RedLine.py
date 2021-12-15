@@ -24,8 +24,8 @@ class RedLine(object):
     ## need to get down to 2400
 
     # Total time around track no dwell is 545 seconds
-    # dwell 14*30 = 965
-    # total time = 1510
+    # dwell 14*30 = 420
+    # total time = 965
     def getBlockCount(self):
         return len(self.blockLengthArray)
 
@@ -52,6 +52,9 @@ class RedLine(object):
         else:
             return self.stationArray[self.stationIndex + 1]
             
+
+    def setStationIndex(self,num):
+        self.stationIndex = num
 
     def incrementIndex(self):
             if self.stationIndex == 13:

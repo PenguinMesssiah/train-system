@@ -32,6 +32,7 @@ class MBO(object):
         self.suggestedSpeed = 0.0
         self.throughArray = [2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000]
         self.startTime = 0.00
+        self.throughput = 0.0
         self.hourSelect = 0
         self.hourN = 0.00
         self.interval = 1.00
@@ -42,7 +43,7 @@ class MBO(object):
         self.tempIndex = 0
         self.driverBool = 0
         self.enterDriverBool = 0
-      
+        self.driverUsedSets = []
 
         link.train_model_send_gps_velocity_mbo.connect(self.receive_train_inputs)
 
@@ -80,6 +81,7 @@ class MBO(object):
         self.displayMainUI.enterDatesButton.pressed.connect(self.changeDates)
         self.displayMainUI.enterDriverDataButton.pressed.connect(self.addNewDriver)
         self.displayMainUI.setActiveButton.pressed.connect(self.toggleStatus)
+        self.displayMainUI.SchedButton.pressed.connect(self.makeDailySchedule)
         #--self.updateMain()
         
     def updateTrainSel(self):
@@ -224,13 +226,28 @@ class MBO(object):
         self.driverSets.append(Driver("Joseph Clark",1,1,1,1,1,1,1,3))
         self.displayMainUI.cb.addItem(self.driverSets[self.driverCount].getName())
         self.driverCount = self.driverCount + 1
-        self.driverSets.append(Driver("Joseph Clark",1,1,1,1,1,1,1,3))
+        self.driverSets.append(Driver("Elissa W",1,1,1,1,1,1,1,4))
         self.displayMainUI.cb.addItem(self.driverSets[self.driverCount].getName())
         self.driverCount = self.driverCount + 1
-        self.driverSets.append(Driver("Joseph Clark",1,1,1,1,1,1,1,3))
+        self.driverSets.append(Driver("Lizzie S",1,1,1,1,1,1,1,5))
         self.displayMainUI.cb.addItem(self.driverSets[self.driverCount].getName())
         self.driverCount = self.driverCount + 1
-        self.driverSets.append(Driver("Joseph Clark",1,1,1,1,1,1,1,3))
+        self.driverSets.append(Driver("Theo KSTD",1,1,1,1,1,1,1,6))
+        self.displayMainUI.cb.addItem(self.driverSets[self.driverCount].getName())
+        self.driverCount = self.driverCount + 1
+        self.driverSets.append(Driver("Eric T",1,1,1,1,1,1,1,7))
+        self.displayMainUI.cb.addItem(self.driverSets[self.driverCount].getName())
+        self.driverCount = self.driverCount + 1
+        self.driverSets.append(Driver("Danny U",1,1,1,1,1,1,1,8))
+        self.displayMainUI.cb.addItem(self.driverSets[self.driverCount].getName())
+        self.driverCount = self.driverCount + 1
+        self.driverSets.append(Driver("Will S",1,1,1,1,1,1,1,9))
+        self.displayMainUI.cb.addItem(self.driverSets[self.driverCount].getName())
+        self.driverCount = self.driverCount + 1
+        self.driverSets.append(Driver("Mike H",1,1,1,1,1,1,1,10))
+        self.displayMainUI.cb.addItem(self.driverSets[self.driverCount].getName())
+        self.driverCount = self.driverCount + 1
+        self.driverSets.append(Driver("Luca M",1,1,1,1,1,1,1,11))
         self.displayMainUI.cb.addItem(self.driverSets[self.driverCount].getName())
         self.driverCount = self.driverCount + 1
 
@@ -464,7 +481,193 @@ class MBO(object):
 ##        self.makeShiftGreen(self.startTime + 18, 0, 45, 11)
 
         self.makeCSV()
+
+    def makeScheduleRed(self):
         
+        self.makeShiftRed(self.startTime, 0, 0, 1)
+        #self.makeShiftGreen(self.startTime, 0, 15, 1)
+        
+       # self.makeShiftGreen(self.startTime + 9, 0, 0, 4)
+##        self.makeShiftGreen(self.startTime + 9, 0, 15, 5)
+##        self.makeShiftGreen(self.startTime + 9, 0, 30, 6)
+##        self.makeShiftGreen(self.startTime + 9, 0, 45, 7)
+        
+##        self.makeShiftGreen(self.startTime + 18, 0, 0, 8)
+##        self.makeShiftGreen(self.startTime + 18, 0, 15, 9)
+##        self.makeShiftGreen(self.startTime + 18, 0, 30, 10)
+##        self.makeShiftGreen(self.startTime + 18, 0, 45, 11)
+
+        self.makeCSV()
+    def makeDailySchedule(self):
+        if self.throughput > 150:
+            trainC = Train('G')
+            print(trainC.getTrainNumber())
+            trainE = Train('R')
+            
+            self.addTrain(trainC)
+            
+            self.addTrain(trainE)
+            
+            for x in range (0, self.driverCount):
+                if self.driverSets[x].freeToWork(3) == 1 and self.driverSets[x].getHoursWorked() < 4 and self.driverSets[x].getStatus()==True:
+                    self.trainSets[0].setDriver(self.driverSets[x])
+                    self.driverSets[x].addShift()
+                    break
+            for x in range (0, self.driverCount):
+                if self.driverSets[x].freeToWork(3) == 1 and self.driverSets[x].getHoursWorked() < 4 and self.driverSets[x].getStatus()==True:
+                    self.trainSets[1].setDriver(self.driverSets[x])
+                    self.driverSets[x].addShift()
+                    break
+            for x in range (0, self.driverCount):
+                if self.driverSets[x].freeToWork(3) == 1 and self.driverSets[x].getHoursWorked() < 4 and self.driverSets[x].getStatus()==True:
+                    self.trainSets[trainC.getTrainNumber()].setDriver(self.driverSets[x])
+                    self.driverSets[x].addShift()
+                    break
+            for x in range (0, self.driverCount):
+                if self.driverSets[x].freeToWork(3) == 1 and self.driverSets[x].getHoursWorked() < 4 and self.driverSets[x].getStatus()==True:
+                    self.trainSets[trainE.getTrainNumber()].setDriver(self.driverSets[x])
+                    self.driverSets[x].addShift()
+                    break
+            self.makeShiftGreen(self.startTime,0,0, 0)
+            self.makeShiftGreen(self.startTime,0,30, trainC.getTrainNumber())
+            self.makeShiftRed(self.startTime,0,0, 1)
+            self.makeShiftRed(self.startTime,0,30, trainE.getTrainNumber())
+    
+            trainG = Train('G')
+            trainH = Train('G')
+            trainI = Train('R')
+            trainJ = Train('R')
+            self.addTrain(trainG)
+            self.addTrain(trainH)
+            self.addTrain(trainI)
+            self.addTrain(trainJ)
+            for x in range (0, self.driverCount):
+                if self.driverSets[x].freeToWork(3) == 1 and self.driverSets[x].getHoursWorked() < 4 and self.driverSets[x].getStatus()==True:
+                    self.trainSets[trainG.getTrainNumber()].setDriver(self.driverSets[x])
+                    self.driverSets[x].addShift()
+                    break
+            for x in range (0, self.driverCount):
+                if self.driverSets[x].freeToWork(3) == 1 and self.driverSets[x].getHoursWorked() < 4 and self.driverSets[x].getStatus()==True:
+                    self.trainSets[trainH.getTrainNumber()].setDriver(self.driverSets[x])
+                    self.driverSets[x].addShift()
+                    break
+            for x in range (0, self.driverCount):
+                if self.driverSets[x].freeToWork(3) == 1 and self.driverSets[x].getHoursWorked() < 4 and self.driverSets[x].getStatus()==True:
+                    self.trainSets[trainI.getTrainNumber()].setDriver(self.driverSets[x])
+                    self.driverSets[x].addShift()
+                    break
+            for x in range (0, self.driverCount):
+                if self.driverSets[x].freeToWork(3) == 1 and self.driverSets[x].getHoursWorked() < 4 and self.driverSets[x].getStatus()==True:
+                    self.trainSets[trainJ.getTrainNumber()].setDriver(self.driverSets[x])
+                    self.driverSets[x].addShift()
+                    break
+            self.makeShiftGreen(self.startTime + 9,0,0, trainG.getTrainNumber())
+            self.makeShiftGreen(self.startTime + 9,0,30, trainH.getTrainNumber())
+            self.makeShiftRed(self.startTime + 9,0,0, trainI.getTrainNumber())
+            self.makeShiftRed(self.startTime + 9,0,30, trainJ.getTrainNumber())
+            
+
+            trainK = Train('G')
+            trainL = Train('G')
+            trainM = Train('R')
+            trainN = Train('R')
+            self.addTrain(trainK)
+            self.addTrain(trainL)
+            self.addTrain(trainM)
+            self.addTrain(trainN)
+            for x in range (0, self.driverCount):
+                if self.driverSets[x].freeToWork(3) == 1 and self.driverSets[x].getHoursWorked() < 4 and self.driverSets[x].getStatus()==True:
+                    self.trainSets[trainK.getTrainNumber()].setDriver(self.driverSets[x])
+                    self.driverSets[x].addShift()
+                    break
+            for x in range (0, self.driverCount):
+                if self.driverSets[x].freeToWork(3) == 1 and self.driverSets[x].getHoursWorked() < 4 and self.driverSets[x].getStatus()==True:
+                    self.trainSets[trainL.getTrainNumber()].setDriver(self.driverSets[x])
+                    self.driverSets[x].addShift()
+                    break
+            for x in range (0, self.driverCount):
+                if self.driverSets[x].freeToWork(3) == 1 and self.driverSets[x].getHoursWorked() < 4 and self.driverSets[x].getStatus()==True:
+                    self.trainSets[trainM.getTrainNumber()].setDriver(self.driverSets[x])
+                    self.driverSets[x].addShift()
+                    break
+            for x in range (0, self.driverCount):
+                if self.driverSets[x].freeToWork(3) == 1 and self.driverSets[x].getHoursWorked() < 4 and self.driverSets[x].getStatus()==True:
+                    self.trainSets[trainN.getTrainNumber()].setDriver(self.driverSets[x])
+                    self.driverSets[x].addShift()
+                    break
+            self.makeShiftGreen(self.startTime + 18,0,0, trainK.getTrainNumber())
+            self.makeShiftGreen(self.startTime + 18,0,30, trainL.getTrainNumber())
+            self.makeShiftRed(self.startTime + 18,0,0, trainM.getTrainNumber())
+            self.makeShiftRed(self.startTime + 18,0,30, trainN.getTrainNumber())
+
+            self.makeCSV()
+        else:
+            
+            for x in range (0, self.driverCount):
+                if self.driverSets[x].freeToWork(3) == 1 and self.driverSets[x].getHoursWorked() < 4 and self.driverSets[x].getStatus()==True:
+                    self.trainSets[0].setDriver(self.driverSets[x])
+                    self.driverSets[x].addShift()
+                    break
+            
+            for x in range (0, self.driverCount):
+                if self.driverSets[x].freeToWork(3) == 1 and self.driverSets[x].getHoursWorked() < 4 and self.driverSets[x].getStatus()==True:
+                    self.trainSets[1].setDriver(self.driverSets[x])
+                    self.driverSets[x].addShift()
+                    break
+        
+            self.makeShiftGreen(self.startTime,0,0, 0)
+            
+            self.makeShiftRed(self.startTime,0,0, 1)
+          
+    
+            trainG = Train('G')
+            print(trainG.getTrainNumber())
+            trainI = Train('R')
+            print(trainI.getTrainNumber())
+            self.addTrain(trainG)
+            
+            self.addTrain(trainI)
+           
+            for x in range (0, self.driverCount):
+                if self.driverSets[x].freeToWork(3) == 1 and self.driverSets[x].getHoursWorked() < 4 and self.driverSets[x].getStatus()==True:
+                    self.trainSets[trainG.getTrainNumber()].setDriver(self.driverSets[x])
+                    self.driverSets[x].addShift()
+                    break
+            
+            for x in range (0, self.driverCount):
+                if self.driverSets[x].freeToWork(3) == 1 and self.driverSets[x].getHoursWorked() < 4 and self.driverSets[x].getStatus()==True:
+                    self.trainSets[trainI.getTrainNumber()].setDriver(self.driverSets[x])
+                    self.driverSets[x].addShift()
+                    break
+            
+            self.makeShiftGreen(self.startTime + 9,0,0, trainG.getTrainNumber())
+            
+            self.makeShiftRed(self.startTime + 9,0,30, trainI.getTrainNumber())
+            
+
+            trainK = Train('G')
+           
+            trainM = Train('R')
+            self.addTrain(trainK)
+            self.addTrain(trainM)
+            for x in range (0, self.driverCount):
+                if self.driverSets[x].freeToWork(3) == 1 and self.driverSets[x].getHoursWorked() < 4 and self.driverSets[x].getStatus()==True:
+                    self.trainSets[trainK.getTrainNumber()].setDriver(self.driverSets[x])
+                    self.driverSets[x].addShift()
+                    break
+           
+            for x in range (0, self.driverCount):
+                if self.driverSets[x].freeToWork(3) == 1 and self.driverSets[x].getHoursWorked() < 4 and self.driverSets[x].getStatus()==True:
+                    self.trainSets[trainM.getTrainNumber()].setDriver(self.driverSets[x])
+                    self.driverSets[x].addShift()
+                    break
+           
+            self.makeShiftGreen(self.startTime + 18,0,0, trainK.getTrainNumber())
+
+            self.makeShiftRed(self.startTime + 18,0,0, trainM.getTrainNumber())
+
+            self.makeCSV()
+                
     def makeShiftRed(self, startTH, startTS, startTM, trainNum):
         
         timeNowS = startTH*60*60 + startTM*60 + startTS
@@ -504,12 +707,12 @@ class MBO(object):
         minuteString2 = str(minuteTN)
         secondString2 = str(secondTN)
         timeString2 = hourString2 + ":" + minuteString2 + ":" + secondString2 + " UTC"
-        tempPath = Path(timeString2, timeString,  green.getCurrentStation(), "The Yard")
+        tempPath = Path(timeString2, timeString,  red.getCurrentStation(), "The Yard")
         self.trainSets[trainNum].addPath(tempPath)
         timeNowS = nextTimeS + 30
-        for z in range(0,6):
-            for y in range(0,21):
-                timeTemp = green.getTime()
+        for z in range(0,15):
+            for y in range(0,14):
+                timeTemp = red.getTime()
                 nextTimeS = timeNowS + timeTemp
                 ##print(nextTimeS)
                 hourT = math.floor(nextTimeS/3600)
@@ -529,16 +732,17 @@ class MBO(object):
                 minuteString2 = str(minuteTN)
                 secondString2 = str(secondTN)
                 timeString2 = hourString2 + ":" + minuteString2 + ":" + secondString2 + " UTC"
-                tempPath = Path(timeString2, timeString, green.getNextStation(), green.getCurrentStation())
+                tempPath = Path(timeString2, timeString, red.getNextStation(), red.getCurrentStation())
                 self.trainSets[trainNum].addPath(tempPath)
-                green.incrementIndex()
-                if green.stationIndex == 17:
-                    if z == 5:
+                red.incrementIndex()
+                
+                if red.stationIndex == 10:
+                    if z == 14:
                         break
                 timeNowS = nextTimeS + 30
-                
+             
         timeNowS = nextTimeS + 30        
-        nextTimeS = timeNowS + 120
+        nextTimeS = timeNowS + 175
         ##print(nextTimeS)
         hourT = math.floor(nextTimeS/3600)
         minuteT = (math.floor((nextTimeS-hourT*3600)/60))
@@ -557,7 +761,7 @@ class MBO(object):
         secondString2 = str(secondTN)
         timeString2 = hourString2 + ":" + minuteString2 + ":" + secondString2 + " UTC"
         # green.setStationIndex(0)
-        tempPath = Path(timeString2, timeString, "The Yard", green.getCurrentStation())
+        tempPath = Path(timeString2, timeString, "The Yard", red.getCurrentStation())
         self.trainSets[trainNum].addPath(tempPath)
         timeNowS = nextTimeS
                
@@ -581,15 +785,15 @@ class MBO(object):
         minuteString2 = str(minuteTN)
         secondString2 = str(secondTN)
         timeString2 = hourString2 + ":" + minuteString2 + ":" + secondString2 + " UTC"
-        green.setStationIndex(0)
-        tempPath = Path(timeString2, timeString, green.getCurrentStation(),"The Yard")
+        red.setStationIndex(0)
+        tempPath = Path(timeString2, timeString, red.getCurrentStation(),"The Yard")
         
         self.trainSets[trainNum].addPath(tempPath)
-        green.setStationIndex(0)
+       #  green.setStationIndex(0)
         timeNowS = nextTimeS + 30
-        for a in range(0,6):
-            for b in range(0,21):
-                timeTemp = green.getTime()
+        for a in range(0,15):
+            for b in range(0,14):
+                timeTemp = red.getTime()
                 nextTimeS = timeNowS + timeTemp
                 ##print(nextTimeS)
                 hourT = math.floor(nextTimeS/3600)
@@ -609,16 +813,16 @@ class MBO(object):
                 minuteString2 = str(minuteTN)
                 secondString2 = str(secondTN)
                 timeString2 = hourString2 + ":" + minuteString2 + ":" + secondString2 + " UTC"
-                tempPath = Path(timeString2, timeString,  green.getNextStation(),green.getCurrentStation())
+                tempPath = Path(timeString2, timeString,  red.getNextStation(), red.getCurrentStation())
                 self.trainSets[trainNum].addPath(tempPath)
-                green.incrementIndex()
-                if green.stationIndex == 17:
-                    if a == 5:
+                red.incrementIndex()
+                if red.stationIndex == 10:
+                    if a == 14:
                         break
                 timeNowS = nextTimeS+30
         #self.trainSets[trainNum].displayTrainsRouteList()
         timeNowS = nextTimeS + 30        
-        nextTimeS = timeNowS + 120
+        nextTimeS = timeNowS + 175
         ##print(nextTimeS)
         hourT = math.floor(nextTimeS/3600)
         minuteT = (math.floor((nextTimeS-hourT*3600)/60))
@@ -637,7 +841,7 @@ class MBO(object):
         secondString2 = str(secondTN)
         timeString2 = hourString2 + ":" + minuteString2 + ":" + secondString2 + " UTC"
         # green.setStationIndex(0)
-        tempPath = Path(timeString2, timeString, "The Yard", green.getCurrentStation())
+        tempPath = Path(timeString2, timeString, "The Yard", red.getCurrentStation())
         self.trainSets[trainNum].addPath(tempPath)
 
         
@@ -651,12 +855,14 @@ class MBO(object):
             schedule_writer.writerow(['Line', 'Train', 'Driver', 'Depart Station', 'Arrival Station', 'Departure Time', 'Arrival Time'])
             for x in range(0, len(self.trainSets)):
                 for y in range(0, self.trainSets[x].pathLength):
-                    schedule_writer.writerow(['Green', str(x), self.trainSets[x].driverTrain.getName(), self.trainSets[x].pathArray[y].getDepartB(), self.trainSets[x].pathArray[y].getDestB(), self.trainSets[x].pathArray[y].getDepartTime(),self.trainSets[x].pathArray[y].getArrivalTime()])
+                    schedule_writer.writerow([self.trainSets[x].getLineString(), str(x), self.trainSets[x].driverTrain.getName(), self.trainSets[x].pathArray[y].getDepartB(), self.trainSets[x].pathArray[y].getDestB(), self.trainSets[x].pathArray[y].getDepartTime(),self.trainSets[x].pathArray[y].getArrivalTime()])
 
     def receive_train_inputs(self, numb, pos, blockNum, Velo):
         self.trainSets[numb].setBlock(blockNum)
         self.trainSets[numb].setCurrentSpeed(Velo)
         self.trainSets[numb].setPosition(pos)
+
+        
 
         print(self.trainSets[numb].getAuthority())
         link.mbo_send_authority_velocity_tc.emit(numb, self.trainSets[numb].getAuthority(), self.trainSets[numb].getSuggestedSpeed())
@@ -728,13 +934,6 @@ class MBO(object):
 ##        ## about 30 transports in an hour
 ##        ## if more than 6660 tickets are sold (or expected to be sold) for the hour, requires at least two trains
 ##        ## would scale for larger lines
-
-## ALGORITHM to walk through drivers
-        ## input day
-        ## check if each driver is available
-        ## if available, add to schedule set
-        ## keep going until each shift is covered
-        ## if no one is available, hire a new driver
         
 if __name__ == "__main__":
     import sys
@@ -751,7 +950,7 @@ if __name__ == "__main__":
     DisplayWindow.show()
 
     trainA = Train('G')
-##    trainB = Train('B')
+    trainB = Train('R')
 ##    trainC = Train('B')
 ##    trainD = Train('B')
 ##    trainE = Train('B')
@@ -763,7 +962,8 @@ if __name__ == "__main__":
 ##    trainK = Train('B')
 ##    trainL = Train('B')
     MBO1 = MBO(trainA,test_UI,main_UI)
-##    MBO1.addTrain(trainB)
+    MBO1.addTrain(trainB)
+##    MBO1.makeDailySchedule()
 ##    MBO1.addTrain(trainC)
 ##    MBO1.addTrain(trainD)
 ##    MBO1.addTrain(trainE)
@@ -774,8 +974,8 @@ if __name__ == "__main__":
 ##    MBO1.addTrain(trainJ)
 ##    MBO1.addTrain(trainK)
 ##    MBO1.addTrain(trainL)
-    John = Driver("John Smith",1,1,1,1,1,1,1,1)
-    MBO1.trainSets[0].setDriver(John)
+##    John = Driver("John Smith",1,1,1,1,1,1,1,1)
+##    MBO1.trainSets[0].setDriver(John)
 ##    Roger = Driver("Roger Smith",1,1,1,1,1,1,1,1)
 ##    MBO1.trainSets[1].setDriver(Roger)
 ##    David = Driver("David Smith",1,1,1,1,1,1,1,1)
@@ -798,12 +998,13 @@ if __name__ == "__main__":
 ##    MBO1.trainSets[10].setDriver(Gabe)
 ##    Joseph = Driver("Joseph Smith",1,1,1,1,1,1,1,1)
 ##    MBO1.trainSets[11].setDriver(Joseph)
-    MBO1.makeScheduleGreen()
+##    MBO1.makeScheduleGreen()
+##    MBO1.makeScheduleRed()
 
-    conv = Conversion()
-    # print(conv.kmh_to_ms(40))
-
-    MBO1.trainSets[0].setDBlock(73)
+##    conv = Conversion()
+##    # print(conv.kmh_to_ms(40))
+##
+##    MBO1.trainSets[0].setDBlock(73)
 
    
     

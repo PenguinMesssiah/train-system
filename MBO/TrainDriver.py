@@ -27,6 +27,9 @@ class Driver(object):
     def getHoursWorked(self):
         return self.hoursWorked
 
+    def addShift(self):
+        self.hoursWorked += 8
+        
     def getStatus(self):
         return self.active
 

@@ -45,7 +45,7 @@
          </property>
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>Block1</string>
+           <string>Block63</string>
           </property>
          </widget>
          <widget class="QSplitter" name="splitter">
@@ -73,7 +73,7 @@
          </property>
          <widget class="QLabel" name="label_15">
           <property name="text">
-           <string>Block2</string>
+           <string>Block64</string>
           </property>
          </widget>
          <widget class="QSplitter" name="splitter_11">
@@ -101,7 +101,7 @@
          </property>
          <widget class="QLabel" name="label_17">
           <property name="text">
-           <string>Block3</string>
+           <string>Block65</string>
           </property>
          </widget>
          <widget class="QSplitter" name="splitter_20">
@@ -129,7 +129,7 @@
          </property>
          <widget class="QLabel" name="label_16">
           <property name="text">
-           <string>Block4</string>
+           <string>Block66</string>
           </property>
          </widget>
          <widget class="QSplitter" name="splitter_17">
@@ -157,7 +157,7 @@
          </property>
          <widget class="QLabel" name="label_18">
           <property name="text">
-           <string>Block5</string>
+           <string>Block67</string>
           </property>
          </widget>
          <widget class="QSplitter" name="splitter_22">
@@ -203,7 +203,7 @@
          </property>
          <widget class="QLabel" name="label_20">
           <property name="text">
-           <string>Block6</string>
+           <string>Block68</string>
           </property>
          </widget>
          <widget class="QSplitter" name="splitter_28">
@@ -231,7 +231,7 @@
          </property>
          <widget class="QLabel" name="label_21">
           <property name="text">
-           <string>Block7</string>
+           <string>Block69</string>
           </property>
          </widget>
          <widget class="QSplitter" name="splitter_30">
@@ -259,7 +259,7 @@
          </property>
          <widget class="QLabel" name="label_22">
           <property name="text">
-           <string>Block8</string>
+           <string>Block70</string>
           </property>
          </widget>
          <widget class="QSplitter" name="splitter_32">
@@ -287,7 +287,7 @@
          </property>
          <widget class="QLabel" name="label_23">
           <property name="text">
-           <string>Block9</string>
+           <string>Block71</string>
           </property>
          </widget>
          <widget class="QSplitter" name="splitter_34">
@@ -315,7 +315,7 @@
          </property>
          <widget class="QLabel" name="label_24">
           <property name="text">
-           <string>Block10</string>
+           <string>Block72</string>
           </property>
          </widget>
          <widget class="QSplitter" name="splitter_36">
@@ -361,7 +361,7 @@
          </property>
          <widget class="QLabel" name="label_26">
           <property name="text">
-           <string>Block11</string>
+           <string>Block73</string>
           </property>
          </widget>
          <widget class="QSplitter" name="splitter_40">
@@ -387,112 +387,40 @@
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
-         <widget class="QLabel" name="label_27">
-          <property name="text">
-           <string>Block12</string>
-          </property>
-         </widget>
          <widget class="QSplitter" name="splitter_42">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>
-          <widget class="QCheckBox" name="b12o">
-           <property name="text">
-            <string>Ocupied</string>
-           </property>
-          </widget>
-          <widget class="QCheckBox" name="b12b">
-           <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
-           </property>
-           <property name="text">
-            <string>Broken</string>
-           </property>
-          </widget>
          </widget>
         </widget>
         <widget class="QSplitter" name="splitter_43">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
-         <widget class="QLabel" name="label_28">
-          <property name="text">
-           <string>Block13</string>
-          </property>
-         </widget>
          <widget class="QSplitter" name="splitter_44">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>
-          <widget class="QCheckBox" name="b13o">
-           <property name="text">
-            <string>Ocupied</string>
-           </property>
-          </widget>
-          <widget class="QCheckBox" name="b13b">
-           <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
-           </property>
-           <property name="text">
-            <string>Broken</string>
-           </property>
-          </widget>
          </widget>
         </widget>
         <widget class="QSplitter" name="splitter_45">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
-         <widget class="QLabel" name="label_29">
-          <property name="text">
-           <string>Block14</string>
-          </property>
-         </widget>
          <widget class="QSplitter" name="splitter_46">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>
-          <widget class="QCheckBox" name="b14o">
-           <property name="text">
-            <string>Ocupied</string>
-           </property>
-          </widget>
-          <widget class="QCheckBox" name="b14b">
-           <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
-           </property>
-           <property name="text">
-            <string>Broken</string>
-           </property>
-          </widget>
          </widget>
         </widget>
         <widget class="QSplitter" name="splitter_47">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
-         <widget class="QLabel" name="label_30">
-          <property name="text">
-           <string>Block15</string>
-          </property>
-         </widget>
          <widget class="QSplitter" name="splitter_48">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>
-          <widget class="QCheckBox" name="b15o">
-           <property name="text">
-            <string>Ocupied</string>
-           </property>
-          </widget>
-          <widget class="QCheckBox" name="b15b">
-           <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
-           </property>
-           <property name="text">
-            <string>Broken</string>
-           </property>
-          </widget>
          </widget>
         </widget>
        </widget>
@@ -502,34 +430,10 @@
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="QLabel" name="label_31">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Switch Position</string>
-       </property>
-      </widget>
       <widget class="QSplitter" name="splitter_49">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
        </property>
-       <widget class="QRadioButton" name="radioButton">
-        <property name="text">
-         <string>Normal</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="radioButton_2">
-        <property name="text">
-         <string>Reverse</string>
-        </property>
-       </widget>
       </widget>
      </widget>
     </widget>

@@ -8,7 +8,7 @@ from RedLine import RedLine
 import math
 class Train(object):
 
-    train_count = 1
+    train_count = 0
     def __init__(self, lineColor):
         
         self.number = Train.train_count
@@ -70,6 +70,14 @@ class Train(object):
 
     def getLineCol(self):
         return self.lineCol
+
+    def getLineString(self):
+        if self.lineCol == 'B':
+            return "Blue"
+        elif self.lineCol == 'G':
+            return "Green"
+        else:
+            return "Red"
 
     def setDBlock(self,num):
         self.DestinationBlock = int(num)

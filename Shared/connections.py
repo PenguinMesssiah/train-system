@@ -21,16 +21,16 @@ class Connections(QObject):
     train_model_ui_testing_button_pressed = pyqtSignal(int)
 
     # Train Model -> Train Controller
-    train_model_send_failure_ctrl = pyqtSignal(str, bool)
-    train_model_send_velocity_ctrl = pyqtSignal(int, bool)
-    train_model_send_lights_ctrl = pyqtSignal(int, bool)
+    train_model_send_failure_ctrl = pyqtSignal(bool,bool,bool)
+    train_model_send_velocity_ctrl = pyqtSignal(float)
+    train_model_send_lights_ctrl = pyqtSignal(bool, bool)
     train_model_train_dispatched_ctrl = pyqtSignal(Track_Circuit_Data)
-    train_model_send_beacon_ctrl = pyqtSignal(int, Beacon_Data)
+    train_model_send_beacon_ctrl = pyqtSignal(Beacon_Data)
 
     # Train Controller -> Train Model
-    train_model_update_kinematics = pyqtSignal(str, int, float)
-    train_model_receive_temperature = pyqtSignal(int, float)
-    train_model_toggleDoors = pyqtSignal(int, str)
+    train_model_update_kinematics = pyqtSignal(float, float)
+    train_model_receive_temperature = pyqtSignal(int)
+    train_model_toggleDoors = pyqtSignal(bool,bool)
 
     # Track Model -> Train Model
     train_model_dispatch_train = pyqtSignal(str, int, list, Track_Circuit_Data)
@@ -62,7 +62,10 @@ class Connections(QObject):
     train_model_send_gps_velocity_mbo = pyqtSignal(int, float, int, float)
 
     # MBO -> Train Controller
-    mbo_send_authority_velocity_tc = pyqtSignal(int, float, float)
+    mbo_send_authority_velocity = pyqtSignal(int, float)
+    
+    # Train Controller -> MBO
+    TrainControllerSendsBeaconSignal = pyqtSignal(str) 
 
     # HW Train Controller -> SW Train Controller
     HWTrainSendsKpTo = pyqtSignal(float);

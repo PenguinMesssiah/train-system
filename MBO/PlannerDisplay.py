@@ -28,11 +28,7 @@ class Display(object):
         self.trainLabel.setObjectName("trainLabel")
         self.trainLabel.setAlignment(QtCore.Qt.AlignCenter)
 
-        self.schedLabel = QtWidgets.QLabel(self.centralwidget)
-        self.schedLabel.setGeometry(QtCore.QRect(100, 300, 300, 61))
-        self.schedLabel.setStyleSheet("font: 12pt \"MS Shell Dlg 2\";\nbackground-color:rgb(216, 216, 162)")
-        self.schedLabel.setObjectName("schedLabel")
-        self.schedLabel.setAlignment(QtCore.Qt.AlignCenter)
+        
 
         self.inputsLabel = QtWidgets.QLabel(self.centralwidget)
         self.inputsLabel.setGeometry(QtCore.QRect(900, 300, 300, 61))
@@ -177,6 +173,11 @@ class Display(object):
         self.addDriverButton.setStyleSheet("background-color:rgb(224,232,245)")
         self.addDriverButton.setObjectName("addDriverButton")
 
+        #-- button to make schedule
+        self.SchedButton = QtWidgets.QPushButton(self.centralwidget)
+        self.SchedButton.setGeometry(QtCore.QRect(200, 375, 100, 50))
+        self.SchedButton.setStyleSheet("background-color:rgb(224,232,245)")
+        self.SchedButton.setObjectName("SchedButton")
          # Create textbox
         self.textbox1 = QtWidgets.QLineEdit(self.centralwidget)
         self.textbox1.move(1350, 500)
@@ -332,7 +333,7 @@ class Display(object):
         _translate = QtCore.QCoreApplication.translate
         DisplayWindow.setWindowTitle(_translate("DisplayWindow", "MainWindow"))
         self.displayLabel.setText(_translate("DisplayWindow", "MBO UI"))
-        self.schedLabel.setText(_translate("DisplayWindow", "Schedule"))
+       
         self.inputsLabel.setText(_translate("DisplayWindow", "Inputs"))
         self.driversLabel.setText(_translate("DisplayWindow", "Drivers"))
         
@@ -357,6 +358,7 @@ class Display(object):
         self.setActiveButton.setText(_translate("DisplayWindow", "Activate Driver"))
         self.enterDriverDataButton.setText(_translate("DisplayWindow", "Enter Driver"))
         self.enterDatesButton.setText(_translate("DisplayWindow", "Submit Dates"))
+        self.SchedButton.setText(_translate("DisplayWindow", "Make Schedule"))
 ##        self.sundayLabel.setText(_translate("DisplayWindow", "Sunday:"))
 ##        self.mondayLabel.setText(_translate("DisplayWindow", "Monday:"))
 ##        self.tuesdayLabel.setText(_translate("DisplayWindow", "Tuesday:"))
