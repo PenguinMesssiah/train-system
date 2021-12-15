@@ -62,6 +62,7 @@ class Connections(QObject):
 
     # HW Track Controller -> SW Track Controller
     hw_track_controller_send_lights_switch_crossing_commandedspeed_authority = pyqtSignal(dict, dict, dict, dict, dict)
+    hw_track_controller_receive_suggestedspeed_authoritylimit_occupancyTM= pyqtSignal(dict, dict, dict)
 
     # SW Track Controller -> HW Track Controller
     sw_track_controller_send_suggestedspeed_authoritylimit_occupancyTM= pyqtSignal(dict, dict, dict)

@@ -17,6 +17,13 @@ class WaysideControllerHW(object):
     def __init__(self)
         self.control = [Block(19),Block(20),Block(21),Block(22),Block(23),Block(24),Block(25),Block(26),Block(27),Block(28),Block(29),Block(30),Block(31),Block(32),Block(33),Block(150)]      # control and listen are set in stone, they can't be modified after instantiation
         self.listen = [Block(17),Block(18),Block(34),Block(35),Block(36)]
+        # dictionaries of all values
+        self.lights_dict = dict()
+        self.switch_dict = dict()
+        self.crossing_dict = dict()
+        self.occupancyCTC_dict = dict()
+        self.commanded_speed_dict = dict()
+        self.authority_dict = dict()
         #controlled blocks indicies:
         # 0  | 19
         # 1  | 20
@@ -190,31 +197,37 @@ class WaysideControllerHW(object):
 
     # merge dictionaries and send info to Elissa
     def merge_and_send_dicts(self):
-        lights_dict = dict()
-        switch_dict = dict()
-        crossing_dict = dict()
-        #occupancyCTC_dict = dict()
-        commanded_speed_dict = dict()
-        authority_dict = dict()
         for i in range(len(self.control)):
-            lights_dict.update(self.control[i].lights)
-            switch_dict.update(self.control[i].switch)
-            crossing_dict.update(self.control[i].crossing)
+            self.lights_dict.update(self.control[i].lights)
+            self.switch_dict.update(self.control[i].switch)
+            self.crossing_dict.update(self.control[i].crossing)
             #occupancyCTC_dict.update(self.control[i].occupancy_ctc)
-            commanded_speed_dict.update(self.control[i].commanded_speed)
-            authority_dict.update(self.control[i].authority)
-        print(lights_dict)
-        print(switch_dict)
-        print(crossing_dict)
-        #print(occupancyCTC_dict)
-        print(commanded_speed_dict)
-        print(authority_dict)
+            self.commanded_speed_dict.update(self.control[i].commanded_speed)
+            self.authority_dict.update(self.control[i].authority)
+        print(self.lights_dict)
+        print(self.switch_dict)
+        print(self.crossing_dict)
+        #print(self.occupancyCTC_dict)
+        print(self.commanded_speed_dict)
+        print(self.authority_dict)
 
         # send info to Elissa
         link.hw_track_controller_send_lights_switch_crossing_commandedspeed_authority.emit(self.lights_dict, self.switch_dict, self.crossing_dict, self.commanded_speed_dict, self.authority_dict)
 
 
+    # receive info from Elissa
+    def receive(self):
+        # receive info
+        link.hw_track_controller_receive_suggestedspeed_authoritylimit_occupancyTM.connect(self.update)
 
+    def update(self, lights_d, switch_d, crossing_d, commanded_speed_d, authority_d):
+        # update info
+        self.lights_dict = lights_d
+        self.switch_dict = switch_d
+        self.crossing_dict = crossing_d
+        #self.occupancyCTC_dict
+        self.commanded_speed_dict = commanded_speed_d
+        self.authority_dict = authority_d
 
 
 
