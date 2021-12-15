@@ -311,18 +311,23 @@ def set_crossing(cro):
     board.digital[crossing].write(int(binCro[0]))
 
 # Set Authority
-def set_authority(aut):
-    binAut = np.binary_repr(aut, width=10)
-    board.digital[authority[0]].write(int(binAut[0]))
-    board.digital[authority[1]].write(int(binAut[1]))
-    board.digital[authority[2]].write(int(binAut[2]))
-    board.digital[authority[3]].write(int(binAut[3]))
-    board.digital[authority[4]].write(int(binAut[4]))
-    board.digital[authority[5]].write(int(binAut[5]))
-    board.digital[authority[6]].write(int(binAut[6]))
-    board.digital[authority[7]].write(int(binAut[7]))
-    board.digital[authority[8]].write(int(binAut[8]))
-    board.digital[authority[9]].write(int(binAut[9]))
+def set_authority(self):
+    board.digital[authority[0]].write(self.authority_dict.get(self.control[0].number))
+    board.digital[authority[1]].write(self.authority_dict.get(self.control[1].number))
+    board.digital[authority[2]].write(self.authority_dict.get(self.control[2].number))
+    board.digital[authority[3]].write(self.authority_dict.get(self.control[3].number))
+    board.digital[authority[4]].write(self.authority_dict.get(self.control[4].number))
+    board.digital[authority[5]].write(self.authority_dict.get(self.control[5].number))
+    board.digital[authority[6]].write(self.authority_dict.get(self.control[6].number))
+    board.digital[authority[7]].write(self.authority_dict.get(self.control[7].number))
+    board.digital[authority[8]].write(self.authority_dict.get(self.control[8].number))
+    board.digital[authority[9]].write(self.authority_dict.get(self.control[9].number))
+    board.digital[authority[10]].write(self.authority_dict.get(self.control[10].number))
+    board.digital[authority[11]].write(self.authority_dict.get(self.control[11].number))
+    board.digital[authority[12]].write(self.authority_dict.get(self.control[12].number))
+    board.digital[authority[13]].write(self.authority_dict.get(self.control[13].number))
+    board.digital[authority[14]].write(self.authority_dict.get(self.control[14].number))
+    board.digital[authority[15]].write(self.authority_dict.get(self.control[15].number))
 
 # Set Commanded Speed
 def set_commandedSpeed(com):
@@ -345,6 +350,16 @@ def set_occupancy(occ):
     board.digital[occupancy[7]].write(int(binOcc[7]))
     board.digital[occupancy[8]].write(int(binOcc[8]))
     board.digital[occupancy[9]].write(int(binOcc[9]))
+
+
+PINS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53]
+
+lights_PINS = [4, 5, 6, 7]
+switch_PINS = 3
+crossing_PINS = 2
+authority_PINS = [38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53]
+commandedSpeed_PINS = [0, 1, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]
+occupancy_PINS = [8, 9, 10, 11, 12, 13, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37]
 
 
 # Continuous while-loop
