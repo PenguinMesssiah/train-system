@@ -1,11 +1,14 @@
 from time import sleep
-from block import Block
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit, QFileDialog
 from PyQt5.QtGui import QIcon
 import sys
 
 sys.path.append("..")
+
+from HWTrack.block import Block
+from HWTrack.PLCInterpreter import PLCInterpreter
+
 
 from Shared.connections import *
 #from Shared.commmon import *
@@ -27,6 +30,7 @@ class WaysideControllerHW(object):
     self.suggested_speed_dict = dict()
     self.authority_limit_dict = dict()
     self.occupancy_tm_dict = dict()
+    self.plc = PLCInterpreter()
     #controlled blocks indicies:
     # 0  | 19
     # 1  | 20
@@ -231,6 +235,8 @@ class WaysideControllerHW(object):
 #    #self.occupancyCTC_dict
 #    self.commanded_speed_dict = commanded_speed_d
 #    self.authority_dict = authority_d
+
+    self.plc.runPLC("hwPLC.txt", self)
 
     self.suggested_speed_dict = suggested_speed_d
     self.authority_limit_dict = authority_limit_d

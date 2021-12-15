@@ -1,5 +1,5 @@
 #class PLCInterpreter
-#Elissa Wilton
+#in Mike's folder
 
 class PLCInterpreter(object):
 
@@ -35,7 +35,7 @@ class PLCInterpreter(object):
 					print(wayside.crossings)
 				elif data =='l':
 					print('lights')
-					wayside.lights.update({currBlock: self.parseLight(line[5:], wayside)}) 
+					wayside.lights.update({currBlock: self.parseLight(line[5:], wayside)})
 					print(wayside.lights)
 				elif data == 'w':
 					print('switch')
@@ -43,7 +43,7 @@ class PLCInterpreter(object):
 					print(wayside.switches)
 				elif data == 'c':
 					print('commanded speed')
-					wayside.crossings.update({currBlock: self.parseCommandedSpeed(line[5:], wayside)}) #should skip equal sign
+					wayside.blockCommandedSpeed.update({currBlock: self.parseCommandedSpeed(line[5:], wayside)}) #should skip equal sign
 					print(wayside.blockCommandedSpeed)
 
 			f.close()
@@ -57,7 +57,65 @@ class PLCInterpreter(object):
 		#or running calculation <- try this first
 		while cursor < len(rule):
 			argBlock = rule[cursor:cursor+3].strip()
-			try: 
+			try:
+				argBlock = int(argBlock)
+			except:
+				argBlock = argBlock #doesn't like when you don't have anything
+			print(argBlock)
+
+			cursor = cursor+3
+			print(cursor)
+			if cursor >= len(rule):
+				break
+			src = rule[cursor]
+			print("src= " + src)
+			if src == 'a':
+				print ('auth')
+				arg = wayside.blockAuth[argBlock]
+				print(argBlock, ":", arg)
+			elif src == 's':
+				print('schedule')
+				arg = wayside.blockCTCAuth[argBlock]
+				print(argBlock, ":", arg)
+			elif src =='o':
+				print('occ')
+				print(argBlock)
+				arg = wayside.blockOcc[argBlock]
+				print(argBlock, ":", arg)
+			elif src == 'w':
+				print('switch')
+				arg = wayside.switches[argBlock]
+				print(argBlock, ":", arg)
+
+			cursor = cursor + 1
+			if cursor >= len(rule):
+				break
+
+			#and or or
+			if logic == '&':
+				if cursor <=4:
+					result = arg and arg
+				else:
+					result = result and arg
+			elif logic == '|':
+				if cursor <=4:
+					result = arg or arg
+				else:
+					result = result or arg
+
+			print("result= ", result)
+			cursor = cursor + 1
+		return result
+
+	def parseCommandedSpeed(self, rule, wayside):
+		cursor = 0
+		result = 0
+		logic = rule[4]
+		#args = [] #add arg values to an array and then and them
+		#or running calculation <- try this first
+		while cursor < len(rule):
+			argBlock = rule[cursor:cursor+3].strip()
+			try:
 				argBlock = int(argBlock)
 			except:
 				argBlock = argBlock #doesn't like when you don't have anything
@@ -116,7 +174,7 @@ class PLCInterpreter(object):
 		#or running calculation <- try this first
 		while cursor < len(rule):
 			argBlock = rule[cursor:cursor+3].strip()
-			try: 
+			try:
 				argBlock = int(argBlock)
 			except:
 				argBlock = argBlock #doesn't like when you don't have anything
@@ -185,14 +243,14 @@ class PLCInterpreter(object):
 		#args = [] #add arg values to an array and then and them
 		#or running calculation <- try this first
 		while cursor < len(rule):
-			
+
 			#currRule = rule[:end]
 			#remaining = rule[end+1:]
 			cursor2 = 0
 			while cursor2 < len(currRule):
 				logic = currRule[4]
 				argBlock = currRule[cursor2:cursor2+3].strip()
-				try: 
+				try:
 					argBlock = int(argBlock)
 				except:
 					argBlock = argBlock #doesn't like when you don't have anything
@@ -226,7 +284,7 @@ class PLCInterpreter(object):
 				if cursor2 >= len(currRule):
 					break
 
-				#lights are actually based on occupancy 0 = occupied 
+				#lights are actually based on occupancy 0 = occupied
 				arg = not arg
 
 				#and or or
@@ -270,7 +328,3 @@ class PLCInterpreter(object):
 			else:
 				break;
 		return [0, 0, 0, 0]
-
-
-
- 
