@@ -43,13 +43,12 @@ class WaysideControllerHW(object):
         # give blocks with switches, crossings, and lights appropriate attributes
         self.control[0].addCrossing()   # Crossing on 19
         self.control[2].addLights()# Lights on 21
-        self.control[3].addLights()# Lights on 22
         self.control[4].addLights()# Lights on 23
         self.control[10].addSwitch()# Switch on 29
         self.control[10].addLights()# Lights on 29
         self.control[11].addLights()# Lights on 30
-        self.control[12].addLights()# Lights on 31
         self.control[13].addLights()# Lights on 32
+        self.control[15].addLights()# Lights on 150
 
     # These getters and setters are for blocks under control
     # get blocks with switches
