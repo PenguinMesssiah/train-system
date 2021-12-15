@@ -1,4 +1,4 @@
-#from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class display(object):
@@ -6,7 +6,7 @@ class display(object):
         DisplayWindow.setObjectName("DisplayWindow")
         DisplayWindow.resize(1500, 1000)
         DisplayWindow.setAutoFillBackground(False)
-        DisplayWindow.setStyleSheet("background-color: rgb(0, 102, 204);")
+        DisplayWindow.setStyleSheet("background-color: rgb(210, 210, 210             );")
         
         self.centralwidget = QtWidgets.QWidget(DisplayWindow)
         self.centralwidget.setObjectName("centralwidget")
