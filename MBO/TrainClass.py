@@ -4,6 +4,7 @@ from BlueLineSet import BlueLine
 from PathSet import Path
 from TrainDriver import Driver
 from GreenLine import GreenLine
+from RedLine import RedLine
 import math
 class Train(object):
 
@@ -21,6 +22,8 @@ class Train(object):
             self.line = BlueLine()
         elif self.lineCol == 'G':
             self.line = GreenLine()
+        elif self.lineCol == 'R':
+            self.line = RedLine()
         self.authority = 0.0
         self.suggestedSpeed = self.line.getSpeedLimit(self.block)
         self.DestinationBlock = 0
@@ -295,7 +298,161 @@ class Train(object):
                         self.destX += self.line.getBlockLength(x)
                     self.destX += self.line.getBlockLength(self.block) - self.position
 
+        # This section will detetmine the distance between the train and its destination in meters.
+        # This section is for trains on the Red Line
+        
+        elif self.lineCol == 'R':
+            
+            #These section handles the stretch of the track with the loop, sections A-E.
+            if self.DestinationBlock < 16:
+                if self.block <= self.DestinationBlock:
+                    for x in range(self.block+1,self.DestinationBlock+1):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+                else:
+                    for x in range(self.DestinationBlock,self.block):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+            # This section will handle when the destination is Herron Ave.
+            # If it is the destination, it needs to be determined which of the three directions it is coming from
+            
+            elif self.DestinationBlock == 16:
+
+                if self.block <= 7:
+                    for x in range(1,self.block):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+                    self.destX += self.line.getBlockLength(16)
                     
+                elif self.block <=16:
+                    for x in range(self.block+1,self.DestinationBlock+1):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+
+                else:
+                    for x in range(self.DestinationBlock,self.block):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+                    
+            # This section covers sections F, G, and the block of H before the station
+            elif self.DestinationBlock > 16 and self.DestinationBlock < 25:
+
+                if self.block < self.DestinationBlock:
+                    for x in range(self.block+1,self.DestinationBlock+1):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+
+                else:
+                    for x in range(self.DestinationBlock,self.block):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+
+            # This section will cover the first station in H, Penn Station, to handle the change if the RST section is taken.
+            elif self.DestinationBlock == 25:
+
+                # If the train is coming from the north, add the distance normally.
+                if self.block < 25:
+                    for x in range(self.block+1,self.DestinationBlock+1):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+
+                # If the train is coming from the South, it depends if it took the extra loop
+                else:
+                    # If the train is heading north and hasn't crossed the switch yet, assume it is taking the main path.
+                    # The safe stopping distance is small enough to cover this discrepancy.
+                    if self.block > 32 and self.block <=35:
+                        for x in range(self.DestinationBlock,self.block):
+                            self.destX += self.line.getBlockLength(x)
+                        self.destX += self.line.getBlockLength(self.block) - self.position
+                    # This is the same as the previous section. This is when the train took the main path.
+                    # It is separate in-case future iterations of this module wanted to take an input signal signaling which path the train will take.
+                    elif self.block <= 32:
+                        for x in range(self.DestinationBlock,self.block):
+                            self.destX += self.line.getBlockLength(x)
+                        self.destX += self.line.getBlockLength(self.block) - self.position
+                    # This is to update the authority if the train took the alternate route.
+                    elif self.block >= 72 and self.block <= 76:
+                        for x in range(self.block+1,77):
+                            self.destX += self.line.getBlockLength(x)
+                        self.destX += self.line.getBlockLength(self.block) - self.position
+                        # This adds the 3 blocks that remain after the loop.
+                        for x in range(25,28):
+                            self.destX += self.line.getBlockLength(x)
+                        
+            # This section handles if the train wanted to stop at blocks 26 and 27. Would only happen if there is an obstacle in the way.
+            elif self.DestinationBlock > 25 and self.DestinationBlock < 28:
+
+                if self.block <= self.DestinationBlock:
+                    for x in range(self.block+1,self.DestinationBlock+1):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+
+                else:
+
+                    # If the train is heading north and hasn't crossed the switch yet, assume it is taking the main path.
+                    # The safe stopping distance is small enough to cover this discrepancy.
+                    if self.block > 32 and self.block <=35:
+                        for x in range(self.DestinationBlock,self.block):
+                            self.destX += self.line.getBlockLength(x)
+                        self.destX += self.line.getBlockLength(self.block) - self.position
+                    # This is the same as the previous section. This is when the train took the main path.
+                    # It is separate in-case future iterations of this module wanted to take an input signal signaling which path the train will take.
+                    elif self.block <= 32:
+                        for x in range(self.DestinationBlock,self.block):
+                            self.destX += self.line.getBlockLength(x)
+                        self.destX += self.line.getBlockLength(self.block) - self.position
+                    # This is to update the authority if the train took the alternate route.
+                    elif self.block >= 72 and self.block <= 76:
+                        for x in range(self.block+1,77):
+                            self.destX += self.line.getBlockLength(x)
+                        self.destX += self.line.getBlockLength(self.block) - self.position
+                        # This adds the 3 blocks that remain after the loop.
+                        for x in range(self.DestinationBlock,28):
+                            self.destX += self.line.getBlockLength(x)
+
+            # This section handles if the train wanted to stop along the H path between the switches for R and T.
+            elif self.DestinationBlock >= 28 and self.DestinationBlock <33:
+
+                # If the train is coming from the north.
+                if self.block <= self.DestinationBlock:
+                    for x in range(self.block+1,self.DestinationBlock+1):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+                    
+                # if the train is coming from the south.
+                else:
+                    for x in range(self.DestinationBlock,self.block):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+            # This section handles if the train wanted to stop before the station but after the loop.
+            
+            elif self.DestinationBlock == 33 or self.DestinationBlock == 34:
+                
+                # If the train is coming from the south.
+                if self.block >= self.DestinationBlock and self.block < 36:
+                    for x in range(self.DestinationBlock,self.block):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+                    
+                # If the train is coming from the north and not in the RST loop.    
+                elif self.block < self.DestinationBlock:
+                    
+                    for x in range(self.block+1,self.DestinationBlock+1):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+                # If the train is in the RST loop coming down    
+                else:
+                    
+                    for x in range(72, self.block):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+                    for x in range(33, self.DestinationBlock+1):
+                        self.destX += self.line.getBlockLength(x)
+                    
+            elif self.DestinationBlock == 35:
+
+                
+                
         self.safeStoppingDistance =  (0 - self.currentSpeed ** 2)/(2*self.regDecel)
 
         #--print(self.safeStoppingDistance)
