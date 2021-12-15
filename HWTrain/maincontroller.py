@@ -11,7 +11,10 @@ sys.path.append("..")
 from Shared.connections import *
 from Shared.common import *
 
-def send_sw_inputs():
+def send_sw_inputs(): #This links the values entered by the train driver to the SW module.
+    link.HWTrainSendsKpTo.emit(Kp);
+    link.HWTrainSendsKiTo.emit(Ki);
+    
     link.HWTrainSendsTempTo.emit(tempStatus);
     link.HWTrainSendsEngineTo.emit(engineStatus);
     link.HWTrainSendsAnnounceTo.emit(announceStatus);
@@ -34,15 +37,15 @@ def send_sw_inputs():
 def setTrainValues():
     #Gather kp and ki input from Engineer
     print("Welcome Engineer!")
-    kp = input("Enter kp value: ")
-    ki = input("Enter ki value: ")
+    kp = float(input("Enter kp value: "))
+    ki = float(input("Enter ki value: "))
     print("Kp is", kp, "and ki is", ki, ".")
     start(kp, ki)
 
 def start(kp, ki): #Start 1 train at a time. Function can only run a single train on hardware.
     print("Welcome Train Driver!")
     engineStatus = input("Turn engine on? (y/n)")
-    
+    #Run RPi display
     if engineStatus == "y":
         print("Engine on.")
         func=input("What would you like to do? (temp/announce/doors/lights/speed/mode/emergbrake/servbrake) ")
