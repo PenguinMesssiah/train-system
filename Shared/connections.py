@@ -60,5 +60,14 @@ class Connections(QObject):
     # MBO -> Train Controller
     mbo_send_authority_velocity_tc = pyqtSignal(int, float, float)
 
+    # HW Track Controller -> SW Track Controller
+    hw_track_controller_send_lights_switch_crossing_occupancyCTC_commandedspeed_authority = pyqtSignal(dict, dict, dict, dict, dict, dict)
+
+    # SW Track Controller -> HW Track Controller
+    sw_track_controller_send_suggestedspeed_authoritylimit = pyqtSignal(dict, dict)
+    
+    # SW Track Controller -> CTC
+
+    # SW Track Controller -> Track Model
 
 link = Connections()

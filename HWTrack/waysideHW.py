@@ -1,7 +1,15 @@
+import time
 from block import Block
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit, QFileDialog
 from PyQt5.QtGui import QIcon
+import sys
+
+sys.path.append("..")
+
+from Shared.connections import *
+from Shared.commmon import *
+
 
 #implement my wayside controller
 class WaysideControllerHW(object):
@@ -37,8 +45,8 @@ class WaysideControllerHW(object):
         self.control[2].addLights()# Lights on 21
         self.control[3].addLights()# Lights on 22
         self.control[4].addLights()# Lights on 23
-        self.control[10].addSwitch()# Switch on 29??? maybe on 150 instead???
-        self.control[10].addLights()# Lights on 29??? maybe on 150 instead???
+        self.control[10].addSwitch()# Switch on 29
+        self.control[10].addLights()# Lights on 29
         self.control[11].addLights()# Lights on 30
         self.control[12].addLights()# Lights on 31
         self.control[13].addLights()# Lights on 32
