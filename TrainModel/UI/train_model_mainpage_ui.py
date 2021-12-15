@@ -7,7 +7,10 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from connections import connect
+import sys
+sys.path.append("..")
+
+from Shared.connections import *
 
 class Mainpage_UI(object):
     def setupUi(self, TrainModel, currentTrainNum):
@@ -544,13 +547,13 @@ class Mainpage_UI(object):
         # TrainModelPassenger.show()
         #sys.exit(passenger_app.exec_())
 
-        connect.train_model_ui_passenger_button_pressed.emit(self.currentTrainNum)
+        link.train_model_ui_passenger_button_pressed.emit(self.currentTrainNum)
 
     def diagnostics_button_pressed(self):
-        connect.train_model_ui_diagnostics_button_pressed.emit(self.currentTrainNum)
+        link.train_model_ui_diagnostics_button_pressed.emit(self.currentTrainNum)
 
     def testing_button_pressed(self):
-        connect.train_model_ui_testing_button_pressed.emit(self.currentTrainNum)
+        link.train_model_ui_testing_button_pressed.emit(self.currentTrainNum)
 
     def retranslateUi(self, TrainModel):
         _translate = QtCore.QCoreApplication.translate

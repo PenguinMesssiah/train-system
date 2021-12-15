@@ -7,7 +7,10 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from connections import connect
+import sys
+sys.path.append("..")
+
+from Shared.connections import link
 
 class Diagnostics_UI(object):
     def setupUi(self, Diagnostics_UI, currentTrainNum):
@@ -100,13 +103,13 @@ class Diagnostics_UI(object):
         #connect.train_model_send_emergencyBrake_passenger_UI.connect(self.set_emergencyBrake_status_label)
 
     def toggleEngineFailure(self):
-        connect.train_model_diagnostics_toggleEngineFailure.emit(self.currentTrainNum)
+        link.train_model_diagnostics_toggleEngineFailure.emit(self.currentTrainNum)
 
     def toggleBrakeFailure(self):
-        connect.train_model_diagnostics_toggleBrakeFailure.emit(self.currentTrainNum)
+        link.train_model_diagnostics_toggleBrakeFailure.emit(self.currentTrainNum)
 
     def toggleSignalPickupFailure(self):
-        connect.train_model_diagnostics_toggleSignalPickupFailure.emit(self.currentTrainNum)
+        link.train_model_diagnostics_toggleSignalPickupFailure.emit(self.currentTrainNum)
 
     def retranslateUi(self, Diagnostics_UI):
         _translate = QtCore.QCoreApplication.translate

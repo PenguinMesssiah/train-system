@@ -7,7 +7,10 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from connections import connect
+import sys
+sys.path.append("..")
+
+from Shared.connections import link
 
 class Passenger_UI(object):
     def setupUi(self, Passenger_UI, currentTrainNum):
@@ -142,13 +145,13 @@ class Passenger_UI(object):
 
         self.engage_emergencyBrake_button.pressed.connect(self.engage_emergencyBrake_button_pressed)
         self.disengage_emergencyBrake_button.pressed.connect(self.disengage_emergencyBrake_button_pressed)
-        connect.train_model_send_emergencyBrake_passenger_UI.connect(self.set_emergencyBrake_status_label)
+        link.train_model_send_emergencyBrake_passenger_UI.connect(self.set_emergencyBrake_status_label)
 
     def engage_emergencyBrake_button_pressed(self):
-        connect.train_model_receive_passenger_emergencyBrake.emit(self.currentTrainNum, True)
+        link.train_model_receive_passenger_emergencyBrake.emit(self.currentTrainNum, True)
 
     def disengage_emergencyBrake_button_pressed(self):
-        connect.train_model_receive_passenger_emergencyBrake.emit(self.currentTrainNum, False)
+        link.train_model_receive_passenger_emergencyBrake.emit(self.currentTrainNum, False)
 
     def set_emergencyBrake_status_label(self, status):
         if status:

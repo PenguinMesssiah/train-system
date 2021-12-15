@@ -1,10 +1,9 @@
 
 class Track_Circuit_Data:
 
-    def __init__(self, authority, commandedSpeed, speedLimit):
+    def __init__(self, authority, commandedSpeed):
         self.authority = authority
         self.commandedSpeed = commandedSpeed
-        self.speedLimit = speedLimit
 
 class Beacon_Data:
 

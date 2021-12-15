@@ -1,6 +1,9 @@
 from PyQt5.Qt import pyqtSignal
 from PyQt5.QtCore import QObject
-from common import *
+import sys
+sys.path.append("..")
+
+from Shared.common import *
 
 class Connections(QObject):
 
@@ -52,16 +55,7 @@ class Connections(QObject):
     train_model_send_testing_values = pyqtSignal(int, int, float, float, float, float, float)
 
     # Train Model -> MBO
-    train_model_send_velocity_mbo = pyqtSignal(int, float)
-    train_model_send_gps_mbo = pyqtSignal(int, float)
     train_model_send_gps_velocity_mbo = pyqtSignal(int, float, int, float)
 
-    # MBO -> Train Controller
-    mbo_send_authority_tc = pyqt(int, float)
-    mbo_send_sugg_speed_tc = pyqt(int, float)
-    # need one to send schedule to TC and to CTC
 
-    
-
-
-connect = Connections()
+link = Connections()

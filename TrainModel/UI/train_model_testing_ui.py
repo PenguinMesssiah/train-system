@@ -7,8 +7,10 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from connections import connect
+import sys
+sys.path.append("..")
 
+from Shared.connections import link
 
 class Testing_UI(object):
     def setupUi(self, Test, currentTrainNum):
@@ -164,28 +166,28 @@ class Testing_UI(object):
         self.toggleRightDoor_button.pressed.connect(self.toggleRightDoor)
 
     def toggleServiceBrakes(self):
-        connect.train_model_testing_send_serviceBrake.emit(self.currentTrainNum)
+        link.train_model_testing_send_serviceBrake.emit(self.currentTrainNum)
 
 
     def toggleEmergencyBrakes(self):
         self.numPressed += 1
 
         if (self.numPressed % 2) == 0:
-            connect.train_model_receive_passenger_emergencyBrake.emit(self.currentTrainNum, False)     # temp for iteration 2, reusing passenger function
+            link.train_model_receive_passenger_emergencyBrake.emit(self.currentTrainNum, False)     # temp for iteration 2, reusing passenger function
         else:
-            connect.train_model_receive_passenger_emergencyBrake.emit(self.currentTrainNum, True)
+            link.train_model_receive_passenger_emergencyBrake.emit(self.currentTrainNum, True)
 
 
     def toggleLeftDoor(self):
-        connect.train_model_toggleDoors.emit(self.currentTrainNum, "left")
+        link.train_model_toggleDoors.emit(self.currentTrainNum, "left")
 
 
     def toggleRightDoor(self):
-        connect.train_model_toggleDoors.emit(self.currentTrainNum, "right")
+        link.train_model_toggleDoors.emit(self.currentTrainNum, "right")
 
     
     def stopRun(self):
-        connect.train_model_stop_run.emit()
+        link.train_model_stop_run.emit()
 
 
     def setValues(self):
@@ -195,7 +197,7 @@ class Testing_UI(object):
         commandedSpeed = float(self.setCommandedSpeed_text.toPlainText())
         speedLimit = float(self.setSpeedLimit_text.toPlainText())
         power = float(self.setPower_text.toPlainText())
-        connect.train_model_send_testing_values.emit(self.currentTrainNum, passengers, temperature, suggestedSpeed, commandedSpeed, speedLimit, power)
+        link.train_model_send_testing_values.emit(self.currentTrainNum, passengers, temperature, suggestedSpeed, commandedSpeed, speedLimit, power)
 
 
     def set_to_zero_if_empty(self, text):

@@ -4,9 +4,7 @@
 from PyQt5 import QtCore, QtWidgets
 import math, time
 import os, sys
-#sys.path.append(r"C:\Users\DAU18\Documents\School\ECE1140\train-system\Shared")
-#sys.path.append(os.path.join(os.path.dirname(__file__), "..", ".."))
-#sys.path = [os.path.join(os.path.dirname(__file__), "..", "..")] + sys.path
+sys.path.append("..")
 
 # from train import Train
 # from block import Block
@@ -15,12 +13,18 @@ import os, sys
 # from train_model_diagnostics_ui import Diagnostics_UI
 # from train_model_testing_ui import Testing_UI
 
-from Models        import *
-from UI            import *
-from ..Shared.connections import *
-from ..Shared.common      import *
+from Models.train                  import *
+from Models.block                  import *
+from UI.train_model_mainpage_ui    import Mainpage_UI
+from UI.train_model_passenger_ui   import Passenger_UI
+from UI.train_model_diagnostics_ui import Diagnostics_UI
+from UI.train_model_testing_ui     import Testing_UI
 
+# from ..Shared.connections import *
+# from ..Shared.common      import *
 
+from Shared.common import *
+from Shared.connections import *
 
 # Reminder for later!!!:  Guard the creation of the windows and dialogs to prevent disconnected duplicate windows
 
@@ -48,33 +52,33 @@ class Train_Functions:
         self.blockList = []
 
         # Connections
-        connect.train_model_receive_authority.connect(self.receive_authority)
+        link.train_model_receive_authority.connect(self.receive_authority)
 
-        connect.train_model_update_kinematics.connect(self.update_kinematics)
-        connect.train_model_dispatch_train.connect(self.dispatch_train)
+        link.train_model_update_kinematics.connect(self.update_kinematics)
+        link.train_model_dispatch_train.connect(self.dispatch_train)
 
-        connect.train_model_receive_blockList.connect(self.receive_blockList)
+        link.train_model_receive_blockList.connect(self.receive_blockList)
 
-        connect.train_model_stop_run.connect(self.stopRun)
+        link.train_model_stop_run.connect(self.stopRun)
 
-        connect.train_model_toggleDoors.connect(self.receive_door)
+        link.train_model_toggleDoors.connect(self.receive_door)
         
 
         if UI_mode == "Default" or UI_mode == "Test":
               
-            connect.train_model_ui_passenger_button_pressed.connect(self.open_passenger_dialog)
-            connect.train_model_ui_diagnostics_button_pressed.connect(self.open_diagnostics_dialog)
-            connect.train_model_ui_testing_button_pressed.connect(self.open_testing_dialog)
+            link.train_model_ui_passenger_button_pressed.connect(self.open_passenger_dialog)
+            link.train_model_ui_diagnostics_button_pressed.connect(self.open_diagnostics_dialog)
+            link.train_model_ui_testing_button_pressed.connect(self.open_testing_dialog)
 
-            connect.train_model_testing_send_serviceBrake.connect(self.receive_serviceBrake)
+            link.train_model_testing_send_serviceBrake.connect(self.receive_serviceBrake)
 
-            connect.train_model_diagnostics_toggleEngineFailure.connect(self.receive_engineFailure)
-            connect.train_model_diagnostics_toggleBrakeFailure.connect(self.receive_brakeFailure)
-            connect.train_model_diagnostics_toggleSignalPickupFailure.connect(self.receive_signalPickupFailure)
+            link.train_model_diagnostics_toggleEngineFailure.connect(self.receive_engineFailure)
+            link.train_model_diagnostics_toggleBrakeFailure.connect(self.receive_brakeFailure)
+            link.train_model_diagnostics_toggleSignalPickupFailure.connect(self.receive_signalPickupFailure)
 
-            connect.train_model_receive_passenger_emergencyBrake.connect(self.receive_emergencyBrake)
+            link.train_model_receive_passenger_emergencyBrake.connect(self.receive_emergencyBrake)
 
-            connect.train_model_send_testing_values.connect(self.receive_testing_values)
+            link.train_model_send_testing_values.connect(self.receive_testing_values)
 
             import sys
 
@@ -167,7 +171,7 @@ class Train_Functions:
         self.blockList = blockRoute
         self.trainList.append(dispatchedTrain)
 
-        connect.train_model_train_dispatched_ctrl.emit(trackCircuitInput)
+        link.train_model_train_dispatched_ctrl.emit(trackCircuitInput)
 
 
     def update_continuously(self, trainNum, power):  
@@ -290,13 +294,16 @@ class Train_Functions:
                     #self.currentBlockNum += 1
 
                     # Send block occupancy to track model
-                    connect.track_model_update_block_occupancy.emit(trainNum, currentBlock)
+                    link.track_model_update_block_occupancy.emit(trainNum, currentBlock)
             
             # Update rest of values
             self.trainList[trainNum].position = position
             self.trainList[trainNum].power = power
             self.trainList[trainNum].currentSpeed = velocity
             self.trainList[trainNum].acceleration = acceleration
+
+            # Send position and velocity to MBO
+            link.train_model_send_gps_velocity_mbo(trainNum, position, currentBlock, velocity)
             
             # Update UI
             # connect.train_model_update_ui.emit("position", position)
@@ -330,7 +337,7 @@ class Train_Functions:
 
     # Receive suggested speed from the Track Model
     def receive_suggestedSpeed(self, train, suggestedSpeed):
-        connect.train_model_send_suggestedSpeed_ctrl.emit(train, suggestedSpeed)
+        link.train_model_send_suggestedSpeed_ctrl.emit(train, suggestedSpeed)
         self.ui.suggestedSpeed_text.setText(str(suggestedSpeed))
 
     # Receive deceleration limit from the Track Model
@@ -377,7 +384,7 @@ class Train_Functions:
         #self.ui.serviceBrake_toggle.set(brake)
 
         if self.UI_mode:
-            connect.train_model_update_UI_serviceBrake.emit(self.trainList[train].serviceBrake)
+            link.train_model_update_UI_serviceBrake.emit(self.trainList[train].serviceBrake)
             if self.trainList[train].serviceBrake:
                 self.ui.serviceBrakes_indicator.setText(self._translate("TrainModel", "<html><head/><body><p><span style=\" color:#ff0004;\">Engaged</span></p></body></html>"))
             else:
@@ -486,22 +493,22 @@ class Train_Functions:
     def send_trackCircuit(self, train, trackCircuit):
         # Send to Train Controller if signal pickup isn't failing
         if not(self.TrainList[train].signalPickupFailure):
-            connect.train_model_send_trackCircuit(trackCircuit)
+            link.train_model_send_trackCircuit(trackCircuit)
 
     # Receive brake failure from Murphy
     def send_brakeFailure(self, train, brakeFailure):
         self.trainList[train].brakeFailure = brakeFailure
-        connect.train_model_send_failure_ctrl.emit("brakeFailure", brakeFailure)
+        link.train_model_send_failure_ctrl.emit("brakeFailure", brakeFailure)
 
     # Receive signal pickup failure from Murphy
     def send_signalPickupFailure(self, train, signalPickupFailure):
         self.trainList[train].signalPickupFailure = signalPickupFailure
-        connect.train_model_send_failure_ctrl.emit("signalPickupFailure", signalPickupFailure)
+        link.train_model_send_failure_ctrl.emit("signalPickupFailure", signalPickupFailure)
         
     # Receive engine failure from Murphy
     def send_engineFailure(self, train, engineFailure):
         self.trainList[train].engineFailure = engineFailure
-        connect.train_model_send_failure_ctrl.emit("engineFailure", engineFailure)
+        link.train_model_send_failure_ctrl.emit("engineFailure", engineFailure)
 
 if __name__ == '__main__':
 
