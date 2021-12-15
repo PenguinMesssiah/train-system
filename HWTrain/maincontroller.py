@@ -4,13 +4,33 @@ import string
 #temp from Controller.TrainController import TrainController
 #temp from UI.Driver import DriverDisplay
 #temp from UI.Engineer import EngineerDisplay
-#from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 sys.path.append("..")
 
 from Shared.connections import *
 from Shared.common import *
 
+def send_sw_inputs():
+    link.HWTrainSendsTempTo.emit(tempStatus);
+    link.HWTrainSendsEngineTo.emit(engineStatus);
+    link.HWTrainSendsAnnounceTo.emit(announceStatus);
+    
+    link.HWTrainSendsRDoorTo.emit(rdoorsOpen);
+    link.HWTrainSendsLDoorTo.emit(ldoorsOpen);
+    
+    link.HWTrainSendsIncSpeedTo.emit(incSpeed);
+    link.HWTrainSendsDecSpeedTo.emit(decSpeed);
+    
+    link.HWTrainSendsCabinLightsTo.emit(cabinlightsOn);
+    link.HWTrainSendsHeadLightsTo.emit(headlightsOn);
+    
+    link.HWTrainSendsAutoModeTo.emit(autoMode);
+    link.HWTrainSendsManModeTo.emit(manMode);
+    
+    link.HWTrainSendsEmergBrakeTo.emit(emergBrake);
+    link.HWTrainSendsServBrakeTo.emit(servBrake);
+    
 def setTrainValues():
     #Gather kp and ki input from Engineer
     print("Welcome Engineer!")
