@@ -29,6 +29,7 @@ class TrainController(object):
         self.announcement = 'NONE'
         self.actualSpeed = 0.0
         self.suggestedSpeed = 0.0
+        self.Track_Circuit_Data = False
 
         self.power = 0.0
         self.maxPower = 150000

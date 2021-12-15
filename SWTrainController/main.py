@@ -5,6 +5,47 @@ from UI.Driver import DriverDisplay
 from UI.Engineer import EngineerDisplay
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
+def receiveFromHW():
+    link.receiveKp.connect(self.update)
+    link.receiveKi.connect(self.update)
+    
+    link.receiveTemp.connect(self.update)
+    link.receiveEngine.connect(self.update)
+    link.receiveAnnounce.connect(self.update)
+    
+    link.receiveRDoor.connect(self.update)
+    link.receiveLDoor.connect(self.update)
+    
+    link.receiveIncSpeed.connect(self.update)
+    link.receiveDecSpeed.connect(self.update)
+    
+    link.receiveCabinLights.connect(self.update)
+    link.receiveHeadLights.connect(self.update)
+    
+    link.receiveAutoMode.connect(self.update)
+    link.receiveManMode.connect(self.update)
+    
+    link.receiveEmergBrake.connect(self.update)
+    link.receiveServBrake.connect(self.update)
+    
+def sendToTrainModel():
+    link.train_model_update_kinematics.emit(kp, ki)
+    link.train_model_receive_temperature.emit(temp)
+    link.train_model_toggleDoors.emit(rightdoorStatus, leftdoorStatus)
+    
+def receiveFromTrainModel():
+    link.train_model_send_failure_ctrl.connect(engineFaultStatus,brakeFaultStatus,signalFaultStatus)
+    link.train_model_send_velocity_ctrl.connect(actualSpeed)
+    link.train_model_send_lights_ctrl.connect(headlightStatus,cabinlightStatus)
+    link.train_model_train_dispatched_ctrl.connect(Track_Circuit_Data)
+    link.train_model_send_beacon_ctrl.connect(beacon) 
+    
+def sendtoMBO():
+    link.TrainControllerSendsBeaconSignal(beacon)
+def receiveFromMBO():
+    link.mbo_send_authority_velocity.connect(authority,velocity)   
+
 def setTrainValues():
     kp = Engineer_UI.kpInput.value()
     ki = Engineer_UI.kiInput.value()

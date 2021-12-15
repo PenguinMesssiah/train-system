@@ -135,3 +135,4 @@ def start(kp, ki): #Start 1 train at a time. Function can only run a single trai
 if __name__ == "__main__":
     import sys
     setTrainValues()
+    send_sw_inputs() #send values over to Klaus
