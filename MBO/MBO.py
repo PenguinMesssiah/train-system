@@ -8,6 +8,7 @@ from TrainClass import Train
 from BlueLineSet import BlueLine
 from PathSet import Path
 from GreenLine import GreenLine
+from RedLine import RedLine
 import math
 import csv
 import sys
@@ -315,7 +316,7 @@ class MBO(object):
         self.trainSets[trainNum].addPath(tempPath)
         timeNowS = nextTimeS + 30
         for z in range(0,6):
-            for y in range(0,20):
+            for y in range(0,21):
                 timeTemp = green.getTime()
                 nextTimeS = timeNowS + timeTemp
                 ##print(nextTimeS)
@@ -339,12 +340,13 @@ class MBO(object):
                 tempPath = Path(timeString2, timeString, green.getNextStation(), green.getCurrentStation())
                 self.trainSets[trainNum].addPath(tempPath)
                 green.incrementIndex()
-                if green.stationIndex == 19:
-                    if z == 7:
+                if green.stationIndex == 17:
+                    if z == 5:
                         break
                 timeNowS = nextTimeS + 30
                 
-        nextTimeS = timeNowS + 30
+        timeNowS = nextTimeS + 30        
+        nextTimeS = timeNowS + 120
         ##print(nextTimeS)
         hourT = math.floor(nextTimeS/3600)
         minuteT = (math.floor((nextTimeS-hourT*3600)/60))
@@ -362,6 +364,7 @@ class MBO(object):
         minuteString2 = str(minuteTN)
         secondString2 = str(secondTN)
         timeString2 = hourString2 + ":" + minuteString2 + ":" + secondString2 + " UTC"
+        # green.setStationIndex(0)
         tempPath = Path(timeString2, timeString, "The Yard", green.getCurrentStation())
         self.trainSets[trainNum].addPath(tempPath)
         timeNowS = nextTimeS
@@ -386,11 +389,14 @@ class MBO(object):
         minuteString2 = str(minuteTN)
         secondString2 = str(secondTN)
         timeString2 = hourString2 + ":" + minuteString2 + ":" + secondString2 + " UTC"
-        tempPath = Path(timeString2, timeString, green.getNextStation(),"The Yard")
+        green.setStationIndex(0)
+        tempPath = Path(timeString2, timeString, green.getCurrentStation(),"The Yard")
+        
         self.trainSets[trainNum].addPath(tempPath)
+        green.setStationIndex(0)
         timeNowS = nextTimeS + 30
         for a in range(0,6):
-            for b in range(0,20):
+            for b in range(0,21):
                 timeTemp = green.getTime()
                 nextTimeS = timeNowS + timeTemp
                 ##print(nextTimeS)
@@ -414,28 +420,226 @@ class MBO(object):
                 tempPath = Path(timeString2, timeString,  green.getNextStation(),green.getCurrentStation())
                 self.trainSets[trainNum].addPath(tempPath)
                 green.incrementIndex()
+                if green.stationIndex == 17:
+                    if a == 5:
+                        break
                 timeNowS = nextTimeS+30
         #self.trainSets[trainNum].displayTrainsRouteList()
-        
+        timeNowS = nextTimeS + 30        
+        nextTimeS = timeNowS + 120
+        ##print(nextTimeS)
+        hourT = math.floor(nextTimeS/3600)
+        minuteT = (math.floor((nextTimeS-hourT*3600)/60))
+        ##print(minuteT)
+        ##minuteT = minuteT/100
+        secondT = (nextTimeS - hourT*3600 - minuteT*60)
+        hourTN = math.floor(timeNowS/3600)
+        minuteTN = math.floor((timeNowS-hourTN*3600)/60)
+        secondTN = (timeNowS - hourTN*3600 - minuteTN*60)
+        hourString = str(hourT)
+        minuteString = str(minuteT)
+        secondString = str(secondT)
+        timeString = hourString + ":" + minuteString + ":" + secondString + " UTC"
+        hourString2 = str(hourTN)
+        minuteString2 = str(minuteTN)
+        secondString2 = str(secondTN)
+        timeString2 = hourString2 + ":" + minuteString2 + ":" + secondString2 + " UTC"
+        # green.setStationIndex(0)
+        tempPath = Path(timeString2, timeString, "The Yard", green.getCurrentStation())
+        self.trainSets[trainNum].addPath(tempPath)
 
     def makeScheduleGreen(self):
         
         self.makeShiftGreen(self.startTime, 0, 0, 0)
-        self.makeShiftGreen(self.startTime, 0, 15, 1)
-        self.makeShiftGreen(self.startTime, 0, 30, 2)
-        self.makeShiftGreen(self.startTime, 0, 45, 3)
-
-        self.makeShiftGreen(self.startTime + 9, 0, 0, 4)
-        self.makeShiftGreen(self.startTime + 9, 0, 15, 5)
-        self.makeShiftGreen(self.startTime + 9, 0, 30, 6)
-        self.makeShiftGreen(self.startTime + 9, 0, 45, 7)
+        #self.makeShiftGreen(self.startTime, 0, 15, 1)
         
-        self.makeShiftGreen(self.startTime + 18, 0, 0, 8)
-        self.makeShiftGreen(self.startTime + 18, 0, 15, 9)
-        self.makeShiftGreen(self.startTime + 18, 0, 30, 10)
-        self.makeShiftGreen(self.startTime + 18, 0, 45, 11)
+       # self.makeShiftGreen(self.startTime + 9, 0, 0, 4)
+##        self.makeShiftGreen(self.startTime + 9, 0, 15, 5)
+##        self.makeShiftGreen(self.startTime + 9, 0, 30, 6)
+##        self.makeShiftGreen(self.startTime + 9, 0, 45, 7)
+        
+##        self.makeShiftGreen(self.startTime + 18, 0, 0, 8)
+##        self.makeShiftGreen(self.startTime + 18, 0, 15, 9)
+##        self.makeShiftGreen(self.startTime + 18, 0, 30, 10)
+##        self.makeShiftGreen(self.startTime + 18, 0, 45, 11)
 
         self.makeCSV()
+        
+    def makeShiftRed(self, startTH, startTS, startTM, trainNum):
+        
+        timeNowS = startTH*60*60 + startTM*60 + startTS
+        nextTime = 0.0
+        nextTimeS = 0.0
+        hourT = 0
+        hourTN = 0
+        minuteTN = 0.0
+        minuteT = 0.0
+        secondTN = 0.0
+        secondT = 0.0
+        timeTemp = 0.0
+        hourString = ""
+        minuteString = ""
+        secondString = ""
+        timeString = ""
+        hourString2 = ""
+        minuteString2 = ""
+        secondString2 = ""
+        timeString2 = ""
+        red = RedLine()
+        nextTimeS = timeNowS + 30
+        ##print(nextTimeS)
+        hourT = math.floor(nextTimeS/3600)
+        minuteT = (math.floor((nextTimeS-hourT*3600)/60))
+        ##print(minuteT)
+        ##minuteT = minuteT/100
+        secondT = (nextTimeS - hourT*3600 - minuteT*60)
+        hourTN = math.floor(timeNowS/3600)
+        minuteTN = math.floor((timeNowS-hourTN*3600)/60)
+        secondTN = (timeNowS - hourTN*3600 - minuteTN*60)
+        hourString = str(hourT)
+        minuteString = str(minuteT)
+        secondString = str(secondT)
+        timeString = hourString + ":" + minuteString + ":" + secondString + " UTC"
+        hourString2 = str(hourTN)
+        minuteString2 = str(minuteTN)
+        secondString2 = str(secondTN)
+        timeString2 = hourString2 + ":" + minuteString2 + ":" + secondString2 + " UTC"
+        tempPath = Path(timeString2, timeString,  green.getCurrentStation(), "The Yard")
+        self.trainSets[trainNum].addPath(tempPath)
+        timeNowS = nextTimeS + 30
+        for z in range(0,6):
+            for y in range(0,21):
+                timeTemp = green.getTime()
+                nextTimeS = timeNowS + timeTemp
+                ##print(nextTimeS)
+                hourT = math.floor(nextTimeS/3600)
+                minuteT = (math.floor((nextTimeS-hourT*3600)/60))
+                ##print(minuteT)
+                ##minuteT = minuteT/100
+                secondT = (nextTimeS - hourT*3600 - minuteT*60)
+                hourTN = math.floor(timeNowS/3600)
+                minuteTN = math.floor((timeNowS-hourTN*3600)/60)
+                secondTN = (timeNowS - hourTN*3600 - minuteTN*60)
+                ##minuteTN = minuteTN/100
+                hourString = str(hourT)
+                minuteString = str(minuteT)
+                secondString = str(secondT)
+                timeString = hourString + ":" + minuteString + ":" + secondString + " UTC"
+                hourString2 = str(hourTN)
+                minuteString2 = str(minuteTN)
+                secondString2 = str(secondTN)
+                timeString2 = hourString2 + ":" + minuteString2 + ":" + secondString2 + " UTC"
+                tempPath = Path(timeString2, timeString, green.getNextStation(), green.getCurrentStation())
+                self.trainSets[trainNum].addPath(tempPath)
+                green.incrementIndex()
+                if green.stationIndex == 17:
+                    if z == 5:
+                        break
+                timeNowS = nextTimeS + 30
+                
+        timeNowS = nextTimeS + 30        
+        nextTimeS = timeNowS + 120
+        ##print(nextTimeS)
+        hourT = math.floor(nextTimeS/3600)
+        minuteT = (math.floor((nextTimeS-hourT*3600)/60))
+        ##print(minuteT)
+        ##minuteT = minuteT/100
+        secondT = (nextTimeS - hourT*3600 - minuteT*60)
+        hourTN = math.floor(timeNowS/3600)
+        minuteTN = math.floor((timeNowS-hourTN*3600)/60)
+        secondTN = (timeNowS - hourTN*3600 - minuteTN*60)
+        hourString = str(hourT)
+        minuteString = str(minuteT)
+        secondString = str(secondT)
+        timeString = hourString + ":" + minuteString + ":" + secondString + " UTC"
+        hourString2 = str(hourTN)
+        minuteString2 = str(minuteTN)
+        secondString2 = str(secondTN)
+        timeString2 = hourString2 + ":" + minuteString2 + ":" + secondString2 + " UTC"
+        # green.setStationIndex(0)
+        tempPath = Path(timeString2, timeString, "The Yard", green.getCurrentStation())
+        self.trainSets[trainNum].addPath(tempPath)
+        timeNowS = nextTimeS
+               
+        timeNowS = timeNowS + 30*60
+
+        nextTimeS = timeNowS + 30
+        ##print(nextTimeS)
+        hourT = math.floor(nextTimeS/3600)
+        minuteT = (math.floor((nextTimeS-hourT*3600)/60))
+        ##print(minuteT)
+        ##minuteT = minuteT/100
+        secondT = (nextTimeS - hourT*3600 - minuteT*60)
+        hourTN = math.floor(timeNowS/3600)
+        minuteTN = math.floor((timeNowS-hourTN*3600)/60)
+        secondTN = (timeNowS - hourTN*3600 - minuteTN*60)
+        hourString = str(hourT)
+        minuteString = str(minuteT)
+        secondString = str(secondT)
+        timeString = hourString + ":" + minuteString + ":" + secondString + " UTC"
+        hourString2 = str(hourTN)
+        minuteString2 = str(minuteTN)
+        secondString2 = str(secondTN)
+        timeString2 = hourString2 + ":" + minuteString2 + ":" + secondString2 + " UTC"
+        green.setStationIndex(0)
+        tempPath = Path(timeString2, timeString, green.getCurrentStation(),"The Yard")
+        
+        self.trainSets[trainNum].addPath(tempPath)
+        green.setStationIndex(0)
+        timeNowS = nextTimeS + 30
+        for a in range(0,6):
+            for b in range(0,21):
+                timeTemp = green.getTime()
+                nextTimeS = timeNowS + timeTemp
+                ##print(nextTimeS)
+                hourT = math.floor(nextTimeS/3600)
+                minuteT = (math.floor((nextTimeS-hourT*3600)/60))
+                ##print(minuteT)
+                ##minuteT = minuteT/100
+                secondT = (nextTimeS - hourT*3600 - minuteT*60)
+                hourTN = math.floor(timeNowS/3600)
+                minuteTN = math.floor((timeNowS-hourTN*3600)/60)
+                secondTN = (timeNowS - hourTN*3600 - minuteTN*60)
+                ##minuteTN = minuteTN/100
+                hourString = str(hourT)
+                minuteString = str(minuteT)
+                secondString = str(secondT)
+                timeString = hourString + ":" + minuteString + ":" + secondString + " UTC"
+                hourString2 = str(hourTN)
+                minuteString2 = str(minuteTN)
+                secondString2 = str(secondTN)
+                timeString2 = hourString2 + ":" + minuteString2 + ":" + secondString2 + " UTC"
+                tempPath = Path(timeString2, timeString,  green.getNextStation(),green.getCurrentStation())
+                self.trainSets[trainNum].addPath(tempPath)
+                green.incrementIndex()
+                if green.stationIndex == 17:
+                    if a == 5:
+                        break
+                timeNowS = nextTimeS+30
+        #self.trainSets[trainNum].displayTrainsRouteList()
+        timeNowS = nextTimeS + 30        
+        nextTimeS = timeNowS + 120
+        ##print(nextTimeS)
+        hourT = math.floor(nextTimeS/3600)
+        minuteT = (math.floor((nextTimeS-hourT*3600)/60))
+        ##print(minuteT)
+        ##minuteT = minuteT/100
+        secondT = (nextTimeS - hourT*3600 - minuteT*60)
+        hourTN = math.floor(timeNowS/3600)
+        minuteTN = math.floor((timeNowS-hourTN*3600)/60)
+        secondTN = (timeNowS - hourTN*3600 - minuteTN*60)
+        hourString = str(hourT)
+        minuteString = str(minuteT)
+        secondString = str(secondT)
+        timeString = hourString + ":" + minuteString + ":" + secondString + " UTC"
+        hourString2 = str(hourTN)
+        minuteString2 = str(minuteTN)
+        secondString2 = str(secondTN)
+        timeString2 = hourString2 + ":" + minuteString2 + ":" + secondString2 + " UTC"
+        # green.setStationIndex(0)
+        tempPath = Path(timeString2, timeString, "The Yard", green.getCurrentStation())
+        self.trainSets[trainNum].addPath(tempPath)
+
         
 
     def makeCSV(self):
@@ -455,74 +659,75 @@ class MBO(object):
         self.trainSets[numb].setPosition(pos)
 
         print(self.trainSets[numb].getAuthority())
-        # link.mbo_send_authority_velocity_tc.emit(numb, self.trainSets[numb].getAuthority(), self.trainSets[numb].getSuggestedSpeed())
+        link.mbo_send_authority_velocity_tc.emit(numb, self.trainSets[numb].getAuthority(), self.trainSets[numb].getSuggestedSpeed())
         
 
-
-    def makeSchedule(self):
-        self.currentTime = self.startTime
-        #--train1 = Train('B')
-        #--self.addTrain(train1)
-        John = Driver("John Smith")
-        self.trainSets[0].driverTrain = John
-        q = 0
-        for j in range(0,4):
-           
-            while self.currentTime < self.startTime+0.60+j:
-                    
-
-                ## --print(self.trainSets[0].getDBlock())
-                if self.trainSets[0].getDBlock() == 0:
-                    tempPath = Path(self.currentTime, self.currentTime + .01, 10, 1)
-                    self.trainSets[0].addPath(tempPath)
-                    if self.currentTime >= self.startTime + 3.56:
-                        self.trainSets[0].setDBlock(1)
-                        self.currentTime += .02
-                    else:
-                        self.trainSets[0].setDBlock(10)
-                        self.currentTime += .02
-                elif self.trainSets[0].getDBlock() == 10 :
-                    tempPath = Path(self.currentTime, self.currentTime + .01, 15, 10)
-                    self.trainSets[0].addPath(tempPath)
-                    if self.currentTime >= self.startTime + 3.56:
-                        self.trainSets[0].setDBlock(1)
-                        self.currentTime += .02
-                    else:
-                        self.trainSets[0].setDBlock(15)
-                        self.currentTime += .02
-                elif self.trainSets[0].getDBlock() == 1 :
-                    tempPath = Path(self.currentTime, self.currentTime + .01, 1, 10)
-                    self.trainSets[0].addPath(tempPath)
-                    if self.currentTime >= self.startTime + 3.56:
-                        self.trainSets[0].setDBlock(1)
-                        self.currentTime += .02
-                    else:
-                        self.trainSets[0].setDBlock(15)
-                        self.currentTime += .02
-                else:
-                    tempPath = Path(self.currentTime, self.currentTime + .01, 10, 15)
-                    self.trainSets[0].addPath(tempPath)
-                    if self.currentTime >= self.startTime + 3.56:
-                        self.trainSets[0].setDBlock(1)
-                        self.currentTime += .02
-                    else:
-                        self.trainSets[0].setDBlock(10)
-                        self.currentTime += .02
-
-            q+=1
-##        for j in range(int(self.startTime), 23):
-##            self.hourN = j
-##            while self.currentTime < j+1:
-                
-        self.trainSets[0].displayTrainsRouteList()
-        
-        ## repeat 30 minutes later
-        ## start 2nd driver 30-31 minutes after the first starts, or if there is a high throughput hour >6660 tickets/hr
-        ## dwell is 1 min, takes about ~45 seconds from station to station
-        ## 222 passengers is occupancy
-        ## about 30 transports in an hour
-        ## if more than 6660 tickets are sold (or expected to be sold) for the hour, requires at least two trains
-        ## would scale for larger lines
+# This function is used to make the schedule for the blue line.
+# The blue line is not a part of the final iteration so it has been commented out.
+##    def makeSchedule(self):
+##        self.currentTime = self.startTime
+##        #--train1 = Train('B')
+##        #--self.addTrain(train1)
+##        John = Driver("John Smith")
+##        self.trainSets[0].driverTrain = John
+##        q = 0
+##        for j in range(0,4):
+##           
+##            while self.currentTime < self.startTime+0.60+j:
+##                    
+##
+##                ## --print(self.trainSets[0].getDBlock())
+##                if self.trainSets[0].getDBlock() == 0:
+##                    tempPath = Path(self.currentTime, self.currentTime + .01, 10, 1)
+##                    self.trainSets[0].addPath(tempPath)
+##                    if self.currentTime >= self.startTime + 3.56:
+##                        self.trainSets[0].setDBlock(1)
+##                        self.currentTime += .02
+##                    else:
+##                        self.trainSets[0].setDBlock(10)
+##                        self.currentTime += .02
+##                elif self.trainSets[0].getDBlock() == 10 :
+##                    tempPath = Path(self.currentTime, self.currentTime + .01, 15, 10)
+##                    self.trainSets[0].addPath(tempPath)
+##                    if self.currentTime >= self.startTime + 3.56:
+##                        self.trainSets[0].setDBlock(1)
+##                        self.currentTime += .02
+##                    else:
+##                        self.trainSets[0].setDBlock(15)
+##                        self.currentTime += .02
+##                elif self.trainSets[0].getDBlock() == 1 :
+##                    tempPath = Path(self.currentTime, self.currentTime + .01, 1, 10)
+##                    self.trainSets[0].addPath(tempPath)
+##                    if self.currentTime >= self.startTime + 3.56:
+##                        self.trainSets[0].setDBlock(1)
+##                        self.currentTime += .02
+##                    else:
+##                        self.trainSets[0].setDBlock(15)
+##                        self.currentTime += .02
+##                else:
+##                    tempPath = Path(self.currentTime, self.currentTime + .01, 10, 15)
+##                    self.trainSets[0].addPath(tempPath)
+##                    if self.currentTime >= self.startTime + 3.56:
+##                        self.trainSets[0].setDBlock(1)
+##                        self.currentTime += .02
+##                    else:
+##                        self.trainSets[0].setDBlock(10)
+##                        self.currentTime += .02
+##
+##            q+=1
+####        for j in range(int(self.startTime), 23):
+####            self.hourN = j
+####            while self.currentTime < j+1:
+##                
+##        self.trainSets[0].displayTrainsRouteList()
+##        
+##        ## repeat 30 minutes later
+##        ## start 2nd driver 30-31 minutes after the first starts, or if there is a high throughput hour >6660 tickets/hr
+##        ## dwell is 1 min, takes about ~45 seconds from station to station
+##        ## 222 passengers is occupancy
+##        ## about 30 transports in an hour
+##        ## if more than 6660 tickets are sold (or expected to be sold) for the hour, requires at least two trains
+##        ## would scale for larger lines
 
 ## ALGORITHM to walk through drivers
         ## input day
@@ -593,7 +798,7 @@ if __name__ == "__main__":
 ##    MBO1.trainSets[10].setDriver(Gabe)
 ##    Joseph = Driver("Joseph Smith",1,1,1,1,1,1,1,1)
 ##    MBO1.trainSets[11].setDriver(Joseph)
-##    MBO1.makeScheduleGreen()
+    MBO1.makeScheduleGreen()
 
     conv = Conversion()
     # print(conv.kmh_to_ms(40))
