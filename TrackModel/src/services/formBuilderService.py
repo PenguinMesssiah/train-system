@@ -10,7 +10,8 @@ from PyQt5.QtWidgets import QDialog, QLCDNumber, QFormLayout, QLabel, QGroupBox,
     QVBoxLayout, QScrollArea, QWidget
 from PyQt5.QtCore import Qt
       
-                
+#Service for Updating Form Fields on the UI
+
 def initalizeLCDs(window: QDialog):
     trackList = trackBuilderService.readDatabase()
 
