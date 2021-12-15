@@ -4,6 +4,10 @@ import numpy as np
 import pandas as pd
 import re
 
+# For connecting signals
+#from ..Shared.connections import *
+#from ..Shared.common      import *
+
 # Declare board variable
 board = ArduinoMega("COM3", baudrate=57600)
 
