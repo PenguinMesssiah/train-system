@@ -448,11 +448,277 @@ class Train(object):
                     self.destX += self.line.getBlockLength(self.block) - self.position
                     for x in range(33, self.DestinationBlock+1):
                         self.destX += self.line.getBlockLength(x)
-                    
+
+                        
+            # This section handles if the train is headed to STEEL PLAZA.
+            # There are 4 possibilities:
+            # The train comes from the north, not in the RST loop.
+            # The train comes from the north, in the RST loop.
+            # The train comes from the south, not in the OPQ loop.
+            # The train comes from the south, in the OPQ loop.
             elif self.DestinationBlock == 35:
 
+                # The train comes from the north, not in the RST loop.
+                if self.block <= self.DestinationBlock:
+                    for x in range(self.block+1,self.DestinationBlock+1):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+                    
+                # The train comes from the south, not in the OPQ loop.
+                elif self.block < 46:
+                    for x in range(self.DestinationBlock,self.block):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+
+                # The train comes from the north, in the RST loop.
+                elif self.block > 71:
+                    for x in range(72, self.block):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+                    for x in range(33, self.DestinationBlock+1):
+                        self.destX += self.line.getBlockLength(x)
+                # The train comes from the south, in the OPQ loop.
+                elif self.block > 66:
+                    for x in range(self.block+1,72):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+                    # This adds the 4 blocks that remain after the loop.
+                    for x in range(35,39):
+                        self.destX += self.line.getBlockLength(x)
+            # This section solves the distance for when the train wants to stop after the station at block 35 and before the switch at the end of 38.
+            elif self.DestinationBlock > 35 and self.DestinationBlock < 39:
+
+                # The train comes from the south, not in the OPQ loop.
+                if self.block < 46 and self.block > self.DestinationBlock:
+                    for x in range(self.DestinationBlock,self.block):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+                    
+                # The train comes from the north.
+                elif self.block <= self.DestinationBlock:
+                    for x in range(self.block+1,self.DestinationBlock+1):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+
+                # The train comes from the south, in the OPQ loop.
+                elif self.block > 66:
+                    for x in range(self.block+1,72):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+                    # This adds the blocks that remain after the loop.
+                    for x in range(self.DestinationBlock,39):
+                        self.destX += self.line.getBlockLength(x)
+            # This section accounts for the stretch of section H on the main path instead of the OPQ loop
+            elif self.DestinationBlock > 38 and self.DestinationBlock < 44:
+
+                # The train comes from the north.
+                if self.block <= self.DestinationBlock:
+                    for x in range(self.block+1,self.DestinationBlock+1):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+                    
+                # The train comes from the south.    
+                else:
+                    for x in range(self.DestinationBlock,self.block):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+
+            # This section handles if the train wanted to stop before the station but after the loop.
+            
+            elif self.DestinationBlock == 44:
                 
+                # If the train is coming from the south.
+                if self.block >= self.DestinationBlock and self.block < 46:
+                    for x in range(self.DestinationBlock,self.block):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+                    
+                # If the train is coming from the north and not in the OPQ loop.    
+                elif self.block < self.DestinationBlock:
+                    
+                    for x in range(self.block+1,self.DestinationBlock+1):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+                    
+                # If the train is in the OPQ loop coming down    
+                else:
+                    
+                    for x in range(67, self.block):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+                    self.destX += self.line.getBlockLength(44)
+
+            # This section will handle the station at First Ave.
+            elif self.DestinationBlock == 45:
+
+                # If the train is coming from the south
+                if self.block >= self.DestinationBlock and self.block < 49:
+                    for x in range(self.DestinationBlock,self.block):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+
+                # If the train is coming from the north, no loop taken.
+                elif self.block < self.DestinationBlock:                   
+                    for x in range(self.block+1,self.DestinationBlock+1):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+
+                # If the train is in the OPQ loop coming down    
+                else:
+                    for x in range(67, self.block):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+                    self.destX += self.line.getBlockLength(44)
+                    self.destX += self.line.getBlockLength(45)
+                    
+            # This section will handle the stretch of track between station's first ave and station square.
+            elif self.DestinationBlock > 45 and self.DestinationBlock < 48:
                 
+                # If the train is coming from the north.
+                if self.block <= self.DestinationBlock:
+                    for x in range(self.block+1,self.DestinationBlock+1):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+                else:
+                    for x in range(self.DestinationBlock,self.block):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+            # This section will handle station station square.        
+            elif self.DestinationBlock == 48:
+
+                # If the train is coming from the north.
+                if self.block <= self.DestinationBlock:
+                    for x in range(self.block+1,self.DestinationBlock+1):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+                # If the train is coming from the south, from L, K, or J.
+                elif self.block < 60:
+                    for x in range(self.DestinationBlock,self.block):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+                # If the train is coming from the south, from M, N.   
+                else:
+                    for x in range(self.block+1, 67):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+                    for x in range(48, 53):
+                        self.destX += self.line.getBlockLength(x)
+            # This section will handle the stretch from j to the switch on j.        
+            elif self.DestinationBlock > 48 and self.DestinationBlock < 53:
+
+                # If the train is coming from the north.
+                if self.block <= self.DestinationBlock:
+                    for x in range(self.block+1,self.DestinationBlock+1):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+                # If the train is coming from the south, from L, K, or J.
+                elif self.block < 60:
+                    for x in range(self.DestinationBlock,self.block):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+                # If the train is coming from the south, from M, N.   
+                else:
+                    for x in range(self.block+1, 67):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+                    for x in range(self.DestinationBlock, 53):
+                        self.destX += self.line.getBlockLength(x)
+            # This section will cover the stretch of j,k, and L.
+            elif self.DestinationBlock >=53 and self.DestinationBlock < 60:
+
+                # If the train is coming from the north.
+                if self.block <= self.DestinationBlock:
+                    for x in range(self.block+1,self.DestinationBlock+1):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+                # If the train is coming from the other direction.
+                else:
+                    for x in range(self.DestinationBlock,self.block):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+
+            # This section will cover station South Hills Junction to the end of N
+            elif self.DestinationBlock >= 60 and self.DestinationBlock <= 66:
+
+                # If the train is coming from the north.
+                if self.block <= self.DestinationBlock:
+                    for x in range(self.block+1,self.DestinationBlock+1):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+
+                # If the train is coming from the south.
+                else:
+                    # If the train is on sections M or N
+                    if self.block >= 60 and self.block <= 66:
+                        for x in range(self.DestinationBlock,self.block):
+                            self.destX += self.line.getBlockLength(x)
+                        self.destX += self.line.getBlockLength(self.block) - self.position
+                    # If the train is still on J or I
+                    else:
+                        for x in range(self.DestinationBlock, 67):
+                            self.destX += self.line.getBlockLength(x)
+                        for x in range(self.block+1, 53):
+                            self.destX += self.line.getBlockLength(x)
+                        self.destX += self.line.getBlockLength(self.block) - self.position
+
+            # This section will cover the OPQ loop, if a train needed to stop there.
+            elif self.DestinationBlock > 66 and self.DestinationBlock < 72:
+
+                if self.block < 39:
+                    for x in range(self.block+1, 39):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+                    for x in range(self.DestinationBlock, 72):
+                        self.destX += self.line.getBlockLength(x)
+
+                elif self.block < 46:
+                    for x in range(44, self.block):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+                    for x in range(67, self.DestinationBlock+1):
+                        self.destX += self.line.getBlockLength(x)
+
+                
+                elif self.block <= self.DestinationBlock:
+                    for x in range(self.block+1,self.DestinationBlock+1):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+
+                else:
+                    for x in range(self.DestinationBlock,self.block):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+
+            # This section will cover the RST loop, if a train needed to stop there.
+            elif self.DestinationBlock > 71:
+
+                if self.block < 28:
+                    for x in range(self.block+1, 28):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+                    for x in range(self.DestinationBlock, 77):
+                        self.destX += self.line.getBlockLength(x)
+
+                elif self.block < 36:
+                    for x in range(33, self.block):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+                    for x in range(72, self.DestinationBlock+1):
+                        self.destX += self.line.getBlockLength(x)
+
+                
+                elif self.block <= self.DestinationBlock:
+                    for x in range(self.block+1,self.DestinationBlock+1):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+
+                else:
+                    for x in range(self.DestinationBlock,self.block):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+
+
+                    
         self.safeStoppingDistance =  (0 - self.currentSpeed ** 2)/(2*self.regDecel)
 
         #--print(self.safeStoppingDistance)
