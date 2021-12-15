@@ -229,6 +229,79 @@ class WaysideControllerHW(object):
         self.commanded_speed_dict = commanded_speed_d
         self.authority_dict = authority_d
 
+        # Lights
+        #block 21
+        if self.lights_dict.get(21) == [0, 0, 0, 1]:
+            self.setSuperGreenLight(2)
+        elif self.lights_dict.get(21) == [0, 0, 1, 0]:
+            self.setBlockGreenLights(2)
+        elif self.lights_dict.get(21) == [0, 1, 0, 0]:
+            self.setBlockYellowLights(2)
+        elif self.lights_dict.get(21) == [1, 0, 0, 0]:
+            self.setBlockRedLights(2)
+
+        #block 23
+        if self.lights_dict.get(23) == [0, 0, 0, 1]:
+            self.setBlockSuperGreenLights(4)
+        elif self.lights_dict.get(23) == [0, 0, 1, 0]:
+            self.setBlockGreenLights(4)
+        elif self.lights_dict.get(23) == [0, 1, 0, 0]:
+            self.setBlockYellowLights(4)
+        elif self.lights_dict.get(23) == [1, 0, 0, 0]:
+            self.setBlockRedLights(4)
+
+        #block 29
+        if self.lights_dict.get(29) == [0, 0, 0, 1]:
+            self.setBlockSuperGreenLights(10)
+        elif self.lights_dict.get(29) == [0, 0, 1, 0]:
+            self.setBlockGreenLights(10)
+        elif self.lights_dict.get(29) == [0, 1, 0, 0]:
+            self.setBlockYellowLights(10)
+        elif self.lights_dict.get(29) == [1, 0, 0, 0]:
+            self.setBlockRedLights(10)
+
+        #block 30
+        if self.lights_dict.get(30) == [0, 0, 0, 1]:
+            self.setBlockSuperGreenLights(11)
+        elif self.lights_dict.get(30) == [0, 0, 1, 0]:
+            self.setBlockGreenLights(11)
+        elif self.lights_dict.get(30) == [0, 1, 0, 0]:
+            self.setBlockYellowLights(11)
+        elif self.lights_dict.get(30) == [1, 0, 0, 0]:
+            self.setBlockRedLights(11)
+
+        #block 32
+        if self.lights_dict.get(32) == [0, 0, 0, 1]:
+            self.setBlockSuperGreenLights(13)
+        elif self.lights_dict.get(32) == [0, 0, 1, 0]:
+            self.setBlockGreenLights(13)
+        elif self.lights_dict.get(32) == [0, 1, 0, 0]:
+            self.setBlockYellowLights(13)
+        elif self.lights_dict.get(32) == [1, 0, 0, 0]:
+            self.setBlockRedLights(13)
+
+        #block 150
+        if self.lights_dict.get(150) == [0, 0, 0, 1]:
+            self.setBlockSuperGreenLights(15)
+        elif self.lights_dict.get(150) == [0, 0, 1, 0]:
+            self.setBlockGreenLights(15)
+        elif self.lights_dict.get(150) == [0, 1, 0, 0]:
+            self.setBlockYellowLights(15)
+        elif self.lights_dict.get(150) == [1, 0, 0, 0]:
+            self.setBlockRedLights(15)
+
+        # Crossings
+        #block 19
+        self.control[0].setBlockCrossingState(0, self.crossing_dict.get(19))   # Crossing on 19
+
+        # Switch
+
+
+
+
+
+        #self.control[10].addSwitch()# Switch on 29
+
 
 
 
@@ -240,3 +313,16 @@ if __name__ == "__main__":
     wayside = WaysideControllerHW()
     # Choose PLC
     # enter name of PLC file
+
+    sleep(9)
+
+    # receive info from Elissa
+    receive()
+
+    # update my info with received info
+    
+
+
+
+    # merging my info and sending to Elissa
+    merge_and_send_dicts()
