@@ -35,6 +35,10 @@ class WaysideControllerSW(object): #for PyQt
 		#may need to add listeners for lights
 		self.wayside4 = WaysideImplementation([67, 68, 69, 70, 71, 72, 73], [65, 66, 74, 75])
 
+		self.waysidehw = WaysideImplementation([19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 150],[17, 18, 34, 35, 36])
+		self.waysidehw.blockOcc.update({25: 0})
+		self.waysidehw.blockOcc.update({19: 0})
+
 		#self.blockOccupancy = {0:0, 61:0, 62:0, 63:0, 63:0, 64:0, 65:0, 66:0}
 		#self.blockAuthority = {0:0, 61:1, 62:1, 63:1, 63:1, 64:1, 65:1, 66:1}
 
@@ -224,7 +228,7 @@ class WaysideControllerSW(object): #for PyQt
 		path = filename[0]
 		print (path)
 
-		self.plc.newPLC(path, self.wayside4)
+		self.plc.runPLC(path, self.waysidehw)
 		self.blockOccupancy = {0:1, 61:0, 62:0, 63:0, 63:0, 64:0, 65:0, 66:0}
 		self.blockAuthority = {0:1, 61:0, 62:0, 63:1, 63:1, 64:1, 65:1, 66:1}
 		self.display()

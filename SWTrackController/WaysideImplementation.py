@@ -20,12 +20,17 @@ class WaysideImplementation(object):
 		self.blockAuth = dict() #output from PLC
 		self.blockOcc = dict()
 		self.blockCTCAuth = dict()
+		self.blockSuggestedSpeedCTC = dict() # should contain speed numbers
+		self.blockCommandedSpeed = dict()
+
 		for block in self.blocks:
 			self.blockOcc.update({block: self.getTrackOcc(block)})
 			self.blockCTCAuth.update({block: self.getCTCAuth(block)}) #might have to rethink this since auth is an output of PLC
-			self.blockAuth.update()
-		print(self.blockOcc)
-		print(self.blockCTCAuth)
+			self.blockAuth.update({block: 0})
+		for block in self.listen:
+			self.blockOcc.update({block: self.getTrackOcc(block)})
+		#print(self.blockOcc)
+		#print(self.blockCTCAuth)
 		
 		 
 	def addSwitch(self, location):
