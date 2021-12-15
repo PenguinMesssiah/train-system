@@ -52,55 +52,67 @@ class WaysideControllerHW(object):
 
     # These getters and setters are for blocks under control
     # get blocks with switches
-    def getBlocksWithSwitches(self):
-        for i in range(len(self.control)):
-            if self.control[i].isSwitch():
-                print(self.control.getNumber())
+#    def getBlocksWithSwitches(self):
+#        for i in range(len(self.control)):
+#            if self.control[i].isSwitch():
+#                print(self.control.getNumber())
 
     # get a block's switch position
-    def getBlockSwitchPosition(self, num):
-        return self.control[num].getSwitchPosition()
+#    def getBlockSwitchPosition(self, num):
+#        return self.control[num].getSwitchPosition()
 
     # set a block's crossing state
     def setBlockSwitchPosition(self, num, position):
         self.control[num].setSwitchPosition(position)
 
     # get blocks with crossings
-    def getBlocksWithCrossings(self):
-        for i in range(len(self.control)):
-            if self.control[i].isCrossing():
-                print(self.control.getNumber())
+#    def getBlocksWithCrossings(self):
+#        for i in range(len(self.control)):
+#            if self.control[i].isCrossing():
+#                print(self.control.getNumber())
 
     # get a block's crossing state
-    def getBlockCrossingState(self, num):
-        return self.control[num].getCrossingState()
+#    def getBlockCrossingState(self, num):
+#        return self.control[num].getCrossingState()
 
     # set a block's crossing state
     def setBlockCrossingState(self, num, state):
         self.control[num].setCrossingState(state)
 
     # get blocks with lights
-    def getBlocksWithLights(self):
-        for i in range(len(self.control)):
-            if self.control[i].isLights():
-                print(self.control.getNumber())
+#    def getBlocksWithLights(self):
+#        for i in range(len(self.control)):
+#            if self.control[i].isLights():
+#                print(self.control.getNumber())
 
     # get a block's lights state
-    def getBlockLightsState(self, num):
-        return self.control[num].getLightsState()
+#    def getBlockLightsState(self, num):
+#        return self.control[num].getLightsState()
 
-    # set a block's lights state
-    def setBlockLightsState(self, num, state):
-        self.control[num].setLightsState(state)
+    # set a block's lights states
+    # super green
+    def setBlockSuperGreenLights(self, num):
+        self.control[num].setSuperGreenLight()
 
+    # green
+    def setBlockGreenLights(self, num):
+        self.control[num].setGreenLight()
+
+    # Yellow
+    def setBlockYellowLights(self, num):
+        self.control[num].setYellowLight()
+
+    # Red
+    def setBlockRedLights(self, num):
+        self.control[num].setRedLight()
 
     # These getters and setters specify whether they are for ALL blocks (blocks under control and listened to), just controlled blocks, or just listened to blocks
     # get controlled blocks' occupancies_ctc
-    def getControlledBlocksOccupancies_CTC(self):
-        occs = []
-        for i in range(len(self.control)):
-            occs.append(self.control[i].getOccupancy_CTC())
-        return occs
+#    def getControlledBlocksOccupancies_CTC(self):
+#        occs = []
+#        for i in range(len(self.control)):
+#            occs.append(self.control[i].getOccupancy_CTC())
+#        return occs
 
     # set controlled blocks' occupancies_ctc
     # NOTE to self: might be easier to make individual block setters too, so we can just change one value instead of the whole list
@@ -110,11 +122,11 @@ class WaysideControllerHW(object):
             self.control[i].setOccupancy_CTC(occs[i])
 
     # get listened blocks' occupancies_ctc
-    def getListenedBlocksOccupancies_CTC(self):
-        occs = []
-        for i in range(len(self.listen)):
-            occs.append(self.listen[i].getOccupancy_CTC())
-        return occs
+#    def getListenedBlocksOccupancies_CTC(self):
+#        occs = []
+#        for i in range(len(self.listen)):
+#            occs.append(self.listen[i].getOccupancy_CTC())
+#        return occs
 
     # set listened blocks' occupancies_ctc
     def setListenedBlocksOccupancies_CTC(self, occs):
@@ -124,11 +136,11 @@ class WaysideControllerHW(object):
 
 
     # get controlled blocks' commanded speeds
-    def getControlledBlocksCommanded_Speeds(self):
-        css = []
-        for i in range(len(self.control)):
-            css.append(self.control[i].getCommanded_Speed())
-        return css
+#    def getControlledBlocksCommanded_Speeds(self):
+#        css = []
+#        for i in range(len(self.control)):
+#            css.append(self.control[i].getCommanded_Speed())
+#        return css
 
     # set controlled blocks' commanded speeds
     def setControlledBlocksCommanded_Speeds(self, css):
@@ -137,11 +149,11 @@ class WaysideControllerHW(object):
             self.control[i].setCommanded_Speed(css[i])
 
     # get listened blocks' commanded speeds
-    def getListenedBlocksCommanded_Speeds(self):
-        css = []
-        for i in range(len(self.listen)):
-            ccs.append(self.listen[i].getCommanded_Speed())
-        return ccs
+#    def getListenedBlocksCommanded_Speeds(self):
+#        css = []
+#        for i in range(len(self.listen)):
+#            ccs.append(self.listen[i].getCommanded_Speed())
+#        return ccs
 
     # set listened blocks' commanded speeds
         def setListenedBlocksCommanded_Speeds(self, css):
@@ -151,11 +163,11 @@ class WaysideControllerHW(object):
 
 
     # get controlled blocks' authorities
-    def getControlledBlocksAuthorities(self):
-        auths = []
-        for i in range(len(self.control)):
-            auths.append(self.control[i].getAuthorities())
-        return auths
+#    def getControlledBlocksAuthorities(self):
+#        auths = []
+#        for i in range(len(self.control)):
+#            auths.append(self.control[i].getAuthorities())
+#        return auths
 
     # set controlled blocks' authorities
     def setControlledBlocksAuthorities(self, auths):
@@ -164,17 +176,42 @@ class WaysideControllerHW(object):
             self.control[i].setAuthority(auths[i])
 
     # get listened blocks' authorities
-    def getListenedBlocksAuthorities(self):
-        auths = []
-        for i in range(len(self.listen)):
-            auths.append(self.listen[i].getAuthority())
-        return auths
+#    def getListenedBlocksAuthorities(self):
+#        auths = []
+#        for i in range(len(self.listen)):
+#            auths.append(self.listen[i].getAuthority())
+#        return auths
 
     # set listened blocks' authorities
     def setListenedBlocksAuthorities(self, auths):
         # auths is a list of size len(self.control)
         for i in range(len(self.listen)):
             self.listen[i].setAuthority(auths[i])
+
+    # merge dictionaries and send info to Elissa
+    def merge_and_send_dicts(self):
+        lights_dict = dict()
+        switch_dict = dict()
+        crossing_dict = dict()
+        #occupancyCTC_dict = dict()
+        commanded_speed_dict = dict()
+        authority_dict = dict()
+        for i in range(len(self.control)):
+            lights_dict.update(self.control[i].lights)
+            switch_dict.update(self.control[i].switch)
+            crossing_dict.update(self.control[i].crossing)
+            #occupancyCTC_dict.update(self.control[i].occupancy_ctc)
+            commanded_speed_dict.update(self.control[i].commanded_speed)
+            authority_dict.update(self.control[i].authority)
+        print(lights_dict)
+        print(switch_dict)
+        print(crossing_dict)
+        #print(occupancyCTC_dict)
+        print(commanded_speed_dict)
+        print(authority_dict)
+
+        # send info to Elissa
+        link.hw_track_controller_send_lights_switch_crossing_commandedspeed_authority.emit(self.lights_dict, self.switch_dict, self.crossing_dict, self.commanded_speed_dict, self.authority_dict)
 
 
 

@@ -98,8 +98,9 @@ class Block(object):
 #    def getOccupancy_CTC(self):
 #        return self.occupancy_ctc
 
-#    def setOccupancy_CTC(self, occ):
-#        self.occupancy_ctc = occ
+    def setOccupancy_CTC(self, occ):
+        self.occupancy_ctc.update({number: occ})
+        print(self.occupancy_CTC)
 
 
     # Commanded Speed methods
@@ -107,13 +108,16 @@ class Block(object):
 #    def getCommanded_Speed(self):
 #        return self.commanded_speed
 
-#    def setCommanded_Speed(self, cs):
-#        self.commanded_speed = cs
+    def setCommanded_Speed(self, cs):
+        self.commanded_speed.update({number: cs})
+        print(self.commanded_speed)
+
 
     # Authority methods
      # 0 = not authorized, 1 = authoized
 #    def getAuthority(self):
 #        return self.authority
 
-#    def setAuthority(self, auth):
-#        self.authority = auth
+    def setAuthority(self, auth):
+        self.authority.update({number: auth})
+        print(self.authority)
