@@ -1,9 +1,7 @@
 from PyQt5.Qt import pyqtSignal
 from PyQt5.QtCore import QObject
-import sys
-sys.path.append("..")
 
-from Shared.common import *
+from .common import *
 
 class Connections(QObject):
 
