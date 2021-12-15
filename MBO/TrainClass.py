@@ -88,7 +88,7 @@ class Train(object):
         #--self.getAuthority()
 
     def setSuggestedSpeed(self):
-        self.suggestedSpeed = self.line.getSpeedLimit(self.block)
+        self.suggestedSpeed = 0.85*self.line.getSpeedLimit(self.block)
         #--self.getAuthority()
     
     def getSuggestedSpeed(self):
@@ -252,6 +252,7 @@ class Train(object):
                         for x in range(self.block+1,151):
                             self.destX += self.line.getBlockLength(x)
                         self.destX += self.line.getBlockLength(self.block) - self.position
+                        self.destX += self.line.getBlockLength(29)
                         # add distance for F line
                         for x in range(self.DestinationBlock, 28+1):
                             self.destX += self.line.getBlockLength(x)
@@ -294,9 +295,16 @@ class Train(object):
 
             # This statement jumps to destinations in line G to end of I. This is the last section of the distance calculations.               
             elif self.DestinationBlock > 28 and self.DestinationBlock <=57:
+                if self.block < 60:
                     for x in range(self.DestinationBlock,self.block):
                         self.destX += self.line.getBlockLength(x)
                     self.destX += self.line.getBlockLength(self.block) - self.position
+                else:
+                    for x in range(self.block+1,self.DestinationBlock+1):
+                        self.destX += self.line.getBlockLength(x)
+                    self.destX += self.line.getBlockLength(self.block) - self.position
+                    for x in range(29,self.DestinationBlock+1):
+                        self.destX += self.line.getBlockLength(x)
 
         # This section will detetmine the distance between the train and its destination in meters.
         # This section is for trains on the Red Line

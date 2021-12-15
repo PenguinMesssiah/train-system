@@ -3,16 +3,16 @@ import time
 class RedLine(object):
 
     speedLimitArray1 = [0, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 55, 70, 70, 70, 55, 55, 55, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 60, 60, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55, 55]
-    blockCount = 150
+    blockCount = 76
     speedLimitArray = []
     for k in range(0,77):
         speedLimitArray.append(speedLimitArray1[k]/3.6)
         
     blockLengthArray = [0, 50, 50, 50, 50, 50, 50, 75, 75, 75, 75, 75, 75, 70, 60, 60, 50, 200, 400, 400, 200, 100, 100, 100, 50, 50, 50, 50, 50, 60, 60, 50, 50, 50, 50, 50, 50, 50, 50, 50, 60, 60, 50, 50, 50, 50, 75, 75, 75, 50, 50, 50, 43.2, 50, 50, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50]
     stationIndex = 0
-    stationArray = ["GLENBURY", "DORMONT", "MT LEBANON", "POPLAR", "CASTLE SHANNON", "MT LEBANON", "GLENBURY", "OVERBROOK", "INGLEWOOD","CENTRAL", "WHITED", "UNNAMED", "EDGEBROOK", "PIONEER", "UNNAMED", "WHITED", "SOUTH BANK", "CENTRAL", "INGLEWOOD", "OVERBROOK"]
-    stationCount = 20
-    TimeArray = [75, 45, 165, 90, 100, 185, 175, 100, 85, 85, 175, 60, 60, 60, 40, 70, 80, 50, 55, 55, 55, 30, 30]
+    stationArray = ["SHADYSIDE", "HERRON AVE", "SWISSVALE", "PENN STATION", "STEEL PLAZA", "FIRST AVE", "STATION SQUARE", "SOUTH HILLS JUNCTION", "STATION SQUARE","FIRST AVE", "STEEL PLAZA", "PENN STATION", "SWISSVALE", "HERRON AVE"]
+    stationCount = 14
+    TimeArray = [35, 75, 20, 30, 30, 15, 55, 50, 15, 30, 30, 25, 75, 60, 30, 30]
     stationToStationBlockCount = 10
     stationToYardBC = 10
     timeFromStationToStation = 1
@@ -22,6 +22,10 @@ class RedLine(object):
     ## plus 30*20 = 600 seconds for dwell
     ## 2465 - 2457 - 2455 - 2451 - 
     ## need to get down to 2400
+
+    # Total time around track no dwell is 545 seconds
+    # dwell 14*30 = 965
+    # total time = 1510
     def getBlockCount(self):
         return len(self.blockLengthArray)
 
@@ -43,14 +47,14 @@ class RedLine(object):
         return self.stationArray[self.stationIndex]
 
     def getNextStation(self):
-        if self.stationIndex == 19:
+        if self.stationIndex == 13:
             return self.stationArray[0]
         else:
             return self.stationArray[self.stationIndex + 1]
             
 
     def incrementIndex(self):
-            if self.stationIndex == 19:
+            if self.stationIndex == 13:
                 self.stationIndex = 0
             else:
                 self.stationIndex = self.stationIndex + 1

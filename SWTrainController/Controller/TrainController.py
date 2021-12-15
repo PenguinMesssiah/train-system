@@ -1,6 +1,7 @@
 import time
 import os
 import json
+import csv
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 class TrainController(object):
@@ -22,7 +23,7 @@ class TrainController(object):
         self.emergencyBrake = False
         self.intercom = False
         self.automaticMode = False
-        self.commanded = 0.0
+        self.commandedSpeed = 0.0
         self.authority = 0.0
         self.speedLimit = 0.0
         self.announcement = 'NONE'
@@ -63,7 +64,7 @@ class TrainController(object):
         self.displayUI.engineOnButton.clicked.connect(self.engineControlOn)
         self.displayUI.engineOffButton.clicked.connect(self.engineControlOff)
         self.displayUI.servicebrakeButton.pressed.connect(self.serviceBrakeControl)
-        self.displayUI.emergencybrakeButton.pressed.connect(self.serviceBrakeControl)
+        self.displayUI.emergencybrakeButton.pressed.connect(self.emergencyBrakeControl)
         self.displayUI.announcementButton.pressed.connect(self.intercomControl)
         self.displayUI.manualButton.pressed.connect(self.manual)
         self.displayUI.automaticButton.pressed.connect(self.automatic)
@@ -77,6 +78,11 @@ class TrainController(object):
         self.timer2 = QtCore.QTimer()
         self.timer2.timeout.connect(self.getMBOInputs)
         self.timer2.start(self.refresh_rate)
+
+        #Timer to refresh inputs every half second
+        self.timer3 = QtCore.QTimer()
+        self.timer3.timeout.connect(self.checkFaults)
+        self.timer3.start(self.refresh_rate)
 
 
     #------------------- Functions for Train Model to receive outputs -------------------------
@@ -127,6 +133,8 @@ class TrainController(object):
 
             self.authority = float(data['authority'])
             self.suggestedSpeed = float(data['suggestedSpeed'])
+
+            self.displayUI.suggestedSpeedInput.setText(str(self.suggestedSpeed))
             
             print('inputs received from MBO')
 
@@ -139,33 +147,43 @@ class TrainController(object):
             file = open(path, 'r')
             data = json.load(file)
             
-            self.commanded = float(data['commandedSpeed'])
+            self.commandedSpeed = float(data['commandedSpeed'])
             self.speedLimit = float(data['speedLimit'])
             self.beacon = str(data['beacon'])
             self.actualSpeed = float(data['actualSpeed'])
             self.engineFaultStatus = bool(data['engineFault'])
             self.brakeFaultStatus = bool(data['brakeFault'])
             self.signalFaultStatus = bool(data['signalFault'])
-
+            
+            self.displayUI.commandedSpeedInput.setText(str(self.commandedSpeed))
             self.displayUI.actualSpeedInput.setText(str(self.actualSpeed))
             self.displayUI.beaconOutput.setText(self.beacon)
             self.displayUI.engineFaultOutput.setText(str(self.engineFaultStatus))
             self.displayUI.brakeFaultOutput.setText(str(self.brakeFaultStatus))
             self.displayUI.signalFaultOutput.setText(str(self.signalFaultStatus))
 
-            if (self.brakeFaultStatus):
-                self.emergencyBrakeControl()
-
             self.calculatePower()
             
             print('inputs received from train model')
 
+
+    #---------- checking for faulta -----------------------
+    def checkFaults(self):
+        if (self.engineFaultStatus):
+                self.emergencyBrakeControl()
+        if (self.brakeFaultStatus):
+                self.emergencyBrakeControl()        
+        if (self.signalFaultStatus):
+                self.emergencyBrakeControl()
+
+        if (self.authority == 0.0):
+            self.serviceBrakeControl()
     
 
 
     #-------------------- Function to calculate Power -------------------------
     def calculatePower(self):
-        self.error = abs(self.setSpeed - self.actualSpeed)
+        self.error = self.setSpeed - self.actualSpeed
 
         if self.power < self.maxPower:
             self.errorSum = self.previous_errorSum + (self.refresh_rate/(2*1000))*(self.error + self.previous_error)
@@ -188,8 +206,9 @@ class TrainController(object):
             print("emergency brake applied")
             self.setSpeed = 0.0
             self.displayUI.setSpeedInput.setValue(self.setSpeed)
-            while (self.actualSpeed > 0):
-                pass
+            while (self.actualSpeed > 0.0):
+                self.getTrainModelInputs()
+                time.sleep(self.refresh_rate/1000)
             self.emergencyBrake = False
             self.manual()
             self.calculatePower()
@@ -199,17 +218,21 @@ class TrainController(object):
     def serviceBrakeControl(self):
         if self.engineStatus:
             self.serviceBrake = True
+            print("service brake applied")
             self.setSpeed = 0.0
             self.displayUI.setSpeedInput.setValue(self.setSpeed)
+            while (self.actualSpeed > 0.0):
+                self.getTrainModelInputs()
+                time.sleep(self.refresh_rate/1000)
             self.serviceBrake = False
             self.manual()
             self.calculatePower()
-            print("service brake applied")
 
     #--------------------------- Announcement Control ------------------------
     def intercomControl(self):
         if self.engineStatus:
             self.announcement = "We have arrived at " + self.beacon + " station."
+            self.displayUI.consoleOutput.setText(self.announcement)
             print(self.announcement)
 
 
@@ -229,8 +252,8 @@ class TrainController(object):
             self.displayUI.manualButton.setStyleSheet("background-color:rgb(255,255,255)")
             print("switched to automatic mode")
             self.displayUI.setSpeedInput.setReadOnly(True)
-            if self.commanded <= self.speedLimit:
-                self.setSpeed = self.commanded
+            if self.commandedSpeed <= self.speedLimit:
+                self.setSpeed = self.commandedSpeed
             else:
                 self.setSpeed = self.speedLimit
             self.displayUI.setSpeedInput.setValue(self.setSpeed)
@@ -243,8 +266,6 @@ class TrainController(object):
         if self.engineStatus:
             if self.automaticMode == False:
                 self.setSpeed = self.displayUI.setSpeedInput.value()
-                if self.authority == 0:
-                    self.serviceBrakeControl()
                 if self.setSpeed >= self.speedLimit:
                     self.setSpeed = self.speedLimit
 
@@ -358,6 +379,8 @@ class TrainController(object):
         self.displayUI.temperatureInput.setValue(self.temperature)
         self.displayUI.setSpeedInput.setValue(self.setSpeed)
         self.displayUI.actualSpeedInput.setText(str(self.actualSpeed))
+        self.displayUI.commandedSpeedInput.setText(str(self.commandedSpeed))
+        self.displayUI.suggestedSpeedInput.setText(str(self.suggestedSpeed))
         self.displayUI.powerOutput.setText((str(self.power)))
         print("engine on")
 
@@ -401,6 +424,8 @@ class TrainController(object):
         self.displayUI.temperatureInput.setValue(0.0)
         self.displayUI.setSpeedInput.setValue(0.0)
         self.displayUI.actualSpeedInput.setText("")
+        self.displayUI.commandedSpeedInput.setText("")
+        self.displayUI.suggestedSpeedInput.setText("")
         self.displayUI.powerOutput.setText("")
 
         print("engine off")

@@ -1,5 +1,5 @@
 #class PLCInterpreter
-#Elissa Wilton
+#in Mike's folder
 
 class PLCInterpreter(object):
 
@@ -35,7 +35,7 @@ class PLCInterpreter(object):
 					print(wayside.crossings)
 				elif data =='l':
 					print('lights')
-					wayside.lights.update({currBlock: self.parseLight(line[5:], wayside)}) 
+					wayside.lights.update({currBlock: self.parseLight(line[5:], wayside)})
 					print(wayside.lights)
 				elif data == 'w':
 					print('switch')
@@ -57,7 +57,7 @@ class PLCInterpreter(object):
 		#or running calculation <- try this first
 		while cursor < len(rule):
 			argBlock = rule[cursor:cursor+3].strip()
-			try: 
+			try:
 				argBlock = int(argBlock)
 			except:
 				argBlock = argBlock #doesn't like when you don't have anything
@@ -115,7 +115,7 @@ class PLCInterpreter(object):
 		#or running calculation <- try this first
 		while cursor < len(rule):
 			argBlock = rule[cursor:cursor+3].strip()
-			try: 
+			try:
 				argBlock = int(argBlock)
 			except:
 				argBlock = argBlock #doesn't like when you don't have anything
@@ -174,7 +174,7 @@ class PLCInterpreter(object):
 		#or running calculation <- try this first
 		while cursor < len(rule):
 			argBlock = rule[cursor:cursor+3].strip()
-			try: 
+			try:
 				argBlock = int(argBlock)
 			except:
 				argBlock = argBlock #doesn't like when you don't have anything
@@ -243,14 +243,14 @@ class PLCInterpreter(object):
 		#args = [] #add arg values to an array and then and them
 		#or running calculation <- try this first
 		while cursor < len(rule):
-			
+
 			#currRule = rule[:end]
 			#remaining = rule[end+1:]
 			cursor2 = 0
 			while cursor2 < len(currRule):
 				logic = currRule[4]
 				argBlock = currRule[cursor2:cursor2+3].strip()
-				try: 
+				try:
 					argBlock = int(argBlock)
 				except:
 					argBlock = argBlock #doesn't like when you don't have anything
@@ -284,7 +284,7 @@ class PLCInterpreter(object):
 				if cursor2 >= len(currRule):
 					break
 
-				#lights are actually based on occupancy 0 = occupied 
+				#lights are actually based on occupancy 0 = occupied
 				arg = not arg
 
 				#and or or
@@ -328,7 +328,3 @@ class PLCInterpreter(object):
 			else:
 				break;
 		return [0, 0, 0, 0]
-
-
-
- 

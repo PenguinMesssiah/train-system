@@ -208,7 +208,7 @@ def unit_test_four():
     trainA.setPosition(200)
     print("Authority Calculated as")
     print(trainA.getAuthority())
-    assert    trainA.getAuthority() > 742 and trainA.getAuthority() < 743
+    assert    trainA.getAuthority() > 786 and trainA.getAuthority() < 787
 
     print("\ntest 4 passed")
 
@@ -216,9 +216,11 @@ def unit_test_four():
     trainA.controlSpeed()
     trainA.setPosition(50)
     # move the train 50 meters down the block to see updated authority
+    # safe stopping distance is 113.8197m
+    # authority is 850 - 113.8197m = 736.18m
     print("Authority Calculated as")
     print(trainA.getAuthority())
-    assert    trainA.getAuthority() > 692 and trainA.getAuthority() < 693
+    assert    trainA.getAuthority() > 736 and trainA.getAuthority() < 737
 
     print("\ntest 5 passed")
 
@@ -231,10 +233,10 @@ def unit_test_four():
     print("Authority Calculated as")
     print(trainA.getAuthority())
     # the total distance should be 700
-    # speed lim is 12.5 m/s
-    # safe stopping distance is 65.10m
-    # authority should be 700 - 65.10 = 634.896m
-    assert    trainA.getAuthority() > 634 and trainA.getAuthority() < 635
+    # speed lim is 12.5 m/s -> 10.625 m/s
+    # safe stopping distance is 47.038m
+    # authority should be 700 - 47.038 = 652.96m
+    assert    trainA.getAuthority() > 652 and trainA.getAuthority() < 653
 
     print("\ntest 6 passed")
 
@@ -247,10 +249,10 @@ def unit_test_four():
     print("Authority Calculated as")
     print(trainA.getAuthority())
     # the total distance should be 1859m
-    # speed lim in block 141 is 5.55 m/s
-    # safe stopping distance is 12.86m
-    # authority should be 1859 - 12.86 = 1846.14m
-    assert    trainA.getAuthority() > 1846 and trainA.getAuthority() < 1847
+    # speed lim in block 141 is 5.55 m/s -> 4.722m/s
+    # safe stopping distance is 9.29m
+    # authority should be 1859 - 9.29m = 1849.71m
+    assert    trainA.getAuthority() > 1849 and trainA.getAuthority() < 1850
 
     print("\ntest 7 passed")
 
@@ -262,10 +264,10 @@ def unit_test_four():
     print("Authority Calculated as")
     print(trainA.getAuthority())
     # the total distance should be 1280m
-    # speed lim in block 28 is 8.33 m/s
-    # safe stopping distance is 28.94m
-    # authority should be 1280m - 28.94m = 1251.06m
-    assert    trainA.getAuthority() > 1251 and trainA.getAuthority() < 1252
+    # speed lim in block 28 is 8.33 m/s -> 7.083
+    # safe stopping distance is 20.901m
+    # authority should be 1280m - 20.906m = 1259.09m
+    assert    trainA.getAuthority() > 1259 and trainA.getAuthority() < 1260
 
     print("\ntest 8 passed")
     
@@ -328,6 +330,97 @@ def unit_test_five():
 
     print("\n There are lengths for all 76 blocks in the Red Line and 1 for the yard")
 
+
+#Unit Test 6: Properly checking Authority Calculations for the Red Line
+def unit_test_six():
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    DisplayTestWindow = QtWidgets.QMainWindow()
+    DisplayWindow = QtWidgets.QMainWindow()
+    
+    test_UI = TestDisplay()
+    test_UI.setupUI(DisplayTestWindow)
+    ##DisplayTestWindow.show()
+
+    main_UI = Display()
+    main_UI.setupUI(DisplayWindow)
+    ##DisplayWindow.show()
+
+    trainA = Train('R')
+
+    # first test will be from a block on section E to station shadyside
+    trainA.setBlock(15)
+    trainA.setDBlock(7)
+    trainA.controlSpeed()
+    trainA.setPosition(20)
+    print("Authority Calculated as")
+    print(trainA.getAuthority())
+    # The distance should be 620
+    # At the suggested speed = 9.444 m/s
+    # authority should be 620 - 37.166 m = 582.834m
+    assert    trainA.getAuthority() > 582 and trainA.getAuthority() < 583
+
+    print("\nAuthority Red Line Test 1 passed")
+
+    
+    
+    
+    trainA.setPosition(40)
+    # move the train 20 meters down the block to see updated authority
+    print("Authority Calculated as")
+    print(trainA.getAuthority())
+    assert    trainA.getAuthority() > 562 and trainA.getAuthority() < 563
+
+    print("\nAuthority Red Line Test 2 passed")
+
+    # The train has moved to the station Shadyside and is headed towards Herron Ave.
+    trainA.setBlock(7)
+    trainA.setDBlock(16)
+    trainA.controlSpeed()
+    trainA.setPosition(75)
+
+    print("Authority Calculated as")
+    print(trainA.getAuthority())
+    # the total distance should be 350
+    # speed sugg is 9.44
+    # safe stopping distance is 37.166m
+    # authority should be 350 - 37.166 = 312.834m
+    assert    trainA.getAuthority() > 312 and trainA.getAuthority() < 313
+
+    print("\nAuthority Red Line Test 3 passed")
+
+    # the train is in the RST loop heading south to station STEEL PLAZA
+    trainA.setBlock(76)
+    trainA.setDBlock(35)
+    trainA.controlSpeed()
+    trainA.setPosition(10)
+
+    print("Authority Calculated as")
+    print(trainA.getAuthority())
+    # the total distance should be 390m
+    # speed lim in block 76 is 12.986
+    # safe stopping distance is 70.27m
+    # authority should be 390 - 70.27 = 319.73m
+    assert    trainA.getAuthority() > 319 and trainA.getAuthority() < 320
+
+    print("\nAuthority Red Line Test 4 passed")
+
+    # the train just moved to section M after the station in section L.It is heading towards STATION SQUARE
+    trainA.setBlock(61)
+    trainA.setDBlock(48)
+    trainA.controlSpeed()
+    trainA.setPosition(0)
+
+    print("Authority Calculated as")
+    print(trainA.getAuthority())
+    # the total distance should be 718.2m
+    # speed lim in block 61 is 15.278 m/s -> suggested = 12.986
+    # safe stopping distance is 70.266m
+    # authority should be 718.2m - 70.266m = 647.934m
+    assert    trainA.getAuthority() > 647 and trainA.getAuthority() < 648
+
+    print("\nAuthority Red Line Test 5 passed")
+
 def main():
     #Call Test One
     #unit_test_one()
@@ -336,9 +429,9 @@ def main():
     #Call Test Three
     #unit_test_three()
     #Call Test Four
-    #unit_test_four()
-    unit_test_five()
-    
+    unit_test_four()
+    #unit_test_five()
+    unit_test_six()
 
 if __name__ == '__main__':
     main() 

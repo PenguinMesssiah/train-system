@@ -55,5 +55,41 @@ class Connections(QObject):
     # Train Model -> MBO
     train_model_send_gps_velocity_mbo = pyqtSignal(int, float, int, float)
 
+    # MBO -> Train Controller
+    mbo_send_authority_velocity_tc = pyqtSignal(int, float, float)
+
+    # HW Train Controller -> SW Train Controller
+    HWTrainSendsKpTo = pyqtSignal(float);
+    HWTrainSendsKiTo = pyqtSignal(float);
+    
+    HWTrainSendsTempTo = pyqtSignal(bool);
+    HWTrainSendsEngineTo = pyqtSignal(bool);
+    HWTrainSendsAnnounceTo = pyqtSignal(bool);
+    
+    HWTrainSendsRDoorTo = pyqtSignal(bool);
+    HWTrainSendsLDoorTo = pyqtSignal(bool);
+    
+    HWTrainSendsIncSpeedTo = pyqtSignal(bool);
+    HWTrainSendsDecSpeedTo = pyqtSignal(bool);
+    
+    HWTrainSendsCabinLightsTo = pyqtSignal(bool);
+    HWTrainSendsHeadLightsTo = pyqtSignal(bool);
+    
+    HWTrainSendsAutoModeTo = pyqtSignal(bool);
+    HWTrainSendsManModeTo = pyqtSignal(bool);
+    
+    HWTrainSendsEmergBrakeTo = pyqtSignal(bool);
+    HWTrainSendsServBrakeTo = pyqtSignal(bool);
+
+    # HW Track Controller -> SW Track Controller
+    hw_track_controller_send_lights_switch_crossing_commandedspeed_authority = pyqtSignal(dict, dict, dict, dict, dict)
+    hw_track_controller_receive_suggestedspeed_authoritylimit_occupancyTM= pyqtSignal(dict, dict, dict)
+
+    # SW Track Controller -> HW Track Controller
+    sw_track_controller_send_suggestedspeed_authoritylimit_occupancyTM= pyqtSignal(dict, dict, dict)
+
+    # SW Track Controller -> CTC
+
+    # SW Track Controller -> Track Model
 
 link = Connections()

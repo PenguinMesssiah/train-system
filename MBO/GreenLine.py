@@ -11,9 +11,9 @@ class GreenLine(object):
     blockLengthArray = [0, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 150, 150, 150, 150, 150, 150, 150, 150, 300, 300, 300, 300, 200, 100, 50, 50, 50, 50, 50 , 50, 50, 50, 50, 50, 50 , 50, 50, 50, 50, 50, 50 , 50, 50, 50, 50, 50, 50 , 50, 50, 50, 50, 50, 50 , 50, 50, 50, 50, 50, 50 , 50,100, 100, 200, 200, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 300, 300, 300,  300, 300, 300,  300, 300, 300, 100, 86.6, 100, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 35, 100, 100, 80, 100, 100, 90, 100, 100, 100, 100, 100, 100, 162, 100, 100, 50, 50, 40, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 184, 40, 35]
 
     stationIndex = 0
-    stationArray = ["GLENBURY", "DORMONT", "MT LEBANON", "POPLAR", "CASTLE SHANNON", "MT LEBANON", "GLENBURY", "OVERBROOK", "INGLEWOOD","CENTRAL", "WHITED", "UNNAMED", "EDGEBROOK", "PIONEER", "UNNAMED", "WHITED", "SOUTH BANK", "CENTRAL", "INGLEWOOD", "OVERBROOK"]
-    stationCount = 20
-    TimeArray = [75, 45, 165, 90, 100, 185, 175, 100, 85, 85, 175, 60, 60, 60, 40, 70, 80, 50, 55, 55, 55, 30, 30]
+    stationArray = ["GLENBURY", "DORMONT", "MT LEBANON", "POPLAR", "CASTLE SHANNON", "MT LEBANON", "DORMONT", "GLENBURY", "OVERBROOK", "INGLEWOOD","CENTRAL", "WHITED", "UNNAMED", "EDGEBROOK", "PIONEER", "UNNAMED", "WHITED", "SOUTH BANK", "CENTRAL", "INGLEWOOD", "OVERBROOK"]
+    stationCount = 21
+    TimeArray = [75, 45, 165, 90, 100, 55, 120, 175, 100, 85, 85, 175, 60, 60, 60, 40, 70, 80, 50, 55, 55, 55, 30, 30]
     stationToStationBlockCount = 10
     stationToYardBC = 10
     timeFromStationToStation = 1
@@ -44,14 +44,16 @@ class GreenLine(object):
         return self.stationArray[self.stationIndex]
 
     def getNextStation(self):
-        if self.stationIndex == 19:
+        if self.stationIndex == 20:
             return self.stationArray[0]
         else:
             return self.stationArray[self.stationIndex + 1]
-            
+
+    def setStationIndex(self,num):
+        self.stationIndex = num
 
     def incrementIndex(self):
-            if self.stationIndex == 19:
+            if self.stationIndex == 20:
                 self.stationIndex = 0
             else:
                 self.stationIndex = self.stationIndex + 1

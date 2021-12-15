@@ -1,87 +1,137 @@
 import time
+import sys
+import string
 #temp from Controller.TrainController import TrainController
 #temp from UI.Driver import DriverDisplay
 #temp from UI.Engineer import EngineerDisplay
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+sys.path.append("..")
+
+from Shared.connections import *
+from Shared.common import *
+
+def send_sw_inputs(): #This links the values entered by the train driver to the SW module.
+    link.HWTrainSendsKpTo.emit(Kp);
+    link.HWTrainSendsKiTo.emit(Ki);
+    
+    link.HWTrainSendsTempTo.emit(tempStatus);
+    link.HWTrainSendsEngineTo.emit(engineStatus);
+    link.HWTrainSendsAnnounceTo.emit(announceStatus);
+    
+    link.HWTrainSendsRDoorTo.emit(rdoorsOpen);
+    link.HWTrainSendsLDoorTo.emit(ldoorsOpen);
+    
+    link.HWTrainSendsIncSpeedTo.emit(incSpeed);
+    link.HWTrainSendsDecSpeedTo.emit(decSpeed);
+    
+    link.HWTrainSendsCabinLightsTo.emit(cabinlightsOn);
+    link.HWTrainSendsHeadLightsTo.emit(headlightsOn);
+    
+    link.HWTrainSendsAutoModeTo.emit(autoMode);
+    link.HWTrainSendsManModeTo.emit(manMode);
+    
+    link.HWTrainSendsEmergBrakeTo.emit(emergBrake);
+    link.HWTrainSendsServBrakeTo.emit(servBrake);
+    
 def setTrainValues():
-    #Gather kp and ki input from engineer.py UI
-    kp = Engineer_UI.kpInput.value()
-    ki = Engineer_UI.kiInput.value()
-    EngineerWindow.close()
+    #Gather kp and ki input from Engineer
+    print("Welcome Engineer!")
+    kp = float(input("Enter kp value: "))
+    ki = float(input("Enter ki value: "))
+    print("Kp is", kp, "and ki is", ki, ".")
     start(kp, ki)
 
-def start(kp, ki):
-
-    #Start an instance for each train model. Up to 10 trains. commented out for readability
-    train1_DriverWindow = QtWidgets.QMainWindow()
-    train1_UI = DriverDisplay()
-    train1_UI.setupUI(train1_DriverWindow, 1)
-    train1_DriverWindow.show()
-    train1 = TrainController(1, kp, ki, train1_UI)
-
-    #train2_DriverWindow = QtWidgets.QMainWindow()
-    #train2_UI = DriverDisplay()
-    #train2_UI.setupUI(train2_DriverWindow, 2)
-    #train2_DriverWindow.show()
-    #train2 = TrainController(2, kp, ki, train2_UI)
-
-    #train3_DriverWindow = QtWidgets.QMainWindow()
-    #train3_UI = DriverDisplay()
-    #train3_UI.setupUI(train3_DriverWindow, 3)
-    #train3_DriverWindow.show()
-    #train3 = TrainController(3, kp, ki, train3_UI)
-
-    #train4_DriverWindow = QtWidgets.QMainWindow()
-    #train4_UI = DriverDisplay()
-    #train4_UI.setupUI(train4_DriverWindow, 4)
-    #train4_DriverWindow.show()
-    #train4 = TrainController(4, kp, ki, train4_UI)
-
-    #train5_DriverWindow = QtWidgets.QMainWindow()
-    #train5_UI = DriverDisplay()
-    #train5_UI.setupUI(train5_DriverWindow, 5)
-    #train5_DriverWindow.show()
-    #train5 = TrainController(5, kp, ki, train5_UI)
-
-    #train6_DriverWindow = QtWidgets.QMainWindow()
-    #train6_UI = DriverDisplay()
-    #train6_UI.setupUI(train6_DriverWindow, 6)
-    #train6_DriverWindow.show()
-    #train6 = TrainController(6, kp, ki, train6_UI)
-
-    #train7_DriverWindow = QtWidgets.QMainWindow()
-    #train7_UI = DriverDisplay()
-    #train7_UI.setupUI(train7_DriverWindow, 7)
-    #train7_DriverWindow.show()
-    #train7 = TrainController(7, kp, ki, train7_UI)
-
-    #train8_DisplayWindow = QtWidgets.QMainWindow()
-    #train8_UI = DriverDisplay()
-    #train8_UI.setupUI(train8_DisplayWindow, 8)
-    #train8_DisplayWindow.show()
-    #train8 = TrainController(8, kp, ki, train8_UI)
-
-    #train9_DriverWindow = QtWidgets.QMainWindow()
-    #train9_UI = DriverDisplay()
-    #train9_UI.setupUI(train9_DriverWindow, 9)
-    #train9_DriverWindow.show()
-    #train9 = TrainController(9, kp, ki, train9_UI)
-
-    #train10_DriverWindow = QtWidgets.QMainWindow()
-    #train10_UI = DriverDisplay()
-    #train10_UI.setupUI(train10_DriverWindow, 10)
-    #train10_DriverWindow.show()
-    #train10 = TrainController(10, kp, ki, train10_UI)
-    
-    sys.exit(app.exec_())
+def start(kp, ki): #Start 1 train at a time. Function can only run a single train on hardware.
+    print("Welcome Train Driver!")
+    engineStatus = input("Turn engine on? (y/n)")
+    #Run RPi display
+    if engineStatus == "y":
+        print("Engine on.")
+        func=input("What would you like to do? (temp/announce/doors/lights/speed/mode/emergbrake/servbrake) ")
+        if func=="temp":
+            tempStatus=input("Increase or decrease temp? (up/down)")
+            if tempStatus=="up":
+                incTemp=True
+                print("Temperature increased.")
+            elif tempStatus=="down":
+                decTemp=True;
+                print("Temperature decreased.")
+            start(kp,ki)
+        if func=="announce":
+            announceStatus=True
+            print("Announcement made.")
+            start(kp,ki)
+        if func=="doors":
+            doorStatus=input("Right doors or left doors?(r/l)")
+            if doorStatus=="r":
+                openStatus=input("Open or close?(o/c)")
+                if openStatus=="o":
+                    rdoorsOpen=True;
+                    print("Right doors opened.")
+                if openStatus=="c":
+                    rdoorsOpen=False;
+                    print("Right doors closed.")
+            if doorStatus=="l":
+                openStatus=input("Open or close?(o/c)")
+                if openStatus=="o":
+                    ldoorsOpen=True;
+                    print("Left doors opened.")
+                if openStatus=="c":
+                    ldoorsOpen=False;
+                    print("Left doors closed.")
+            start(kp,ki)
+        if func=="lights":
+            lightStatus=input("Cabin lights or headlights?(c/h)")
+            if lightStatus=="c":
+                onStatus=input("On or off?(on/off)")
+                if onStatus=="on":
+                    cabinlightsOn=True;
+                    print("Cabin lights on.")
+                if onStatus=="off":
+                    cabinlightsOn=False;
+                    print("Cabin lights off.")
+            if lightStatus=="h":
+                onStatus=input("On or off?(on/off)")
+                if onStatus=="on":
+                    headlightsOn=True;
+                    print("Headlights on.")
+                if onStatus=="off":
+                    headlightsOn=False;
+                    print("Headlights off.")
+            start(kp,ki)
+        if func=="speed":
+            speedStatus=input("Increase or decrease speed? (up/down")
+            if speedStatus=="up":
+                incSpeed=True;
+                print("Speed increased by 5 mph.")
+            if speedStatus=="down":
+                decSpeed=True;
+                print("Speed decreased by 5 mph.")
+            start(kp,ki)
+        if func=="mode":
+            modeStatus=input("Automatic or manual?(a/m)")
+            if modeStatus=="a":
+                autoMode=True;
+                print("Automatic mode ON.")
+            if modeStatus=="m":
+                manMode=True;
+                print("Manual mode ON.")
+            start(kp,ki)
+        if func=="emergbrake":
+            emergBrake=True;
+            print("Emergency brake engaged.")
+            start(kp,ki)
+        if func=="servbrake":
+            servBrake=True;
+            print("Service brake engaged.")
+            start(kp,ki)
+        if func=="quit":
+            sys.exit(app.exec_())
+    if engineStatus == "n":
+        print("Please turn on engine to start train.")
+        start(kp,ki)
 
 if __name__ == "__main__":
     import sys
-    app = QtWidgets.QApplication(sys.argv)
-    
-    EngineerWindow = QtWidgets.QMainWindow()
-    Engineer_UI = EngineerDisplay()
-    Engineer_UI.setupUI(EngineerWindow)
-    EngineerWindow.show()
-    Engineer_UI.enterButton.clicked.connect(setTrainValues)
+    setTrainValues()

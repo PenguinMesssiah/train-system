@@ -55,9 +55,6 @@ def setTrainValues():
     speedLimit = TrainModel_UI.speedLimitInput.value()
     actualSpeed = TrainModel_UI.actualSpeedInput.value()
 
-    print(beacon)
-    print(speedLimit)
-
     #writing values to json
     trainModel_data = {"trainNumber":trainNumber,
                        "beacon":beacon,
