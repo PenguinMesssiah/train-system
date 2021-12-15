@@ -27,24 +27,24 @@ class PLCInterpreter(object):
 				data = line[3]
 				if data == 'a':
 					print ('auth')
-					wayside.blockAuth.update({currBlock: self.parseAuthority(line[5:], wayside)}) #should skip equal sign
-					print(wayside.blockAuth)
+					wayside.authority_dict.update({currBlock: self.parseAuthority(line[5:], wayside)}) #should skip equal sign
+					print(wayside.authority_dict)
 				elif data == 'x':
 					print('crossing')
-					wayside.crossings.update({currBlock: self.parseCrossing(line[5:], wayside)}) #should skip equal sign
-					print(wayside.crossings)
+					wayside.crossing_dict.update({currBlock: self.parseCrossing(line[5:], wayside)}) #should skip equal sign
+					print(wayside.crossing_dict)
 				elif data =='l':
 					print('lights')
-					wayside.lights.update({currBlock: self.parseLight(line[5:], wayside)})
-					print(wayside.lights)
+					wayside.lights_dict.update({currBlock: self.parseLight(line[5:], wayside)})
+					print(wayside.lights_dict)
 				elif data == 'w':
 					print('switch')
-					wayside.switches.update({currBlock: self.parseSwitch(line[5:], wayside)}) #should skip equal sign
-					print(wayside.switches)
+					wayside.switch_dict.update({currBlock: self.parseSwitch(line[5:], wayside)}) #should skip equal sign
+					print(wayside.switch_dict)
 				elif data == 'c':
 					print('commanded speed')
-					wayside.blockCommandedSpeed.update({currBlock: self.parseCommandedSpeed(line[5:], wayside)}) #should skip equal sign
-					print(wayside.blockCommandedSpeed)
+					wayside.commanded_speed_dict.update({currBlock: self.parseCommandedSpeed(line[5:], wayside)}) #should skip equal sign
+					print(wayside.commanded_speed_dict)
 
 			f.close()
 		#print(file)
@@ -71,20 +71,20 @@ class PLCInterpreter(object):
 			print("src= " + src)
 			if src == 'a':
 				print ('auth')
-				arg = wayside.blockAuth[argBlock]
+				arg = wayside.authority_dict[argBlock]
 				print(argBlock, ":", arg)
 			elif src == 's':
 				print('schedule')
-				arg = wayside.blockCTCAuth[argBlock]
+				arg = wayside.authority_limit_dict[argBlock]
 				print(argBlock, ":", arg)
 			elif src =='o':
 				print('occ')
 				print(argBlock)
-				arg = wayside.blockOcc[argBlock]
+				arg = wayside.occupancyCTC_dict[argBlock]
 				print(argBlock, ":", arg)
 			elif src == 'w':
 				print('switch')
-				arg = wayside.switches[argBlock]
+				arg = wayside.switch_dict[argBlock]
 				print(argBlock, ":", arg)
 
 			cursor = cursor + 1
@@ -129,20 +129,20 @@ class PLCInterpreter(object):
 			print("src= " + src)
 			if src == 'a':
 				print ('auth')
-				arg = wayside.blockAuth[argBlock]
+				arg = wayside.authority_dict[argBlock]
 				print(argBlock, ":", arg)
 			elif src == 's':
 				print('schedule')
-				arg = wayside.blockCTCAuth[argBlock]
+				arg = wayside.authority_limit_dict[argBlock]
 				print(argBlock, ":", arg)
 			elif src =='o':
 				print('occ')
 				print(argBlock)
-				arg = wayside.blockOcc[argBlock]
+				arg = wayside.occupancyCTC_dict[argBlock]
 				print(argBlock, ":", arg)
 			elif src == 'w':
 				print('switch')
-				arg = wayside.switches[argBlock]
+				arg = wayside.switch_dict[argBlock]
 				print(argBlock, ":", arg)
 
 			cursor = cursor + 1
