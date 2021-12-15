@@ -270,7 +270,7 @@ def generatePositioningData_blueLine(trackLayout: list):
     writeDatabase(trackLayout); 
     
 #Method for Updating Ticket Sales  
-def generateTicketSales():
+def generateTicketSales() -> int:
     #Maximum of 74 seated Passengers & Maximum of 148 standing Passengers = 222 Total
     #Arbitrarily Set 10 as the Minimum & 50 as the Maximum number of Ticket Sales per Station 
     
@@ -280,15 +280,18 @@ def generateTicketSales():
     database    = db_workbook.active;
 
     rowIndex = 0
+    rangeValue = random.randrange(10, 50, 3)
     #Reading Database File
     for row in database.values:
         rowIndex+=1
         random.seed(rowIndex)
 
-        if(row[0] == 'Station'):
-            print('\nStation rowIndex = ', rowIndex)
-            
-            database.cell(row=rowIndex, column= 6, value=random.randrange(10, 50, 3))
+        if(row[0] == 'Station'):            
+            database.cell(row=rowIndex, column= 6, value=rangeValue)
+            print("\nUpdated Station Occupancy to ", rangeValue )
+            break;
     
     db_workbook.save(r'C:\Users\willi\eclipse-workspace\train-system\TrackModel\src\database.xlsx')
     db_workbook.close
+
+    return rangeValue

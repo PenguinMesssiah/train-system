@@ -35,10 +35,14 @@ class Connections(QObject):
     # Track Model -> Train Model
     train_model_dispatch_train = pyqtSignal(str, int, list, Track_Circuit_Data)
     train_model_receive_blockList = pyqtSignal(list)
-    train_model_receive_track_circuit = pyqtSignal(int, Track_Circuit_Data)     # Includes authority and commanded speed
+    train_model_receive_track_circuit = pyqtSignal(int, list)     # Includes authority and commanded speed
     train_model_receive_beacon = pyqtSignal(int, Beacon_Data)
     train_model_receive_authority = pyqtSignal(int, float)
     train_model_receive_lights = pyqtSignal(int, bool)
+
+    #Track Model -> SW Wayside
+    track_model_send_blockOccupancy = pyqtSignal(dict)
+    sw_wayside_send_blockList = pyqtSignal(list)
 
      # Diagnostics / Murphy interactive signals
     train_model_diagnostics_toggleEngineFailure = pyqtSignal(int)

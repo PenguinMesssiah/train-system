@@ -6,7 +6,7 @@ Last Updated: Oct 12, 2021
 # Imports
 import sys, time
 from models          import trackBlock, trackSwitch
-from PyQt5.QtWidgets import QDialog, QApplication
+from PyQt5.QtWidgets import QDialog, QApplication, QLineEdit
 from PyQt5.QtCore    import pyqtSlot
 from ui.trackModel_mainPage import Ui_Dialog
 from services        import formBuilderService, trackBuilderService, connectionService
@@ -28,6 +28,7 @@ class AppWindow(QDialog):
             #Connections to Backend
             #Connecting uploadTrackButton to Intializing Form Data
             self.ui.uploadTrackButton.clicked.connect(lambda: self.uploadButtonClicked())
+            self.ui.stationButton.clicked.connect(lambda: self.updateStationOccupancy())
             
             #Connecting Power Failure Buttons
             self.ui.powerFailureButton.clicked.connect(lambda: self.updatePowerFailure())
@@ -37,6 +38,9 @@ class AppWindow(QDialog):
             #Connecting Spin Boxes
             self.ui.blockSelectSpinBox.valueChanged['int'].connect(lambda: self.updateGlobalBlock())
             self.ui.swSelectSpinBox.valueChanged['int'].connect(lambda: self.updateGlobalSwitch())
+
+            #Connecting Line Edit
+            self.ui.envTempLineEdit.returnPressed.connect(lambda: self.enableHeater(self, self.ui.envTempLineEdit.text()))
                 
             
         #Intializing Data
@@ -76,7 +80,22 @@ class AppWindow(QDialog):
             formBuilderService.updateFailureLCDs(self, self.ui.blockSelectSpinBox.value())      
 
         def receiveBlockList(self, pBlockList: list):
-            self.blockList = pBlockList;            
+            self.blockList = pBlockList;
+        
+        def updateStationOccupancy(self):
+            occupancy = trackBuilderService.generateTicketSales()
+            self.ui.lcdStationOccupancy.display(occupancy)
+
+        def enableHeater(self, QLineEdit: QLineEdit, lineEditValue: str):       
+            if(float(lineEditValue) < 40):
+                self.trackHeater = 1
+                self.ui.lcdTrackHeater.display(self.trackHeater)
+                print('\nTrack Heater Enabled')
+            else:
+                self.trackHeater = 0
+                self.ui.lcdTrackHeater.display(self.trackHeater)
+                print("\nTrack Heater Disabled")
+            
 
 app    = QApplication(sys.argv)
 window = AppWindow()
