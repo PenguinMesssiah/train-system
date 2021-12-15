@@ -10,9 +10,12 @@ from PathSet import Path
 from GreenLine import GreenLine
 import math
 import csv
+import sys
 
-#from ..Shared.connections import *
-#from ..Shared.common      import *
+sys.path.append("..")
+
+from Shared.connections import *
+from Shared.common      import *
 
 class MBO(object):
 
@@ -581,6 +584,9 @@ if __name__ == "__main__":
     Joseph = Driver("Joseph Smith",1,1,1,1,1,1,1,1)
     MBO1.trainSets[11].setDriver(Joseph)
     MBO1.makeScheduleGreen()
+
+    conv = Conversion()
+    print(conv.kmh_to_ms(40))
     ## --- MBO1.makeSchedule()
 
 ##    self.tableView = QtGui.QTableView(self.centralwidget)
