@@ -3,7 +3,8 @@
 
 from PyQt5 import QtCore, QtWidgets
 import math, time
-import os, sys
+from datetime import datetime, timedelta
+import sys
 sys.path.append("..")
 
 # from train import Train
@@ -23,7 +24,7 @@ from UI.train_model_testing_ui     import Testing_UI
 # from ..Shared.connections import *
 # from ..Shared.common      import *
 
-from Shared.common import *
+from Shared.common import Track_Circuit_Data, Beacon_Data, Conversion, Constants
 from Shared.connections import *
 
 # Reminder for later!!!:  Guard the creation of the windows and dialogs to prevent disconnected duplicate windows
@@ -50,6 +51,8 @@ class Train_Functions:
 
         self.trainList = []
         self.blockList = []
+
+        self.trainNum_const = 0
 
         # Connections
         link.train_model_receive_authority.connect(self.receive_authority)
@@ -94,25 +97,7 @@ class Train_Functions:
             self.already_run = False
             self.run_continously = True
 
-            if UI_mode == "Test":
-
-                print("test")
-                tempList = []
-                tempList.append(Block("A1", 50, 0.25, 0.5, "", ""))
-                tempList.append(Block("A2", 50, 0.5, 1, "", ""))
-                tempList.append(Block("A3", 50, 0.75, 1.5, "", ""))
-                tempList.append(Block("B4", 50, 1, 2, "", ""))
-                tempList.append(Block("B5", 50, 0.75, 1.5, "", ""))
-                tempList.append(Block("B6", 50, 0.5, 1, "", ""))
-                tempList.append(Block("C7", 75, 0.38, 0.5, "Shadyside", "arrived_at_station"))
-                tempList.append(Block("C8", 75, 0, 0 ,"", ""))
-
-                tempTrackCircuit = Track_Circuit_Data(450, 40)
-
-                self.dispatch_train("Shadyside", tempList, tempTrackCircuit)
-                self.update_continuously(0, 5)
-
-            sys.exit(app.exec_())
+            sys.exit(self.app.exec_())
 
 
 
@@ -121,7 +106,6 @@ class Train_Functions:
         self.passenger_ui = Passenger_UI()
         self.passenger_ui.setupUi(self.passenger_dialog, trainNum)
         self.passenger_dialog.show()
-        #sys.exit(app.exec_())
 
 
     def open_diagnostics_dialog(self, trainNum):
@@ -139,22 +123,38 @@ class Train_Functions:
 
 
     def receive_testing_values(self, trainNum, passengers, temperature, suggestedSpeed, commandedSpeed, speedLimit, power):
-        self.receive_passengers(trainNum, passengers)
-        self.receive_temperature(trainNum, temperature)
-        self.receive_suggestedSpeed(trainNum, suggestedSpeed)
-        self.receive_commandedSpeed(trainNum, commandedSpeed)
-        self.receive_speedLimit(trainNum, speedLimit)
+        tempList = []
+        tempList.append(Block("A1", 50, 0.25, 0.5, "Shadyside", ""))
+        tempList.append(Block("A2", 50, 0.5, 1, "Shadyside", ""))
+        tempList.append(Block("A3", 50, 0.75, 1.5, "Shadyside", ""))
+        tempList.append(Block("B4", 50, 1, 2, "Shadyside", ""))
+        tempList.append(Block("B5", 50, 0.75, 1.5, "Shadyside", ""))
+        tempList.append(Block("B6", 50, 0.5, 1, "Shadyside", ""))
+        tempList.append(Block("C7", 75, 0.38, 0.5, "Shadyside", "arrived_at_station"))
+        tempList.append(Block("C8", 75, 0, 0 ,"", ""))
+
+        tempTrackCircuit = Track_Circuit_Data(450, 40)
 
         # Give time for old run to end and new to start
         if self.already_run:
             self.run_continously = False
-            time.sleep(0.2)
+            time.sleep(Constants.TIME_PERIOD*2)
             self.run_continously = True
 
+        self.ui.trainNum_text.setText(str(self.trainNum_const))
+        self.trainNum_const = self.trainNum_const + 1
+
+        self.dispatch_train("Shadyside", tempList, tempTrackCircuit)
+        
+        self.receive_passengers(trainNum, passengers)
+        self.receive_temperature(trainNum, temperature)
+        self.receive_suggestedSpeed(trainNum, Conversion.mph_to_ms(suggestedSpeed))
+        self.receive_commandedSpeed(trainNum, Conversion.mph_to_ms(commandedSpeed))
+        self.receive_speedLimit(trainNum, Conversion.mph_to_ms(speedLimit))
+
+        self.ui.power_text.setText(str(round(power)))
         self.update_continuously(trainNum, power)
         self.run_continously = True
-
-        #self.update_kinematics(trainNum, power)
 
 
     def stopRun(self):
@@ -171,29 +171,28 @@ class Train_Functions:
         self.blockList = blockRoute
         self.trainList.append(dispatchedTrain)
 
+        # Update departure time
+        self.ui.departureTime_text.setText(time.strftime("%H:%M:%S"))
+        self.ui.arrivalTime_text.setText((datetime.now() + timedelta(hours=1)).strftime("%H:%M:%S"))
+
         link.train_model_train_dispatched_ctrl.emit(trackCircuitInput)
 
 
     def update_continuously(self, trainNum, power):  
-        self.already_run = True
-        import sys
-        sys.exit(self.app.exec_())
+        self.already_run = True 
 
-        # self.timer = QtCore.QTimer()
-        # self.update_continuously_trainNum = trainNum
-        # self.update_continuously_power = power
-        # self.timer.timeout.connect(self.update_continuously_kinematics)
-        # self.timer.start(Constants.TIME_PERIOD*100) # in ms, so x 100
+        self.timer = QtCore.QTimer()
+        self.update_continuously_trainNum = trainNum
+        self.update_continuously_power = power
+        self.timer.timeout.connect(self.update_continuously_kinematics)
+        self.timer.start(int(Constants.TIME_PERIOD*100)) # in ms, so x 100
+        
+        self.timer2 = QtCore.QTimer()
+        self.timer2.timeout.connect(self.update_time)
+        self.timer2.start(int(Constants.TIME_PERIOD*100))
 
-        #print("hi")
-        #Timer(Constants.TIME_PERIOD, self.update_kinematics(trainNum, power)).start()
-
-        while self.run_continously:
-            time.sleep(Constants.TIME_PERIOD)
-            self.update_kinematics(trainNum, power)
-
-        # if self.run_continously:
-        #     self.update_kinematics(trainNum, power)
+    def update_time(self):
+        self.ui.currentTime_text.setText(time.strftime("%H:%M:%S"))
 
     # temp for iteration 2
     def update_continuously_kinematics(self):
@@ -202,7 +201,7 @@ class Train_Functions:
 
     def update_kinematics(self, trainNum, power):
         if self.run_continously:
-            
+
             # Convert from kW to W
             power = power*1000
 
@@ -223,88 +222,99 @@ class Train_Functions:
             emergencyBrake = self.trainList[trainNum].emergencyBrake
             currentBlockNum = self.trainList[trainNum].currentBlock
 
+            run = True
             # If blocklist exists, set current block
-            #if len(self.blockList) > 0:
-            #print("curr blockNum =",currentBlockNum)
-            currentBlock = self.blockList[0]
-
-            # From track class
-            currentBlockLength = currentBlock.blockLength
-            slope = currentBlock.slope
+            if len(self.blockList) > 0:
+                if self.blockList[0].beacon == "":
+                    currentBlock = self.blockList[0]
+                    currentBlockLength = currentBlock.blockLength
+                    slope = currentBlock.slope
+                    self.ui.nextStation_text.setText(self.blockList[1].station)
+                    run = True
+                else:
+                    self.run_continously = False
+                    run = False
+            else:
+                # Stop running
+                self.run_continously = False
+                run = False
 
             # For calculations
             timePeriod = Constants.TIME_PERIOD 
 
-            # --------------------- FORCE CALCULATIONS ---------------------
-            # --------------------------------------------------------------
-            if (brake or emergencyBrake or power == 0):
-                force = 0
-            else:
-                if (currentSpeed == 0):
-                    force = self.FRICTION * mass * self.GRAVITY_ACC * math.cos(slope)
-                else:
-                    force = power / currentSpeed - (self.FRICTION + mass * self.GRAVITY_ACC + math.cos(slope))
-
-                if (force < 0):
+            if run:
+                # --------------------- FORCE CALCULATIONS ---------------------
+                # --------------------------------------------------------------
+                if (brake or emergencyBrake or power == 0):
                     force = 0
-        
-            # --------------------- ACCELERATION CALCULATIONS ---------------------
-            # ---------------------------------------------------------------------
-            acceleration = force / mass
-
-            if (acceleration > self.ACCELERATION_LIMIT and not brake and not emergencyBrake):
-                acceleration = self.ACCELERATION_LIMIT
-            elif (brake and not emergencyBrake):
-                acceleration = self.DECELERATION_REGULAR_BRAKE
-            elif (emergencyBrake):
-                # Note, the emergency brake takes priority over regular
-                acceleration = self.DECELERATION_EMERGENCY_BRAKE
-
-            # --------------------- VELOCITY CALCULATIONS ---------------------
-            # -----------------------------------------------------------------
-            velocity = currentSpeed + ( (timePeriod / 2) * (acceleration + prevAcceleration) )
-
-            if (velocity > self.VELOCITY_LIMIT):
-                velocity = self.VELOCITY_LIMIT
-            elif (velocity < 0):
-                velocity = 0
-                
-            # --------------------- POSITION CALCULATIONS ---------------------
-            # -----------------------------------------------------------------
-            position = prevPosition + (velocity * timePeriod)
-
-            #Move position to next block on track
-            if (position > currentBlockLength):
-                
-                # This if statement is only for testing, not needed for functionality
-                if len(self.blockList) <= 1:
-                    self.blockList.pop(0)
-                    position = currentBlockLength
-
-                    self.destination_reached = True
-                    self.run_continously = False
                 else:
-                    # Fix block length
-                    position -= currentBlockLength
+                    if (currentSpeed == 0):
+                        force = self.FRICTION * mass * self.GRAVITY_ACC * math.cos(slope)
+                    else:
+                        force = power / currentSpeed - (self.FRICTION + mass * self.GRAVITY_ACC + math.cos(slope))
 
-                    # Remove traveled block from list and update current block
-                    self.blockList.pop(0)
-                    self.trainList[trainNum].currentBlock = self.blockList[0]
-                    currentBlock = self.blockList[0]
-                    #self.currentBlockNum += 1
-
-                    # Send block occupancy to track model
-                    link.track_model_update_block_occupancy.emit(trainNum, currentBlock)
+                    if (force < 0):
+                        force = 0
             
-            # Update rest of values
-            self.trainList[trainNum].position = position
-            self.trainList[trainNum].power = power
-            self.trainList[trainNum].currentSpeed = velocity
-            self.trainList[trainNum].acceleration = acceleration
+                # --------------------- ACCELERATION CALCULATIONS ---------------------
+                # ---------------------------------------------------------------------
+                acceleration = force / mass
 
-            # Send position and velocity to MBO
-            link.train_model_send_gps_velocity_mbo(trainNum, position, currentBlock, velocity)
-            
+                if (acceleration > self.ACCELERATION_LIMIT and not brake and not emergencyBrake):
+                    acceleration = self.ACCELERATION_LIMIT
+                elif (brake and not emergencyBrake):
+                    acceleration = self.DECELERATION_REGULAR_BRAKE
+                elif (emergencyBrake):
+                    # Note, the emergency brake takes priority over regular
+                    acceleration = self.DECELERATION_EMERGENCY_BRAKE
+                elif (self.trainList[trainNum].doors[0] or self.trainList[trainNum].doors[1]):
+                    acceleration = self.DECELERATION_EMERGENCY_BRAKE
+
+                # --------------------- VELOCITY CALCULATIONS ---------------------
+                # -----------------------------------------------------------------
+                velocity = currentSpeed + ( (timePeriod / 2) * (acceleration + prevAcceleration) )
+
+                if (velocity > self.VELOCITY_LIMIT):
+                    velocity = self.VELOCITY_LIMIT
+                elif (velocity < 0):
+                    velocity = 0
+                    
+                # --------------------- POSITION CALCULATIONS ---------------------
+                # -----------------------------------------------------------------
+                position = prevPosition + (velocity * timePeriod)
+
+                #Move position to next block on track
+                if (position > currentBlockLength):
+                    
+                    # This if statement is only for testing, not needed for functionality
+                    if len(self.blockList) <= 1:
+                        self.blockList.pop(0)
+                        position = currentBlockLength
+
+                        self.destination_reached = True
+                        self.run_continously = False
+                    else:
+                        # Fix block length
+                        position -= currentBlockLength
+
+                        # Remove traveled block from list and update current block
+                        self.blockList.pop(0)
+                        self.trainList[trainNum].currentBlock = self.blockList[0]
+                        currentBlock = self.blockList[0]
+                        #self.currentBlockNum += 1
+
+                        # Send block occupancy to track model
+                        link.track_model_update_block_occupancy.emit(trainNum, currentBlock)
+                
+                # Update rest of values
+                self.trainList[trainNum].position = position
+                self.trainList[trainNum].power = power
+                self.trainList[trainNum].currentSpeed = velocity
+                self.trainList[trainNum].acceleration = acceleration
+
+                # Send position and velocity to MBO
+                link.train_model_send_gps_velocity_mbo.emit(trainNum, position, currentBlock, velocity)
+                
             # Update UI
             # connect.train_model_update_ui.emit("position", position)
             # connect.train_model_update_ui.emit("power", power)
@@ -312,11 +322,11 @@ class Train_Functions:
             # connect.train_model_update_ui.emit("acceleration", acceleration)
             # connect.train_model_update_ui.emit("blockName", currentBlock.name)
 
-            if self.UI_mode:
-                self.ui.power_text.setText(str(power))
-                self.ui.currentSpeed_text.setText(str(velocity))
-                #self.ui.currentSpeed_text.setText(str(acceleration))
-                self.ui.block_text.setText(str(currentBlock.name))
+                if self.UI_mode:
+                    self.ui.power_text.setText(str(power))
+                    self.ui.currentSpeed_text.setText(str(velocity*2.23694) + " mph")
+                    #self.ui.currentSpeed_text.setText(str(acceleration))
+                    self.ui.block_text.setText(str(currentBlock.name))
         
 # ---------------------------------------------------------------------------------------------
 # -------------------------------- INPUTS FROM TRACK MODEL ------------------------------------
@@ -324,12 +334,12 @@ class Train_Functions:
     # Receives acceleration limit from the Track Model
     def receive_accelerationLimit(self, train, accelerationLimit):
         self.trainList[train].accelerationLimit = accelerationLimit
-        self.ui.accLimit_text.setText(str(accelerationLimit))
+        self.ui.accLimit_text.setText(str(Conversion.ms_to_mph(accelerationLimit)))
 
     # Receives authority from the Track Model
     def receive_authority(self, train, authority):
         self.trainList[train].authority = authority
-        self.ui.authority_text.setText(str(authority))
+        self.ui.authority_text.setText(str(Conversion.meters_to_feet(authority)))
 
     # Receives beacon from the Track Model
     def receive_beacon(self, train, beacon):
@@ -338,12 +348,12 @@ class Train_Functions:
     # Receive suggested speed from the Track Model
     def receive_suggestedSpeed(self, train, suggestedSpeed):
         link.train_model_send_suggestedSpeed_ctrl.emit(train, suggestedSpeed)
-        self.ui.suggestedSpeed_text.setText(str(suggestedSpeed))
+        self.ui.suggestedSpeed_text.setText(str(Conversion.ms_to_mph(suggestedSpeed)))
 
     # Receive deceleration limit from the Track Model
     def receive_decelerationLimit(self, train, decelerationLimit):
         self.trainList[train].decelerationLimit = decelerationLimit
-        self.ui.decelerationLimit_text.setText(str(decelerationLimit))
+        self.ui.decelerationLimit_text.setText(str(Conversion.ms_to_mph(decelerationLimit)))
 
     # Receives light toggle from the Track Model
     def receive_lights(self, train, lights):
@@ -353,7 +363,7 @@ class Train_Functions:
     # Receive speed limit from the Track Model
     def receive_speedLimit(self, train, speedLimit):
         self.trainList[train].speedLimit = speedLimit
-        self.ui.speedLimit_text.setText(str(speedLimit))
+        self.ui.speedLimit_text.setText(str(Conversion.ms_to_mph(speedLimit)))
 
     def receive_blockList(self, blockList):
         self.blockList = blockList
@@ -412,7 +422,7 @@ class Train_Functions:
     def receive_commandedSpeed(self, train, commandedSpeed):
         self.trainList[train].commandedSpeed = commandedSpeed
         if self.UI_mode:
-            self.ui.commandedSpeed_text.setText(str(commandedSpeed))
+            self.ui.commandedSpeed_text.setText(str(Conversion.ms_to_mph(commandedSpeed)))
 
     # Receive door open/closed from the Train Controller
     def receive_door(self, train, side):
@@ -481,7 +491,7 @@ class Train_Functions:
     # Receive passengers from station
     def receive_passengers(self, train, passengers):
         self.trainList[train].passengers = passengers
-        self.trainList[train].mass = self.trainList[train].mass * (passengers*Conversion.kg_to_tons(62))        # Average mass of a human is 62 kg
+        self.trainList[train].mass = self.trainList[train].mass + (Conversion.kg_to_tons(62)) # Average mass of a human is 62 kg
         if self.UI_mode:
             self.ui.passengers_text.setText(str(passengers))
 

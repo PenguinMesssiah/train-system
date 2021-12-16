@@ -13,20 +13,23 @@ class Beacon_Data:
 
 class Conversion:
 
-    def kmh_to_ms(self, kmh):
-        return kmh*.277778
+    def kmh_to_ms(kmh):
+        return round(kmh*.277778, 2)
 
-    def kmh_to_mph(self, kmh):
-        return kmh*.621371
+    def kmh_to_mph(kmh):
+        return round(kmh*.621371, 2)
 
-    def ms_to_mph(self, ms):
-        return ms*2.23694
+    def ms_to_mph(ms):
+        return round(ms*2.23694, 2)
 
-    def meters_to_feet(self, m):
-        return m*3.28084
+    def mph_to_ms(mph):
+        return round(mph/2.23694, 2)
 
-    def kg_to_tons(self, kg):
-        return kg*0.00110231
+    def meters_to_feet(m):
+        return round(m*3.28084, 2)
+
+    def kg_to_tons(kg):
+        return round(kg*0.00110231, 2)
 
 class Constants:
     
