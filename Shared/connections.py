@@ -25,7 +25,11 @@ class Connections(QObject):
     train_model_send_velocity_ctrl = pyqtSignal(float)
     train_model_send_lights_ctrl = pyqtSignal(bool, bool)
     train_model_train_dispatched_ctrl = pyqtSignal(Track_Circuit_Data)
+<<<<<<< Updated upstream
     train_model_send_beacon_ctrl = pyqtSignal(Beacon_Data)
+=======
+    train_model_send_beacon_ctrl = pyqtSignal(int, Beacon_Data)
+>>>>>>> Stashed changes
     train_model_send_suggestedSpeed_ctrl = pyqtSignal(int, float)
 
     # Train Controller -> Train Model
