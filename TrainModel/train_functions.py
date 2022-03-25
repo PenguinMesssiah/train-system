@@ -7,13 +7,6 @@ from datetime import datetime, timedelta
 import sys
 sys.path.append("..")
 
-# from train import Train
-# from block import Block
-# from train_model_mainpage_ui import Mainpage_UI
-# from train_model_passenger_ui import Passenger_UI
-# from train_model_diagnostics_ui import Diagnostics_UI
-# from train_model_testing_ui import Testing_UI
-
 from Models.train                  import *
 from Models.block                  import *
 from UI.train_model_mainpage_ui    import Mainpage_UI
@@ -21,16 +14,9 @@ from UI.train_model_passenger_ui   import Passenger_UI
 from UI.train_model_diagnostics_ui import Diagnostics_UI
 from UI.train_model_testing_ui     import Testing_UI
 
-# from ..Shared.connections import *
-# from ..Shared.common      import *
-
 from Shared.common import Track_Circuit_Data, Beacon_Data, Conversion, Constants
 from Shared.connections import *
 
-# Reminder for later!!!:  Guard the creation of the windows and dialogs to prevent disconnected duplicate windows
-
-# UI_mode options: Default, Off, Passenger, Test
-# Currently, only default, off, and test are supported (UPDATE PASSENGER!)
 class Train_Functions:
 
     def __init__(self, trainNum, UI_mode):
@@ -324,7 +310,7 @@ class Train_Functions:
 
                 if self.UI_mode:
                     self.ui.power_text.setText(str(power))
-                    self.ui.currentSpeed_text.setText(str(velocity*2.23694) + " mph")
+                    self.ui.currentSpeed_text.setText(str(Conversion.ms_to_mph(velocity)) + " mph")
                     #self.ui.currentSpeed_text.setText(str(acceleration))
                     self.ui.block_text.setText(str(currentBlock.name))
         
